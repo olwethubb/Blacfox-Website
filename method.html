@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Positioning &amp; Messaging Framework for B2B Tech Companies | Blacfox Method</title>
+  <meta name="description" content="Blacfox PMF: eight-step positioning framework built from buyer research. Used by Microsoft &amp; SAP partners to sharpen messaging and generate 10:1 pipeline."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,800&display=swap" rel="stylesheet"/>
+  <link rel="icon" href="fox-icon.svg" type="image/svg+xml"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>
+    /* ── Local token: darker muted text, no site equivalent ── */
+    :root { --muted2: rgba(255,255,255,0.28); }
+
+    /* ══ #ig4 — PMF Three-Column Radial ══ */
+    /* 3-col grid: left cards | hub | right cards — all 8 visible at once */
+    .pmf-radial{display:grid;grid-template-columns:1fr 210px 1fr;gap:0;margin-top:48px;align-items:stretch}
+
+    /* Left column — steps 1–4 */
+    .pmf-left-col,.pmf-right-col{display:flex;flex-direction:column;gap:8px;padding:8px 0}
+
+    /* Each row: card + node (or node + card) */
+    .pmf-step-item{display:flex;align-items:center;gap:10px;position:relative;flex:1}
+    .pmf-left-col .pmf-step-item{flex-direction:row}  /* card → node → centre */
+    .pmf-right-col .pmf-step-item{flex-direction:row} /* centre → node → card */
+    .pmf-left-col  .pmf-rcard,.pmf-right-col .pmf-rcard{flex:1}
+
+    /* Connector lines removed — nodes float beside the hub */
+
+    /* Numbered node circles */
+    .pmf-n{
+      width:44px;height:44px;border-radius:50%;flex-shrink:0;
+      display:flex;align-items:center;justify-content:center;
+      font-size:17px;font-weight:900;color:white;position:relative;z-index:2;
+      background:linear-gradient(135deg,rgba(233,92,37,0.92) 0%,rgba(178,54,8,0.96) 100%);
+      backdrop-filter:blur(10px) saturate(2);-webkit-backdrop-filter:blur(10px) saturate(2);
+      border:2px solid rgba(255,165,90,0.65);
+      box-shadow:0 4px 20px rgba(233,92,37,0.50),inset 0 1.5px 0 rgba(255,200,140,0.45)}
+
+    /* Centre column — hub circle + vertical spine with refraction */
+    .pmf-hub-col{position:relative;display:flex;align-items:center;justify-content:center}
+    /* Spine line — fades to near-invisible through the hub, returns after */
+    .pmf-hub-col::before{
+      content:'';position:absolute;left:50%;top:0;bottom:0;width:2px;
+      background:linear-gradient(to bottom,
+        transparent,
+        rgba(233,92,37,0.45) 8%,
+        rgba(233,92,37,0.45) 36%,
+        rgba(233,92,37,0.06) 44%,
+        rgba(233,92,37,0.04) 50%,
+        rgba(233,92,37,0.06) 56%,
+        rgba(233,92,37,0.45) 64%,
+        rgba(233,92,37,0.45) 92%,
+        transparent);
+      transform:translateX(-50%);z-index:0}
+
+    /* Hub circle */
+    .pmf-hub{
+      width:188px;height:188px;border-radius:50%;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      text-align:center;padding:24px;gap:4px;position:relative;z-index:1;
+      background:linear-gradient(135deg,rgba(255,255,255,0.12) 0%,rgba(255,255,255,0.04) 50%,rgba(255,255,255,0.09) 100%);
+      backdrop-filter:blur(24px) saturate(2) brightness(1.15);-webkit-backdrop-filter:blur(24px) saturate(2) brightness(1.15);
+      border:1.5px solid rgba(255,255,255,0.24);
+      box-shadow:0 8px 48px rgba(0,0,0,0.35),inset 0 2px 0 rgba(255,255,255,0.26),inset 0 -1px 0 rgba(0,0,0,0.12)}
+    .pmf-hub-pre,.pmf-hub-post{font-size:10px;font-weight:500;color:var(--muted);margin:0}
+    .pmf-hub-title{font-size:13px;font-weight:900;font-style:italic;color:var(--light);letter-spacing:-0.02em;line-height:1.25;display:block;margin:5px 0}
+
+    /* Step cards — compact liquid glass */
+    .pmf-rcard{
+      background:linear-gradient(135deg,rgba(255,255,255,0.10) 0%,rgba(255,255,255,0.03) 45%,rgba(255,255,255,0.07) 100%);
+      backdrop-filter:blur(20px) saturate(1.9) brightness(1.14);-webkit-backdrop-filter:blur(20px) saturate(1.9) brightness(1.14);
+      border:1px solid rgba(255,255,255,0.15);border-radius:16px;padding:14px 18px;
+      box-shadow:0 4px 28px rgba(0,0,0,0.28),inset 0 1.5px 0 rgba(255,255,255,0.22),inset 0 -1px 0 rgba(0,0,0,0.08);
+      transition:border-color 0.25s,box-shadow 0.25s,background 0.25s;cursor:default}
+    .pmf-rcard:hover{
+      background:linear-gradient(135deg,rgba(233,92,37,0.18) 0%,rgba(233,92,37,0.07) 50%,rgba(233,92,37,0.14) 100%);
+      border-color:rgba(233,92,37,0.42);
+      box-shadow:0 8px 36px rgba(233,92,37,0.18),0 0 0 1px rgba(233,92,37,0.12),inset 0 1.5px 0 rgba(255,200,150,0.28)}
+    .pmf-rcard.output{
+      background:linear-gradient(135deg,rgba(233,92,37,0.52) 0%,rgba(233,92,37,0.24) 48%,rgba(233,92,37,0.44) 100%);
+      backdrop-filter:blur(22px) saturate(2.3) brightness(1.32);-webkit-backdrop-filter:blur(22px) saturate(2.3) brightness(1.32);
+      border-color:rgba(255,160,80,0.45);
+      box-shadow:0 8px 36px rgba(233,92,37,0.28),inset 0 2px 0 rgba(255,190,110,0.42),inset 0 -1px 0 rgba(100,28,0,0.22)}
+    .pmf-rcard-num{font-size:9px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--orange);margin-bottom:4px}
+    .pmf-rcard-name{font-size:16px;font-weight:900;font-style:italic;color:var(--light);letter-spacing:-0.02em;margin-bottom:3px}
+    .pmf-rcard.output .pmf-rcard-name{color:white}
+    .pmf-rcard-sub{font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+    .pmf-rcard-body{font-size:11px;color:var(--muted);line-height:1.6}
+    .pmf-rcard.output .pmf-rcard-body{color:rgba(255,230,210,0.85)}
+
+    /* ══ #ig5 — 4Ps Quadrant ══ */
+    .four-ps-wrap{position:relative;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:2px;border-radius:20px;overflow:clip;border:1px solid rgba(255,255,255,0.15);min-height:480px;margin-top:48px}
+    /* Neutral liquid glass for each quadrant */
+    .ps-quad{
+      background:linear-gradient(135deg,rgba(255,255,255,0.10) 0%,rgba(255,255,255,0.03) 45%,rgba(255,255,255,0.07) 100%);
+      backdrop-filter:blur(20px) saturate(1.9) brightness(1.14);
+      -webkit-backdrop-filter:blur(20px) saturate(1.9) brightness(1.14);
+      padding:36px 32px;position:relative;
+      box-shadow:inset 0 1.5px 0 rgba(255,255,255,0.18),inset 0 -1px 0 rgba(0,0,0,0.08);
+      transition:background 0.25s,box-shadow 0.25s;
+    }
+    /* All quads — orange-tinted glass on hover */
+    .ps-quad:hover,.ps-quad.active:hover{
+      background:linear-gradient(135deg,rgba(233,92,37,0.52) 0%,rgba(233,92,37,0.24) 48%,rgba(233,92,37,0.44) 100%);
+      backdrop-filter:blur(22px) saturate(2.3) brightness(1.32);
+      -webkit-backdrop-filter:blur(22px) saturate(2.3) brightness(1.32);
+      border-color:rgba(255,160,80,0.45);
+      box-shadow:0 8px 40px rgba(233,92,37,0.28),inset 0 2px 0 rgba(255,190,110,0.45),inset 0 -1px 0 rgba(100,28,0,0.22);
+    }
+    /* Active quads — same neutral glass as the others (no persistent orange) */
+    .ps-quad.active{
+      background:linear-gradient(135deg,rgba(255,255,255,0.10) 0%,rgba(255,255,255,0.03) 45%,rgba(255,255,255,0.07) 100%);
+      backdrop-filter:blur(20px) saturate(1.9) brightness(1.14);
+      -webkit-backdrop-filter:blur(20px) saturate(1.9) brightness(1.14);
+      border:1px solid rgba(255,255,255,0.15);
+      box-shadow:0 4px 32px rgba(0,0,0,0.28),inset 0 1.5px 0 rgba(255,255,255,0.22),inset 0 -1px 0 rgba(0,0,0,0.08);
+    }
+    .ps-letter{font-size:80px;font-weight:900;font-style:italic;color:rgba(255,255,255,0.04);position:absolute;right:24px;bottom:16px;line-height:1;user-select:none}
+    .ps-quad.active .ps-letter{color:rgba(233,92,37,0.12)}
+    .ps-label{font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--orange);margin-bottom:10px}
+    .ps-title{font-size:28px;font-weight:900;letter-spacing:-0.02em;color:var(--light);margin-bottom:14px}
+    .ps-body{font-size:13px;color:var(--muted);line-height:1.7;max-width:320px}
+    .ps-centre{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:80px;height:80px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;letter-spacing:0.08em;color:white;z-index:10;text-align:center;line-height:1.2;box-shadow:0 0 60px rgba(233,92,37,0.5)}
+
+    /* ══ #ig6 — Positioning vs Messaging ══ */
+    .pvm-wrap{display:grid;grid-template-columns:1fr 80px 1fr;align-items:stretch;min-height:520px;margin-top:48px}
+    /* Neutral liquid glass — Positioning (left) column */
+    .pvm-col{
+      background:linear-gradient(135deg,rgba(255,255,255,0.10) 0%,rgba(255,255,255,0.03) 45%,rgba(255,255,255,0.07) 100%);
+      backdrop-filter:blur(20px) saturate(1.9) brightness(1.14);
+      -webkit-backdrop-filter:blur(20px) saturate(1.9) brightness(1.14);
+      border-radius:20px;padding:40px 36px;display:flex;flex-direction:column;gap:20px;
+      border:1px solid rgba(255,255,255,0.15);
+      box-shadow:0 4px 32px rgba(0,0,0,0.28),inset 0 1.5px 0 rgba(255,255,255,0.22),inset 0 -1px 0 rgba(0,0,0,0.08);
+    }
+    /* Orange-tinted liquid glass — Messaging (right) column */
+    .pvm-col.right{
+      background:linear-gradient(135deg,rgba(233,92,37,0.52) 0%,rgba(233,92,37,0.24) 48%,rgba(233,92,37,0.44) 100%);
+      backdrop-filter:blur(22px) saturate(2.3) brightness(1.32);
+      -webkit-backdrop-filter:blur(22px) saturate(2.3) brightness(1.32);
+      border:1px solid rgba(255,160,80,0.40);
+      box-shadow:0 8px 40px rgba(233,92,37,0.22),inset 0 2px 0 rgba(255,190,110,0.42),inset 0 -1px 0 rgba(100,28,0,0.22);
+    }
+    .pvm-label{font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase}
+    .pvm-col.left .pvm-label{color:var(--muted)}
+    .pvm-col.right .pvm-label{color:rgba(255,255,255,0.65)}
+    .pvm-heading{font-size:32px;font-weight:900;letter-spacing:-0.02em;line-height:1.1}
+    .pvm-col.left .pvm-heading{color:var(--light)}
+    .pvm-col.right .pvm-heading{color:#fff}
+    .pvm-role{font-size:13px;font-weight:700;color:var(--muted);padding:8px 16px;border-radius:8px;background:rgba(255,255,255,0.04);display:inline-block}
+    .pvm-col.right .pvm-role{background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.85)}
+    .pvm-items{display:flex;flex-direction:column;gap:12px;margin-top:8px}
+    .pvm-item{padding:14px 18px;border-radius:10px;border:1px solid var(--border);font-size:13px;font-weight:600;color:var(--muted);display:flex;align-items:center;gap:12px}
+    .pvm-col.right .pvm-item{border-color:rgba(255,255,255,0.15);color:rgba(255,255,255,0.80)}
+    .pvm-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+    .pvm-col.left .pvm-dot{background:rgba(255,255,255,0.2)}
+    .pvm-col.right .pvm-dot{background:rgba(255,255,255,0.70)}
+    .pvm-arrow-col{display:flex;flex-direction:column;align-items:center;justify-content:center}
+    .pvm-arrow-line{width:2px;flex:1;background:linear-gradient(to bottom,transparent,var(--orange),transparent)}
+    .pvm-arrow-circle{width:52px;height:52px;border-radius:50%;background:var(--orange);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;color:white;box-shadow:0 0 40px rgba(233,92,37,0.4)}
+    .pvm-quote{margin-top:auto;padding:20px 24px;background:rgba(255,255,255,0.03);border-radius:12px;border-left:3px solid var(--orange);font-size:13px;font-style:italic;color:var(--muted);line-height:1.65}
+    .pvm-col.right .pvm-quote{background:rgba(255,255,255,0.06);border-left-color:rgba(255,255,255,0.35);color:rgba(255,255,255,0.72)}
+    .pvm-timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:2px;border-radius:0 0 20px 20px;overflow:clip}
+
+    @media(max-width:900px){
+      .pmf-radial{grid-template-columns:1fr}
+      .pmf-hub-col{display:none}
+      .pmf-left-col .pmf-step-item::after,.pmf-right-col .pmf-step-item::before{display:none}
+      .pmf-left-col .pmf-step-item,.pmf-right-col .pmf-step-item{flex-direction:row}
+      .four-ps-wrap{grid-template-columns:1fr;grid-template-rows:auto}
+      .pvm-wrap{grid-template-columns:1fr}
+      .pvm-arrow-col{flex-direction:row;padding:16px 0}
+      .pvm-timeline{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<div id="cursor-glow"></div>
+
+<div id="orbs-bg" aria-hidden="true">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="orb orb-4"></div>
+  <div class="orb orb-5"></div>
+</div>
+
+<div id="bottom-nav">
+  <a href="index.html" class="nav-logo nav-pill-glass" aria-label="Blacfox">
+    <img src="fox-icon.svg" class="nav-logo-svg" alt="Blacfox"/>
+  </a>
+  <nav class="nav-links-pill nav-pill-glass">
+    <a href="index.html" data-page="index">Home</a>
+    <a href="method.html" data-page="method">Method</a>
+    <a href="for-partners.html" data-page="for-partners">Partners</a>
+    <a href="for-isvs.html" data-page="for-isvs">ISVs</a>
+    <a href="services.html" data-page="services">Services</a>
+    <a href="work.html" data-page="work">Work</a>
+    <a href="about.html" data-page="about">About</a>
+    <a href="contact.html" data-page="contact">Contact</a>
+  </nav>
+</div>
+
+<!-- HERO -->
+<section style="position:relative;overflow:hidden;min-height:100vh;">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-bg-glow"></div>
+  <div class="hero-split" style="position:relative;z-index:1;width:100%;max-width:1240px;margin:0 auto;">
+    <div>
+      <h1 class="hero-title">
+        <span class="line"><span class="word">We are</span></span>
+        <span class="line"><span class="word"><em>product marketers.</em></span></span>
+      </h1>
+      <p class="hero-sub">Most B2B growth problems aren't growth problems. They're <strong>story problems</strong> — the buyer doesn't understand who you're for, what you solve, or why you're worth the risk. Our positioning and messaging framework fixes that. Then the growth happens.</p>
+      <div class="hero-ctas">
+        <a href="contact.html" class="btn-primary">Book a 20-min call →</a>
+        <a href="services.html" class="btn-ghost">See our services</a>
+      </div>
+    </div>
+    <div class="hero-quote-panel">
+      <blockquote>"Most B2B growth problems aren't growth problems. They're story problems — the buyer doesn't understand who you're for, what you solve, or why you're worth the risk."</blockquote>
+      <p class="hero-attribution">THE BLACFOX PMF PRINCIPLE</p>
+    </div>
+  </div>
+  <div class="hero-scroll" style="position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- S02 WHAT IS PRODUCT MARKETING -->
+<section>
+  <div class="section-inner">
+    <p class="section-tag reveal">01 · Product marketing</p>
+    <h2 class="section-h reveal">What is product marketing for <em>B2B tech companies?</em></h2>
+    <p class="section-p reveal">Product marketing is the discipline of making a product easier to buy. Not easier to use — that's product management. Not easier to find — that's demand generation. Easier to buy. That's a different problem — and it's the one Blacfox solves for B2B tech companies.</p>
+  </div>
+</section>
+
+<!-- S03 B2B BUYERS -->
+<section class="section-mid">
+  <div class="section-inner">
+    <p class="section-tag reveal">02 · The real problem</p>
+    <h2 class="section-h reveal">B2B buyers don't purchase what you <em>make.</em></h2>
+    <p class="section-p reveal">They purchase what they believe they'll get. The gap between your product and what buyers believe about it is a positioning and messaging problem. We close that gap — with research, not guesswork.</p>
+  </div>
+</section>
+
+<!-- S04 USP -->
+<section>
+  <div class="section-inner">
+    <p class="section-tag reveal">03 · The USP question</p>
+    <h2 class="section-h reveal">What makes a strong B2B USP? It's not a slogan — it's the <em>sharpest line</em> of an enhanced offering.</h2>
+    <p class="section-p reveal">Most B2B USPs are taglines. They describe features, not outcomes. They're written from the inside out — by people who already know the product — and they land flat with buyers who don't.</p>
+
+    <div class="callout-box reveal">
+      <p>A strong B2B USP = customer language + reduced friction + real proof. Anything less is a tagline.</p>
+    </div>
+  </div>
+</section>
+
+<!-- #ig4 — PMF Eight Steps -->
+<section class="section-mid">
+  <div class="section-inner">
+    <p class="section-tag reveal">04 · The process</p>
+    <h2 class="section-h reveal">How we build your Positioning &amp; Messaging Framework — <em>eight steps.</em></h2>
+    <p class="section-p reveal">Every engagement follows the same rigorous sequence. The output is a PMF that aligns your entire go-to-market — website, sales decks, partner packs, campaign briefs.</p>
+
+    <!-- 3-col: steps 1–4 left | hub centre | steps 5–8 right — all visible at once -->
+    <div class="pmf-radial reveal">
+
+      <!-- LEFT COLUMN: steps 1–4 -->
+      <div class="pmf-left-col">
+        <div class="pmf-step-item">
+          <div class="pmf-rcard">
+            <div class="pmf-rcard-num">Step 01</div>
+            <div class="pmf-rcard-name">Context</div>
+            <div class="pmf-rcard-sub">Market &amp; Timing</div>
+            <div class="pmf-rcard-body">Macro forces, vendor strategy shifts, regulatory changes, buyer-behaviour data. Position your product against the market your B2B buyer is currently navigating — not last year's version.</div>
+          </div>
+          <div class="pmf-n">1</div>
+        </div>
+        <div class="pmf-step-item">
+          <div class="pmf-rcard">
+            <div class="pmf-rcard-num">Step 02</div>
+            <div class="pmf-rcard-name">Company</div>
+            <div class="pmf-rcard-sub">Credible Claims</div>
+            <div class="pmf-rcard-body">Audit your actual capability, outcomes, and proof points — then ringfence the claims you can own. Positioning that overstates gets called out in the first sales conversation.</div>
+          </div>
+          <div class="pmf-n">2</div>
+        </div>
+        <div class="pmf-step-item">
+          <div class="pmf-rcard">
+            <div class="pmf-rcard-num">Step 03</div>
+            <div class="pmf-rcard-name">Competitors</div>
+            <div class="pmf-rcard-sub">Where They're Weak</div>
+            <div class="pmf-rcard-body">A linguistic map of the B2B tech category — who claims what, in whose words, with what proof. The strongest positioning is built on where competitors are evasive or quietly overpromising.</div>
+          </div>
+          <div class="pmf-n">3</div>
+        </div>
+        <div class="pmf-step-item">
+          <div class="pmf-rcard">
+            <div class="pmf-rcard-num">Step 04</div>
+            <div class="pmf-rcard-name">Customers</div>
+            <div class="pmf-rcard-sub">Buyer Interviews</div>
+            <div class="pmf-rcard-body">Real buyer interviews with real decision-makers. The exact words buyers use, the trade-offs they make, the alternatives they consider, the risks they fear.</div>
+          </div>
+          <div class="pmf-n">4</div>
+        </div>
+      </div>
+
+      <!-- CENTRE: hub circle + vertical spine -->
+      <div class="pmf-hub-col">
+        <div class="pmf-hub">
+          <p class="pmf-hub-pre">How we build your</p>
+          <strong class="pmf-hub-title">Positioning &amp; Messaging Framework</strong>
+          <p class="pmf-hub-post">eight steps.</p>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: steps 5–8 -->
+      <div class="pmf-right-col">
+        <div class="pmf-step-item">
+          <div class="pmf-n">5</div>
+          <div class="pmf-rcard">
+            <div class="pmf-rcard-num">Step 05</div>
+            <div class="pmf-rcard-name">Segmentation</div>
+            <div class="pmf-rcard-sub">Who We Go After First</div>
+            <div class="pmf-rcard-body">The segment with the highest right-to-win, the shortest path to revenue, and the most defensible early-customer story. The other segments wait.</div>
+          </div>
+        </div>
+        <div class="pmf-step-item">
+          <div class="pmf-n">6</div>
+          <div class="pmf-rcard">
+            <div class="pmf-rcard-num">Step 06</div>
+            <div class="pmf-rcard-name">Positioning</div>
+            <div class="pmf-rcard-sub">"Why You" Story</div>
+            <div class="pmf-rcard-body">The intersection of what your customer needs, what you can credibly deliver, and what your competitors can't. This is where the PMF crystallises.</div>
+          </div>
+        </div>
+        <div class="pmf-step-item">
+          <div class="pmf-n">7</div>
+          <div class="pmf-rcard">
+            <div class="pmf-rcard-num">Step 07</div>
+            <div class="pmf-rcard-name">The 4 Ps</div>
+            <div class="pmf-rcard-sub">Price · Place · Product · Promo</div>
+            <div class="pmf-rcard-body">The positioning must land in operational reality. Tune the four levers so the B2B messaging ships — into campaigns, sales decks, partner packs.</div>
+          </div>
+        </div>
+        <div class="pmf-step-item">
+          <div class="pmf-n">8</div>
+          <div class="pmf-rcard output">
+            <div class="pmf-rcard-num">Output</div>
+            <div class="pmf-rcard-name">PMF</div>
+            <div class="pmf-rcard-sub">The Message Blueprint</div>
+            <div class="pmf-rcard-body">The Positioning &amp; Messaging Framework that aligns B2B sales and marketing. A working document — feeds your website, sales decks, partner packs, campaign briefs, and renewal conversations.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CHART 07 — PMF Engagement Timelines -->
+<section class="section-mid">
+  <div class="section-inner">
+    <p class="section-tag reveal">05 · Engagement timelines</p>
+    <h2 class="section-h reveal">PMF sprint <em>durations.</em></h2>
+    <p class="section-p reveal">Pick the engagement that matches where you are. Each sprint has a defined output and timeline — no open-ended retainers.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:64px;" class="stagger">
+
+      <!-- Full PMF: 10 weeks -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:20px;">
+        <div style="position:relative;width:160px;height:160px;">
+          <svg width="160" height="160" viewBox="0 0 160 160" style="transform:rotate(-90deg);">
+            <circle cx="80" cy="80" r="68" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="10"/>
+            <circle cx="80" cy="80" r="68" fill="none" stroke="#e95c25" stroke-width="10" stroke-dasharray="427.26" stroke-dashoffset="0"/>
+          </svg>
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:800;color:#e95c25;">10w</div>
+        </div>
+        <div style="text-align:center;">
+          <p style="font-size:16px;font-weight:700;color:var(--light);margin-bottom:8px;">Full PMF Journey</p>
+          <p style="font-size:12px;color:var(--muted);line-height:1.7;">Context → Company → Competitors<br>→ Customers → Segment → Position<br>→ 4 Ps → PMF output</p>
+        </div>
+      </div>
+
+      <!-- Research Only: 4 weeks -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:20px;">
+        <div style="position:relative;width:160px;height:160px;">
+          <svg width="160" height="160" viewBox="0 0 160 160" style="transform:rotate(-90deg);">
+            <circle cx="80" cy="80" r="68" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="10"/>
+            <circle cx="80" cy="80" r="68" fill="none" stroke="#e95c25" stroke-width="10" stroke-dasharray="427.26" stroke-dashoffset="256.36"/>
+          </svg>
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:800;color:#e95c25;">4w</div>
+        </div>
+        <div style="text-align:center;">
+          <p style="font-size:16px;font-weight:700;color:var(--light);margin-bottom:8px;">Research Only</p>
+          <p style="font-size:12px;color:var(--muted);line-height:1.7;">Buyer interviews<br>Competitive language audit<br>Decision-maker pain mapping</p>
+        </div>
+      </div>
+
+      <!-- Messaging Sprint: 2 weeks -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:20px;">
+        <div style="position:relative;width:160px;height:160px;">
+          <svg width="160" height="160" viewBox="0 0 160 160" style="transform:rotate(-90deg);">
+            <circle cx="80" cy="80" r="68" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="10"/>
+            <circle cx="80" cy="80" r="68" fill="none" stroke="#e95c25" stroke-width="10" stroke-dasharray="427.26" stroke-dashoffset="341.81"/>
+          </svg>
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:800;color:#e95c25;">2w</div>
+        </div>
+        <div style="text-align:center;">
+          <p style="font-size:16px;font-weight:700;color:var(--light);margin-bottom:8px;">Messaging Sprint</p>
+          <p style="font-size:12px;color:var(--muted);line-height:1.7;">Takes existing positioning<br>Sharpens message stack<br>For campaigns and sales</p>
+        </div>
+      </div>
+
+    </div>
+    <p style="font-size:10px;color:var(--muted);margin-top:28px;letter-spacing:0.06em;text-transform:uppercase;">Source: Blacfox Services page</p>
+  </div>
+</section>
+
+<!-- #ig5 — The 4 Ps Quadrant (Step 07 expanded) -->
+<section>
+  <div class="section-inner">
+    <p class="section-tag reveal">06 · Step 07 expanded</p>
+    <h2 class="section-h reveal">The <em>4 Ps</em> — positioning in operational reality.</h2>
+    <p class="section-p reveal">Positioning must translate into operational reality. The four levers that ship B2B messaging into campaigns, sales decks, and partner packs.</p>
+
+    <div class="four-ps-wrap reveal">
+      <div class="ps-quad">
+        <div class="ps-label">Price</div>
+        <div class="ps-title">Price</div>
+        <div class="ps-body">How you charge must match how buyers perceive value. Outcomes-based pricing signals confidence in your methodology. If your price structure doesn't reflect your PMF positioning, it undermines it.</div>
+        <div class="ps-letter">P</div>
+      </div>
+      <div class="ps-quad active">
+        <div class="ps-label">Place</div>
+        <div class="ps-title">Place</div>
+        <div class="ps-body">Where and how you reach buyers. For B2B tech, this means the right channels — LinkedIn, partner events, SDR outreach — not the broadest ones. Channel selection follows the buyer's journey, not convenience.</div>
+        <div class="ps-letter">P</div>
+      </div>
+      <div class="ps-quad active">
+        <div class="ps-label">Product</div>
+        <div class="ps-title">Product</div>
+        <div class="ps-body">Not the features list — the story of what the product does for the buyer. Positioning defines which capabilities matter most, to which segment, in which words. The product message is the PMF in action.</div>
+        <div class="ps-letter">P</div>
+      </div>
+      <div class="ps-quad">
+        <div class="ps-label">Promotion</div>
+        <div class="ps-title">Promotion</div>
+        <div class="ps-body">Campaigns, content, SDR follow-up, partner enablement. Every promotional asset speaks from the same PMF. Consistency is what makes the message land — and repeat inside the sales conversation.</div>
+        <div class="ps-letter">P</div>
+      </div>
+      <div class="ps-centre">PMF<br>Core</div>
+    </div>
+  </div>
+</section>
+
+<!-- #ig6 — Positioning vs Messaging -->
+<section class="section-mid">
+  <div class="section-inner">
+    <p class="section-tag reveal">07 · PMF questions</p>
+    <h2 class="section-h reveal">Positioning <em>vs</em> messaging.</h2>
+    <p class="section-p reveal">Positioning is the strategy. Messaging is the execution of that strategy in words. One feeds the other — and they are not the same thing.</p>
+
+    <div class="pvm-wrap reveal">
+      <div class="pvm-col left">
+        <div class="pvm-label">Positioning</div>
+        <div class="pvm-heading">The<br>Strategy</div>
+        <span class="pvm-role">Where you sit in the market</span>
+        <div class="pvm-items">
+          <div class="pvm-item"><div class="pvm-dot"></div>Who you serve</div>
+          <div class="pvm-item"><div class="pvm-dot"></div>What category you compete in</div>
+          <div class="pvm-item"><div class="pvm-dot"></div>Why you win against competitors</div>
+          <div class="pvm-item"><div class="pvm-dot"></div>Proof that supports your claims</div>
+          <div class="pvm-item"><div class="pvm-dot"></div>Segments with right-to-win</div>
+        </div>
+        <div class="pvm-quote">"Positioning defines the foundation. If you get this wrong, every message built on top of it is wrong too."</div>
+      </div>
+      <div class="pvm-arrow-col">
+        <div class="pvm-arrow-line"></div>
+        <div class="pvm-arrow-circle">→</div>
+        <div class="pvm-arrow-line"></div>
+      </div>
+      <div class="pvm-col right">
+        <div class="pvm-label">Messaging</div>
+        <div class="pvm-heading">The<br>Execution</div>
+        <span class="pvm-role">Words that carry your positioning</span>
+        <div class="pvm-items">
+          <div class="pvm-item"><div class="pvm-dot"></div>Website headline</div>
+          <div class="pvm-item"><div class="pvm-dot"></div>Sales pitch language</div>
+          <div class="pvm-item"><div class="pvm-dot"></div>SDR email sequences</div>
+          <div class="pvm-item"><div class="pvm-dot"></div>Partner enablement packs</div>
+          <div class="pvm-item"><div class="pvm-dot"></div>Campaign copy &amp; ad creative</div>
+        </div>
+        <div class="pvm-quote">"Messaging is positioning made speakable. It's what your sales team actually says in the first meeting."</div>
+      </div>
+    </div>
+
+    <div class="pvm-timeline">
+      <div style="background:linear-gradient(135deg,rgba(255,255,255,0.09) 0%,rgba(255,255,255,0.02) 100%);backdrop-filter:blur(18px) saturate(1.8) brightness(1.10);-webkit-backdrop-filter:blur(18px) saturate(1.8) brightness(1.10);border:1px solid rgba(255,255,255,0.12);box-shadow:inset 0 1.5px 0 rgba(255,255,255,0.16);padding:24px 28px;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted2);margin-bottom:6px;">Phase 1</div>
+        <div style="font-size:14px;font-weight:800;color:var(--light);margin-bottom:6px;">Research &amp; Positioning</div>
+        <div style="font-size:12px;color:var(--muted);">Steps 01–06 of the PMF. 6–8 weeks. The strategic foundation.</div>
+      </div>
+      <div style="background:linear-gradient(135deg,rgba(255,255,255,0.07) 0%,rgba(255,255,255,0.02) 100%);backdrop-filter:blur(18px) saturate(1.8) brightness(1.08);-webkit-backdrop-filter:blur(18px) saturate(1.8) brightness(1.08);border:1px solid rgba(255,255,255,0.10);box-shadow:inset 0 1.5px 0 rgba(255,255,255,0.12);padding:24px 28px;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted2);margin-bottom:6px;">Phase 2</div>
+        <div style="font-size:14px;font-weight:800;color:var(--light);margin-bottom:6px;">Messaging Build</div>
+        <div style="font-size:12px;color:var(--muted);">Step 07 + PMF output. 2–4 weeks. Words, surfaces, assets.</div>
+      </div>
+      <div style="background:linear-gradient(135deg,rgba(233,92,37,0.50) 0%,rgba(233,92,37,0.22) 48%,rgba(233,92,37,0.42) 100%);backdrop-filter:blur(22px) saturate(2.3) brightness(1.32);-webkit-backdrop-filter:blur(22px) saturate(2.3) brightness(1.32);border:1px solid rgba(255,160,80,0.38);box-shadow:inset 0 2px 0 rgba(255,190,110,0.38),inset 0 -1px 0 rgba(100,28,0,0.18);padding:24px 28px;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.65);margin-bottom:6px;">Output</div>
+        <div style="font-size:14px;font-weight:800;color:#fff;margin-bottom:6px;">PMF Document</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.72);">All channels speak the same story — consistently.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2 class="cta-h reveal">Ready to fix your <em>story problem?</em></h2>
+  <p class="cta-p reveal">Book a 20-minute call. We'll tell you honestly if we're a fit.</p>
+  <a href="contact.html" class="btn-white reveal">Book a 20-min call
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <img src="fox-icon.svg" width="28" height="28" alt="Blacfox" style="object-fit:contain;"/>
+        <span style="font-size:16px;font-weight:800;letter-spacing:-0.01em;">Blacfox</span>
+      </div>
+      <p>A research-led B2B tech growth consultancy for Microsoft &amp; SAP partners and ISVs. Paid on outcomes — we don't get paid until you do.</p>
+      <div class="footer-socials">
+        <a class="soc" href="https://www.linkedin.com/company/blacfox-enterprises" aria-label="LinkedIn" target="_blank" rel="noopener">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1.5" y="1.5" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M4.5 6.5v4M4.5 4.5v.6M7.5 10.5v-3a1.5 1.5 0 013 0v3M7.5 6.5v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-col"><h5>Pages</h5><ul><li><a href="index.html">Home</a></li><li><a href="method.html">Method</a></li><li><a href="for-partners.html">For Partners</a></li><li><a href="for-isvs.html">For ISVs</a></li><li><a href="services.html">Services</a></li><li><a href="work.html">Work</a></li></ul></div>
+    <div class="footer-col"><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+    <div class="footer-col"><h5>Contact</h5><ul><li><a href="mailto:info@blacfox.com">info@blacfox.com</a></li><li><a href="tel:+27214939327">+27 21 493 9327</a></li><li><a href="https://www.linkedin.com/company/blacfox-enterprises" target="_blank" rel="noopener">LinkedIn</a></li></ul></div>
+    <div class="footer-col"><h5>Internal</h5><ul><li><a href="seo-checklist.html">SEO Checklist</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><p>&copy; 2026 Blacfox Enterprises. All rights reserved.</p><p>Cape Town, South Africa</p></div>
+</footer>
+
+<script>
+  const glow = document.getElementById('cursor-glow');
+  document.addEventListener('mousemove', e => { glow.style.left = e.clientX+'px'; glow.style.top = e.clientY+'px'; });
+  const pg = (location.pathname.split('/').pop()||'index.html').replace('.html','') || 'index';
+  document.querySelectorAll('.nav-links-pill a[data-page]').forEach(a => { if(a.dataset.page===pg) a.classList.add('active'); });
+  const ro = new IntersectionObserver(entries => { entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('visible');}else{e.target.classList.remove('visible');} }); }, {threshold:0.12});
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.stagger').forEach(el => ro.observe(el));
+  const hg = document.querySelector('.hero-bg-glow');
+  window.addEventListener('scroll', () => { if(hg) hg.style.transform = `translateX(-50%) translateY(${window.scrollY*0.3}px)`; }, {passive:true});
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+</script>
+</body>
+</html>

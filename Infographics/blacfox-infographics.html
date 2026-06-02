@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Blacfox — Infographic Suite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,800&display=swap" rel="stylesheet"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #0f0f0f;
+      --surface: #161616;
+      --card: #1c1c1c;
+      --border: rgba(255,255,255,0.07);
+      --orange: #e95c25;
+      --orange-dim: rgba(233,92,37,0.15);
+      --orange-glow: rgba(233,92,37,0.08);
+      --light: #f0f0f0;
+      --muted: #666;
+      --muted2: #444;
+      --glass-bg: rgba(255,255,255,0.04);
+      --glass-border: rgba(255,255,255,0.08);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--light);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── BG ORBS ── */
+    #orbs-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.18; }
+    .orb-1 { width: 600px; height: 600px; background: #e95c25; top: -200px; left: -200px; }
+    .orb-2 { width: 400px; height: 400px; background: #ff8c42; top: 40%; right: -150px; }
+    .orb-3 { width: 350px; height: 350px; background: #c44b1a; bottom: 10%; left: 20%; }
+
+    /* ── CURSOR GLOW ── */
+    #cursor-glow {
+      position: fixed; width: 300px; height: 300px;
+      border-radius: 50%; pointer-events: none; z-index: 9999;
+      background: radial-gradient(circle, rgba(233,92,37,0.08) 0%, transparent 70%);
+      transform: translate(-50%, -50%); transition: left 0.1s, top 0.1s;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      position: relative; z-index: 1;
+      padding: 80px 60px 60px;
+      border-bottom: 1px solid var(--border);
+      max-width: 1240px; margin: 0 auto;
+    }
+    .page-header .eyebrow {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--orange); margin-bottom: 16px;
+    }
+    .page-header h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900;
+      line-height: 1.1; letter-spacing: -0.03em;
+    }
+    .page-header h1 em { font-style: italic; color: var(--orange); }
+    .page-header p {
+      margin-top: 20px; max-width: 600px;
+      color: var(--muted); font-size: 14px; font-weight: 500;
+    }
+
+    /* ── NAV INDEX ── */
+    .ig-nav {
+      position: relative; z-index: 1;
+      max-width: 1240px; margin: 0 auto;
+      padding: 40px 60px;
+      display: flex; flex-wrap: wrap; gap: 10px;
+    }
+    .ig-nav a {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; text-decoration: none;
+      color: var(--muted); border: 1px solid var(--border);
+      border-radius: 100px; padding: 8px 18px;
+      transition: all 0.2s;
+    }
+    .ig-nav a:hover { color: var(--orange); border-color: var(--orange); }
+
+    /* ── SECTION WRAPPER ── */
+    .ig-section {
+      position: relative; z-index: 1;
+      max-width: 1240px; margin: 0 auto;
+      padding: 80px 60px;
+      border-top: 1px solid var(--border);
+    }
+    .ig-section:first-of-type { border-top: none; }
+
+    .ig-tag {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--orange); margin-bottom: 12px;
+    }
+    .ig-title {
+      font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 900;
+      line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 10px;
+    }
+    .ig-title em { font-style: italic; color: var(--orange); }
+    .ig-desc {
+      font-size: 13px; color: var(--muted); font-weight: 500;
+      max-width: 560px; margin-bottom: 48px; line-height: 1.7;
+    }
+
+    /* ── GLASS CARD ── */
+    .glass-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    /* ── REVEAL ANIMATION ── */
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ══════════════════════════════════════════════
+       INFOGRAPHIC 4 — PMF EIGHT STEPS
+    ══════════════════════════════════════════════ */
+    .pmf-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .pmf-step {
+      background: var(--card);
+      padding: 28px 24px;
+      position: relative;
+      transition: background 0.25s;
+      cursor: default;
+    }
+    .pmf-step:hover { background: #222; }
+    .pmf-step.output {
+      background: var(--orange-dim);
+      border: 1px solid rgba(233,92,37,0.3);
+      grid-column: span 4;
+      display: flex; align-items: center; gap: 40px;
+    }
+    .pmf-step-num {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--orange); margin-bottom: 10px;
+    }
+    .pmf-step-name {
+      font-size: 18px; font-weight: 800; letter-spacing: -0.01em;
+      color: var(--light); margin-bottom: 6px;
+    }
+    .pmf-step-sub {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--muted2);
+    }
+    .pmf-step-body {
+      font-size: 12px; color: var(--muted); line-height: 1.65;
+      margin-top: 12px;
+    }
+    .pmf-connector {
+      position: absolute; right: -12px; top: 50%;
+      transform: translateY(-50%);
+      width: 24px; height: 24px;
+      background: var(--orange); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; color: white; font-weight: 900;
+      z-index: 2;
+    }
+    .pmf-output-badge {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--orange);
+      background: rgba(233,92,37,0.15); border: 1px solid rgba(233,92,37,0.3);
+      border-radius: 100px; padding: 4px 14px; display: inline-block;
+      margin-bottom: 8px;
+    }
+    .pmf-output-title {
+      font-size: 32px; font-weight: 900; font-style: italic;
+      color: var(--orange); letter-spacing: -0.02em;
+    }
+    .pmf-output-desc {
+      font-size: 13px; color: rgba(233,92,37,0.8); line-height: 1.65;
+      max-width: 520px;
+    }
+    .pmf-step-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
+
+    /* ══════════════════════════════════════════════
+       INFOGRAPHIC 5 — 4PS QUADRANT
+    ══════════════════════════════════════════════ */
+    .four-ps-wrap {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 2px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      min-height: 480px;
+    }
+    .ps-quad {
+      background: var(--card);
+      padding: 36px 32px;
+      transition: background 0.25s;
+      position: relative;
+    }
+    .ps-quad:hover { background: #222; }
+    .ps-quad.active { background: var(--orange-dim); }
+    .ps-letter {
+      font-size: 80px; font-weight: 900; font-style: italic;
+      color: rgba(255,255,255,0.04);
+      position: absolute; right: 24px; bottom: 16px;
+      line-height: 1; user-select: none;
+    }
+    .ps-quad.active .ps-letter { color: rgba(233,92,37,0.12); }
+    .ps-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--orange); margin-bottom: 10px;
+    }
+    .ps-title {
+      font-size: 28px; font-weight: 900; letter-spacing: -0.02em;
+      color: var(--light); margin-bottom: 14px;
+    }
+    .ps-body { font-size: 13px; color: var(--muted); line-height: 1.7; max-width: 320px; }
+    .ps-centre {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 80px; height: 80px; border-radius: 50%;
+      background: var(--orange);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 900; letter-spacing: 0.08em;
+      color: white; z-index: 10; text-align: center; line-height: 1.2;
+      box-shadow: 0 0 60px rgba(233,92,37,0.5);
+    }
+
+    /* ══════════════════════════════════════════════
+       INFOGRAPHIC 6 — POSITIONING VS MESSAGING
+    ══════════════════════════════════════════════ */
+    .pvm-wrap {
+      display: grid; grid-template-columns: 1fr 80px 1fr; gap: 0;
+      align-items: stretch; min-height: 520px;
+    }
+    .pvm-col {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 40px 36px;
+      display: flex; flex-direction: column; gap: 20px;
+    }
+    .pvm-col.right { background: var(--orange-dim); border: 1px solid rgba(233,92,37,0.2); }
+    .pvm-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    .pvm-col.left .pvm-label { color: var(--muted); }
+    .pvm-col.right .pvm-label { color: var(--orange); }
+    .pvm-heading {
+      font-size: 32px; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1;
+    }
+    .pvm-col.left .pvm-heading { color: var(--light); }
+    .pvm-col.right .pvm-heading { color: var(--orange); }
+    .pvm-role {
+      font-size: 13px; font-weight: 700; color: var(--muted);
+      padding: 8px 16px; border-radius: 8px; background: rgba(255,255,255,0.04);
+      display: inline-block;
+    }
+    .pvm-col.right .pvm-role { background: rgba(233,92,37,0.1); color: rgba(233,92,37,0.9); }
+    .pvm-items { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+    .pvm-item {
+      padding: 14px 18px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      font-size: 13px; font-weight: 600; color: var(--muted);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .pvm-col.right .pvm-item { border-color: rgba(233,92,37,0.2); color: rgba(233,92,37,0.8); }
+    .pvm-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .pvm-col.left .pvm-dot { background: rgba(255,255,255,0.2); }
+    .pvm-col.right .pvm-dot { background: var(--orange); }
+    .pvm-arrow-col {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 0;
+    }
+    .pvm-arrow-line {
+      width: 2px; flex: 1; background: linear-gradient(to bottom, transparent, var(--orange), transparent);
+    }
+    .pvm-arrow-circle {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: var(--orange); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; color: white;
+      box-shadow: 0 0 40px rgba(233,92,37,0.4);
+    }
+    .pvm-quote {
+      margin-top: auto; padding: 20px 24px;
+      background: rgba(255,255,255,0.03); border-radius: 12px;
+      border-left: 3px solid var(--orange);
+      font-size: 13px; font-style: italic; color: var(--muted);
+      line-height: 1.65;
+    }
+    .pvm-col.right .pvm-quote {
+      background: rgba(233,92,37,0.08);
+      border-left-color: rgba(233,92,37,0.5);
+      color: rgba(233,92,37,0.8);
+    }
+
+    /* ══════════════════════════════════════════════
+       INFOGRAPHIC 7 — AGENCY COMPARISON
+    ══════════════════════════════════════════════ */
+    .compare-infographic {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+      border-radius: 20px; overflow: hidden; border: 1px solid var(--border);
+    }
+    .cmp-col {
+      padding: 40px 36px;
+      display: flex; flex-direction: column; gap: 0;
+    }
+    .cmp-col.bad { background: var(--card); }
+    .cmp-col.good { background: #181818; }
+    .cmp-col-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+    .cmp-col.bad .cmp-col-label { color: var(--muted2); }
+    .cmp-col.good .cmp-col-label { color: var(--orange); }
+    .cmp-col-title {
+      font-size: 22px; font-weight: 900; letter-spacing: -0.02em;
+      margin-bottom: 32px;
+    }
+    .cmp-col.bad .cmp-col-title { color: rgba(255,255,255,0.4); }
+    .cmp-col.good .cmp-col-title { color: var(--light); }
+    .cmp-steps { display: flex; flex-direction: column; gap: 0; }
+    .cmp-step {
+      display: flex; align-items: flex-start; gap: 16px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .cmp-step:last-child { border-bottom: none; }
+    .cmp-step-num {
+      font-size: 10px; font-weight: 800; letter-spacing: 0.12em;
+      width: 24px; flex-shrink: 0; padding-top: 2px;
+    }
+    .cmp-col.bad .cmp-step-num { color: var(--muted2); }
+    .cmp-col.good .cmp-step-num { color: var(--orange); }
+    .cmp-step-text { font-size: 15px; font-weight: 700; }
+    .cmp-col.bad .cmp-step-text { color: rgba(255,255,255,0.35); }
+    .cmp-col.good .cmp-step-text { color: var(--light); }
+    .cmp-step-sub { font-size: 11px; color: var(--muted); margin-top: 3px; font-weight: 500; }
+    .cmp-step-icon { font-size: 14px; margin-left: auto; flex-shrink: 0; }
+    .cmp-dead-end {
+      margin-top: 32px; padding: 18px 22px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 10px; border: 1px solid var(--border);
+      font-size: 12px; color: var(--muted2); font-style: italic;
+    }
+    .cmp-outcome {
+      margin-top: 32px; padding: 20px 22px;
+      background: var(--orange-dim);
+      border-radius: 10px; border: 1px solid rgba(233,92,37,0.3);
+      font-size: 12px; color: var(--orange); font-weight: 700;
+    }
+    .cmp-outcome-num { font-size: 28px; font-weight: 900; letter-spacing: -0.02em; }
+
+    /* ══════════════════════════════════════════════
+       INFOGRAPHIC 8 — CO-OP MISTAKES
+    ══════════════════════════════════════════════ */
+    .mistakes-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    }
+    .mistake-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 24px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.25s, background 0.25s;
+    }
+    .mistake-card:hover { border-color: rgba(233,92,37,0.3); background: #1f1f1f; }
+    .mistake-card:nth-child(4),
+    .mistake-card:nth-child(5) { grid-column: span 1; }
+    .mistake-num {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--orange); margin-bottom: 10px;
+    }
+    .mistake-q {
+      font-size: 14px; font-weight: 800; color: var(--light);
+      line-height: 1.4; margin-bottom: 12px; letter-spacing: -0.01em;
+    }
+    .mistake-a {
+      font-size: 12px; color: var(--muted); line-height: 1.7;
+    }
+    .mistake-a em { color: var(--orange); font-style: normal; font-weight: 700; }
+    .mistake-bg-num {
+      position: absolute; right: 16px; top: 12px;
+      font-size: 80px; font-weight: 900; font-style: italic;
+      color: rgba(255,255,255,0.03); line-height: 1; user-select: none;
+    }
+    .mistakes-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+
+    /* ══════════════════════════════════════════════
+       INFOGRAPHIC 9 — ADEPT ICT CASE STUDY STATS
+    ══════════════════════════════════════════════ */
+    .case-wrap {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .case-header {
+      background: var(--orange-dim);
+      border-bottom: 1px solid rgba(233,92,37,0.2);
+      padding: 36px 40px;
+      display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap;
+    }
+    .case-badge {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--orange);
+      background: rgba(233,92,37,0.15); border: 1px solid rgba(233,92,37,0.3);
+      border-radius: 100px; padding: 5px 14px; display: inline-block;
+    }
+    .case-headline {
+      font-size: clamp(1.1rem, 2.5vw, 1.6rem); font-weight: 900;
+      letter-spacing: -0.02em; line-height: 1.2;
+      color: var(--light); flex: 1; min-width: 260px;
+    }
+    .case-headline em { color: var(--orange); font-style: italic; }
+    .case-stats-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--border);
+    }
+    .case-stat {
+      padding: 36px 32px;
+      border-right: 1px solid var(--border);
+      position: relative; overflow: hidden;
+      transition: background 0.2s;
+    }
+    .case-stat:hover { background: rgba(255,255,255,0.02); }
+    .case-stat:last-child { border-right: none; }
+    .case-stat-num {
+      font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 900;
+      letter-spacing: -0.03em; color: var(--orange);
+      line-height: 1; margin-bottom: 10px;
+    }
+    .case-stat-label {
+      font-size: 12px; font-weight: 700; color: var(--light);
+      line-height: 1.4; margin-bottom: 6px;
+    }
+    .case-stat-sub { font-size: 11px; color: var(--muted); font-weight: 500; }
+    .case-stat-bg {
+      position: absolute; right: -10px; bottom: -10px;
+      font-size: 70px; font-weight: 900; font-style: italic;
+      color: rgba(255,255,255,0.025); line-height: 1; user-select: none;
+    }
+    .case-footer {
+      padding: 24px 40px;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: gap;
+      gap: 16px;
+    }
+    .case-footer-tag {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .case-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+    .case-tag {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted);
+      border: 1px solid var(--border); border-radius: 100px;
+      padding: 4px 12px;
+    }
+
+    /* ══════════════════════════════════════════════
+       INFOGRAPHIC 10 — TECHNICAL SEO CHECKLIST
+    ══════════════════════════════════════════════ */
+    .checklist-wrap {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    }
+    .checklist-priority {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .checklist-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .priority-badge {
+      font-size: 9px; font-weight: 800; letter-spacing: 0.14em;
+      text-transform: uppercase; border-radius: 100px; padding: 4px 12px;
+    }
+    .badge-high { background: rgba(233,92,37,0.15); color: var(--orange); border: 1px solid rgba(233,92,37,0.3); }
+    .badge-medium { background: rgba(255,255,255,0.06); color: var(--muted); border: 1px solid var(--border); }
+    .badge-low { background: rgba(255,255,255,0.03); color: var(--muted2); border: 1px solid rgba(255,255,255,0.04); }
+    .checklist-count {
+      font-size: 11px; font-weight: 700; color: var(--muted); margin-left: auto;
+    }
+    .checklist-items { padding: 8px 0; }
+    .checklist-item {
+      padding: 12px 24px;
+      font-size: 12px; font-weight: 600; color: var(--muted);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      display: flex; align-items: flex-start; gap: 10px;
+      line-height: 1.5; transition: background 0.15s;
+    }
+    .checklist-item:last-child { border-bottom: none; }
+    .checklist-item:hover { background: rgba(255,255,255,0.02); }
+    .check-box {
+      width: 16px; height: 16px; border-radius: 4px;
+      border: 1px solid var(--muted2); flex-shrink: 0; margin-top: 1px;
+    }
+    .badge-high + .checklist-count ~ .checklist-items .check-box { border-color: rgba(233,92,37,0.4); }
+    .owner-tag {
+      margin-left: auto; font-size: 9px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted2);
+      background: rgba(255,255,255,0.04); border-radius: 4px; padding: 2px 6px;
+      flex-shrink: 0;
+    }
+
+    /* ══════════════════════════════════════════════
+       INFOGRAPHIC 11 — CONTENT ROADMAP
+    ══════════════════════════════════════════════ */
+    .roadmap-phases { display: flex; flex-direction: column; gap: 2px; border-radius: 20px; overflow: hidden; border: 1px solid var(--border); }
+    .roadmap-phase-header {
+      padding: 20px 32px;
+      display: grid; grid-template-columns: 180px 1fr;
+      align-items: center; gap: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    .phase-label {
+      font-size: 10px; font-weight: 800; letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+    .phase-1 .phase-label { color: var(--orange); }
+    .phase-2 .phase-label { color: #c0a060; }
+    .phase-3 .phase-label { color: var(--muted); }
+    .phase-title {
+      font-size: 13px; font-weight: 700; color: var(--muted);
+    }
+    .roadmap-articles {
+      display: grid;
+    }
+    .roadmap-article {
+      display: grid; grid-template-columns: 180px 1fr 140px 100px;
+      align-items: start; gap: 32px;
+      padding: 20px 32px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      transition: background 0.15s;
+    }
+    .roadmap-article:last-child { border-bottom: none; }
+    .roadmap-article:hover { background: rgba(255,255,255,0.02); }
+    .ra-num {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .phase-1 .ra-num { color: var(--orange); }
+    .phase-2 .ra-num { color: #c0a060; }
+    .phase-3 .ra-num { color: var(--muted2); }
+    .ra-title { font-size: 13px; font-weight: 700; color: var(--light); line-height: 1.45; }
+    .ra-keyword { font-size: 11px; color: var(--muted); font-weight: 500; margin-top: 4px; }
+    .ra-intent {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      border-radius: 6px; padding: 4px 10px; display: inline-block; align-self: start;
+    }
+    .intent-info { background: rgba(255,255,255,0.05); color: var(--muted); }
+    .intent-comm { background: var(--orange-dim); color: var(--orange); border: 1px solid rgba(233,92,37,0.2); }
+    .ra-priority { align-self: start; }
+    .priority-bar-wrap { display: flex; flex-direction: column; gap: 4px; }
+    .priority-bar {
+      height: 4px; border-radius: 2px; background: var(--border);
+      overflow: hidden;
+    }
+    .priority-bar-fill { height: 100%; border-radius: 2px; }
+    .phase-1 .priority-bar-fill { background: var(--orange); }
+    .phase-2 .priority-bar-fill { background: #c0a060; }
+    .phase-3 .priority-bar-fill { background: var(--muted2); }
+    .priority-label { font-size: 10px; font-weight: 700; color: var(--muted2); letter-spacing: 0.08em; }
+
+    .phase-1 { background: #171510; }
+    .phase-2 { background: #141414; }
+    .phase-3 { background: var(--card); }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 40px 60px;
+      max-width: 1240px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+      gap: 16px;
+    }
+    footer p { font-size: 11px; color: var(--muted2); font-weight: 600; letter-spacing: 0.06em; }
+    footer .logo { font-size: 14px; font-weight: 900; color: var(--orange); letter-spacing: -0.01em; }
+
+    @media (max-width: 900px) {
+      .ig-section { padding: 60px 24px; }
+      .page-header { padding: 60px 24px 40px; }
+      .ig-nav { padding: 24px; }
+      .pmf-grid { grid-template-columns: repeat(2,1fr); }
+      .pmf-step.output { grid-column: span 2; flex-direction: column; gap: 16px; }
+      .four-ps-wrap { grid-template-columns: 1fr; grid-template-rows: auto; }
+      .pvm-wrap { grid-template-columns: 1fr; }
+      .pvm-arrow-col { flex-direction: row; padding: 16px 0; }
+      .compare-infographic { grid-template-columns: 1fr; }
+      .mistakes-grid { grid-template-columns: 1fr; }
+      .case-stats-grid { grid-template-columns: repeat(2,1fr); }
+      .checklist-wrap { grid-template-columns: 1fr; }
+      .roadmap-article { grid-template-columns: 1fr; gap: 6px; }
+      .roadmap-phase-header { grid-template-columns: 1fr; }
+      footer { padding: 40px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="cursor-glow"></div>
+
+<div id="orbs-bg" aria-hidden="true">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<!-- PAGE HEADER -->
+<div class="page-header reveal">
+  <p class="eyebrow">Blacfox · Visual Intelligence Suite</p>
+  <h1>Eight infographics.<br><em>Every key idea.</em></h1>
+  <p>Derived from the Blacfox Website Copy Deck v2.0 — SEO & GEO Edition. Each infographic translates a strategic section into a standalone visual asset.</p>
+</div>
+
+<!-- INDEX NAV -->
+<div class="ig-nav">
+  <a href="#ig4">04 · PMF Eight Steps</a>
+  <a href="#ig5">05 · 4Ps Quadrant</a>
+  <a href="#ig6">06 · Positioning vs Messaging</a>
+  <a href="#ig7">07 · Agency Comparison</a>
+  <a href="#ig8">08 · Co-op Mistakes</a>
+  <a href="#ig9">09 · Case Study Stats</a>
+  <a href="#ig10">10 · SEO Checklist</a>
+  <a href="#ig11">11 · Content Roadmap</a>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     INFOGRAPHIC 04 — PMF EIGHT STEPS
+════════════════════════════════════════════ -->
+<div class="ig-section reveal" id="ig4">
+  <p class="ig-tag">04 · Method · Numbered Linear Process</p>
+  <h2 class="ig-title">The Eight-Step <em>PMF Method</em></h2>
+  <p class="ig-desc">From market context to the 4 Ps — every step in the Positioning & Messaging Framework, with the output that aligns your sales and marketing.</p>
+
+  <div class="pmf-grid">
+    <!-- Row 1: Steps 1–4 -->
+    <div class="pmf-step" style="border-right:2px solid var(--bg);">
+      <div class="pmf-step-num">Step 01</div>
+      <div class="pmf-step-name">Context</div>
+      <div class="pmf-step-sub">Market & Timing</div>
+      <div class="pmf-step-body">Macro forces, vendor strategy shifts, regulatory changes, buyer-behaviour data. Position your product against the market your B2B buyer is currently navigating.</div>
+    </div>
+    <div class="pmf-step" style="border-right:2px solid var(--bg);">
+      <div class="pmf-step-num">Step 02</div>
+      <div class="pmf-step-name">Company</div>
+      <div class="pmf-step-sub">Credible Claims</div>
+      <div class="pmf-step-body">Audit your actual capability, outcomes, and proof points — then ringfence the claims you can own. Overstatement gets called out in the first sales conversation.</div>
+    </div>
+    <div class="pmf-step" style="border-right:2px solid var(--bg);">
+      <div class="pmf-step-num">Step 03</div>
+      <div class="pmf-step-name">Competitors</div>
+      <div class="pmf-step-sub">Where They're Weak</div>
+      <div class="pmf-step-body">A linguistic map of the B2B tech category — who claims what, in whose words, with what proof. The strongest positioning is built on where competitors are evasive.</div>
+    </div>
+    <div class="pmf-step">
+      <div class="pmf-step-num">Step 04</div>
+      <div class="pmf-step-name">Customers</div>
+      <div class="pmf-step-sub">Buyer Interviews</div>
+      <div class="pmf-step-body">Real buyer interviews with real decision-makers. The exact words buyers use, the trade-offs they make, the alternatives they consider, the risks they fear.</div>
+    </div>
+
+    <!-- Row 2: Steps 5–7 + connector -->
+    <div class="pmf-step" style="border-top:2px solid var(--bg);border-right:2px solid var(--bg);">
+      <div class="pmf-step-num">Step 05</div>
+      <div class="pmf-step-name">Segment</div>
+      <div class="pmf-step-sub">Who We Go After</div>
+      <div class="pmf-step-body">The segment with the highest right-to-win, the shortest path to revenue, and the most defensible early-customer story. The others wait.</div>
+    </div>
+    <div class="pmf-step" style="border-top:2px solid var(--bg);border-right:2px solid var(--bg);">
+      <div class="pmf-step-num">Step 06</div>
+      <div class="pmf-step-name">Position</div>
+      <div class="pmf-step-sub">"Why You" Story</div>
+      <div class="pmf-step-body">The intersection of what your customer needs, what you can credibly deliver, and what your competitors can't. This is where the PMF crystallises.</div>
+    </div>
+    <div class="pmf-step" style="border-top:2px solid var(--bg);border-right:2px solid var(--bg);">
+      <div class="pmf-step-num">Step 07</div>
+      <div class="pmf-step-name">The 4 Ps</div>
+      <div class="pmf-step-sub">Price · Place · Product · Promo</div>
+      <div class="pmf-step-body">The positioning must land in operational reality. Tune the four levers so the B2B messaging actually ships — into campaigns, sales decks, partner packs.</div>
+    </div>
+    <div class="pmf-step" style="border-top:2px solid var(--bg); background: rgba(233,92,37,0.05); border: 1px solid rgba(233,92,37,0.15);">
+      <div class="pmf-step-num" style="opacity:0.5;">Step 08</div>
+      <div class="pmf-step-name" style="color:var(--muted);">Synthesise</div>
+      <div class="pmf-step-sub" style="color:var(--muted2);">All Inputs → One Document</div>
+      <div class="pmf-step-body">Every step feeds forward. The output is a living document — not a deck that sits in a shared folder. It feeds campaigns, sales decks, partner packs, and renewal conversations.</div>
+    </div>
+
+    <!-- OUTPUT ROW -->
+    <div class="pmf-step output" style="border-top:2px solid var(--bg);">
+      <div>
+        <div class="pmf-output-badge">Output</div>
+        <div class="pmf-output-title">PMF</div>
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(233,92,37,0.6);margin-bottom:8px;">Positioning & Messaging Framework</div>
+        <div class="pmf-output-desc">The document that aligns B2B sales and marketing. Feeds your website, sales decks, partner enablement packs, campaign briefs, and renewal conversations. A working document — not a shelf artefact.</div>
+      </div>
+      <div style="margin-left:auto;text-align:right;flex-shrink:0;">
+        <div style="font-size:48px;font-weight:900;font-style:italic;color:var(--orange);line-height:1;">8–10</div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(233,92,37,0.6);">weeks to build</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     INFOGRAPHIC 05 — 4PS QUADRANT
+════════════════════════════════════════════ -->
+<div class="ig-section reveal" id="ig5">
+  <p class="ig-tag">05 · Method · Quadrant Diagram</p>
+  <h2 class="ig-title">The <em>4 Ps</em> — Step 07 of the PMF</h2>
+  <p class="ig-desc">Positioning must translate into operational reality. The four levers that ship B2B messaging into campaigns, sales decks, and partner packs.</p>
+
+  <div class="four-ps-wrap">
+    <div class="ps-quad">
+      <div class="ps-label">Price</div>
+      <div class="ps-title">Price</div>
+      <div class="ps-body">How you charge must match how buyers perceive value. Outcomes-based pricing signals confidence in your methodology. If your price structure doesn't reflect your PMF positioning, it undermines it.</div>
+      <div class="ps-letter">P</div>
+    </div>
+    <div class="ps-quad active">
+      <div class="ps-label">Place</div>
+      <div class="ps-title">Place</div>
+      <div class="ps-body">Where and how you reach buyers. For B2B tech, this means the right channels — LinkedIn, partner events, SDR outreach — not the broadest ones. Channel selection follows the buyer's journey, not convenience.</div>
+      <div class="ps-letter">P</div>
+    </div>
+    <div class="ps-quad active">
+      <div class="ps-label">Product</div>
+      <div class="ps-title">Product</div>
+      <div class="ps-body">Not the features list — the story of what the product does for the buyer. Positioning defines which capabilities matter most, to which segment, in which words. The product message is the PMF in action.</div>
+      <div class="ps-letter">P</div>
+    </div>
+    <div class="ps-quad">
+      <div class="ps-label">Promotion</div>
+      <div class="ps-title">Promotion</div>
+      <div class="ps-body">Campaigns, content, SDR follow-up, partner enablement. Every promotional asset speaks from the same PMF. Consistency is what makes the message land — and repeat inside the sales conversation.</div>
+      <div class="ps-letter">P</div>
+    </div>
+    <div class="ps-centre">PMF<br>Core</div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     INFOGRAPHIC 06 — POSITIONING VS MESSAGING
+════════════════════════════════════════════ -->
+<div class="ig-section reveal" id="ig6">
+  <p class="ig-tag">06 · Method · Funnel / Two-Pillar Diagram</p>
+  <h2 class="ig-title">Positioning <em>vs</em> Messaging</h2>
+  <p class="ig-desc">Positioning is the strategy. Messaging is the execution of that strategy in words. One feeds the other — and they are not the same thing.</p>
+
+  <div class="pvm-wrap">
+    <!-- LEFT: POSITIONING -->
+    <div class="pvm-col left">
+      <div class="pvm-label">Positioning</div>
+      <div class="pvm-heading">The<br>Strategy</div>
+      <span class="pvm-role">Where you sit in the market</span>
+      <div class="pvm-items">
+        <div class="pvm-item"><div class="pvm-dot"></div>Who you serve</div>
+        <div class="pvm-item"><div class="pvm-dot"></div>What category you compete in</div>
+        <div class="pvm-item"><div class="pvm-dot"></div>Why you win against competitors</div>
+        <div class="pvm-item"><div class="pvm-dot"></div>Proof that supports your claims</div>
+        <div class="pvm-item"><div class="pvm-dot"></div>Segments with right-to-win</div>
+      </div>
+      <div class="pvm-quote">
+        "Positioning defines the foundation. If you get this wrong, every message built on top of it is wrong too."
+      </div>
+    </div>
+
+    <!-- ARROW COLUMN -->
+    <div class="pvm-arrow-col">
+      <div class="pvm-arrow-line"></div>
+      <div class="pvm-arrow-circle">→</div>
+      <div class="pvm-arrow-line"></div>
+    </div>
+
+    <!-- RIGHT: MESSAGING -->
+    <div class="pvm-col right">
+      <div class="pvm-label">Messaging</div>
+      <div class="pvm-heading">The<br>Execution</div>
+      <span class="pvm-role">Words that carry your positioning</span>
+      <div class="pvm-items">
+        <div class="pvm-item"><div class="pvm-dot"></div>Website headline</div>
+        <div class="pvm-item"><div class="pvm-dot"></div>Sales pitch language</div>
+        <div class="pvm-item"><div class="pvm-dot"></div>SDR email sequences</div>
+        <div class="pvm-item"><div class="pvm-dot"></div>Partner enablement packs</div>
+        <div class="pvm-item"><div class="pvm-dot"></div>Campaign copy & ad creative</div>
+      </div>
+      <div class="pvm-quote">
+        "Messaging is positioning made speakable. It's what your sales team actually says in the first meeting."
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE BELOW -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:2px;border-radius:0 0 20px 20px;overflow:hidden;">
+    <div style="background:var(--card);padding:24px 28px;border-top:2px solid var(--bg);">
+      <div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted2);margin-bottom:6px;">Phase 1</div>
+      <div style="font-size:14px;font-weight:800;color:var(--light);margin-bottom:6px;">Research & Positioning</div>
+      <div style="font-size:12px;color:var(--muted);">Steps 01–06 of the PMF. 6–8 weeks. The strategic foundation.</div>
+    </div>
+    <div style="background:#1a1a1a;padding:24px 28px;border-top:2px solid var(--bg);">
+      <div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted2);margin-bottom:6px;">Phase 2</div>
+      <div style="font-size:14px;font-weight:800;color:var(--light);margin-bottom:6px;">Messaging Build</div>
+      <div style="font-size:12px;color:var(--muted);">Step 07 + PMF output. 2–4 weeks. Words, surfaces, assets.</div>
+    </div>
+    <div style="background:var(--orange-dim);border:1px solid rgba(233,92,37,0.15);padding:24px 28px;border-top:2px solid var(--bg);">
+      <div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--orange);margin-bottom:6px;">Output</div>
+      <div style="font-size:14px;font-weight:800;color:var(--orange);margin-bottom:6px;">PMF Document</div>
+      <div style="font-size:12px;color:rgba(233,92,37,0.7);">All channels speak the same story — consistently.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     INFOGRAPHIC 07 — AGENCY COMPARISON
+════════════════════════════════════════════ -->
+<div class="ig-section reveal" id="ig7">
+  <p class="ig-tag">07 · Model · Versus Comparison</p>
+  <h2 class="ig-title">Most agencies. <em>Blacfox.</em></h2>
+  <p class="ig-desc">The uncomfortable difference between a traditional B2B marketing agency and a growth consultancy that stays in the room until the deal is in motion.</p>
+
+  <div class="compare-infographic">
+    <!-- LEFT: MOST AGENCIES -->
+    <div class="cmp-col bad">
+      <div class="cmp-col-label">Most B2B Marketing Agencies</div>
+      <div class="cmp-col-title">Stop at leads.<br>Then shrug.</div>
+      <div class="cmp-steps">
+        <div class="cmp-step">
+          <div class="cmp-step-num">01</div>
+          <div>
+            <div class="cmp-step-text">Campaigns</div>
+            <div class="cmp-step-sub">Impressions, clicks, CPM reports</div>
+          </div>
+          <div class="cmp-step-icon" style="color:var(--muted2);">→</div>
+        </div>
+        <div class="cmp-step">
+          <div class="cmp-step-num">02</div>
+          <div>
+            <div class="cmp-step-text">Leads</div>
+            <div class="cmp-step-sub">MQL volume. Spreadsheet of names.</div>
+          </div>
+          <div class="cmp-step-icon" style="color:var(--muted2);">→</div>
+        </div>
+        <div class="cmp-step">
+          <div class="cmp-step-num">03</div>
+          <div>
+            <div class="cmp-step-text">Handover</div>
+            <div class="cmp-step-sub">Dropped into the CRM. Job done.</div>
+          </div>
+          <div class="cmp-step-icon" style="color:var(--muted2);">→</div>
+        </div>
+        <div class="cmp-step">
+          <div class="cmp-step-num">04</div>
+          <div>
+            <div class="cmp-step-text">(Shrug)</div>
+            <div class="cmp-step-sub">Sales team inherits the problem.</div>
+          </div>
+          <div class="cmp-step-icon" style="color:var(--muted2);">✕</div>
+        </div>
+      </div>
+      <div class="cmp-dead-end">
+        "If your agency can't tell you their pipeline-to-spend ratio — they don't have one."
+      </div>
+    </div>
+
+    <!-- RIGHT: BLACFOX -->
+    <div class="cmp-col good">
+      <div class="cmp-col-label">Blacfox</div>
+      <div class="cmp-col-title">Stays in the room<br>until sales is talking.</div>
+      <div class="cmp-steps">
+        <div class="cmp-step">
+          <div class="cmp-step-num">01</div>
+          <div>
+            <div class="cmp-step-text">Research</div>
+            <div class="cmp-step-sub">Real buyer interviews. Decision-maker language.</div>
+          </div>
+          <div class="cmp-step-icon" style="color:var(--orange);">→</div>
+        </div>
+        <div class="cmp-step">
+          <div class="cmp-step-num">02</div>
+          <div>
+            <div class="cmp-step-text">Positioning</div>
+            <div class="cmp-step-sub">PMF built from buyer research. Sales can repeat it.</div>
+          </div>
+          <div class="cmp-step-icon" style="color:var(--orange);">→</div>
+        </div>
+        <div class="cmp-step">
+          <div class="cmp-step-num">03</div>
+          <div>
+            <div class="cmp-step-text">Campaigns</div>
+            <div class="cmp-step-sub">Built on the PMF. Measured on pipeline ACV.</div>
+          </div>
+          <div class="cmp-step-icon" style="color:var(--orange);">→</div>
+        </div>
+        <div class="cmp-step">
+          <div class="cmp-step-num">04</div>
+          <div>
+            <div class="cmp-step-text">Follow-up</div>
+            <div class="cmp-step-sub">SDR outbound. Real conversations, not cold lists.</div>
+          </div>
+          <div class="cmp-step-icon" style="color:var(--orange);">→</div>
+        </div>
+        <div class="cmp-step">
+          <div class="cmp-step-num">05</div>
+          <div>
+            <div class="cmp-step-text">Sales-ready meetings</div>
+            <div class="cmp-step-sub">Decision-makers who are ready to talk. The actual job.</div>
+          </div>
+          <div class="cmp-step-icon" style="color:var(--orange);">✓</div>
+        </div>
+      </div>
+      <div class="cmp-outcome">
+        <div class="cmp-outcome-num">10:1</div>
+        Pipeline ACV return on campaign spend — guaranteed or we keep working.
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     INFOGRAPHIC 08 — CO-OP MISTAKES
+════════════════════════════════════════════ -->
+<div class="ig-section reveal" id="ig8">
+  <p class="ig-tag">08 · For Partners · Warning / Checklist</p>
+  <h2 class="ig-title">5 Microsoft Co-op<br><em>Funding Mistakes</em></h2>
+  <p class="ig-desc">The five reasons Microsoft co-op claims get rejected — and how to avoid them on your next cycle. Based on dozens of executed campaigns across South Africa and EMEA.</p>
+
+  <div class="mistakes-grid">
+    <div class="mistake-card">
+      <div class="mistake-bg-num">1</div>
+      <div class="mistake-num">Mistake 01</div>
+      <div class="mistake-q">Does timing of campaign approval affect Microsoft co-op eligibility?</div>
+      <div class="mistake-a">Yes — and it's the most common rejection reason. <em>Launch after approval, not before.</em> Most claims fail because the campaign spent money before Microsoft confirmed eligibility. Sequence the paperwork before a single rand is committed.</div>
+    </div>
+    <div class="mistake-card">
+      <div class="mistake-bg-num">2</div>
+      <div class="mistake-num">Mistake 02</div>
+      <div class="mistake-q">What level of Proof of Execution does Microsoft require?</div>
+      <div class="mistake-a">Asset-level documentation — every email send, every ad placement, every landing page version. <em>Generic PoE gets rejected.</em> Claims must clear the first review without resubmission, which requires documenting at the asset level by default.</div>
+    </div>
+    <div class="mistake-card">
+      <div class="mistake-bg-num">3</div>
+      <div class="mistake-num">Mistake 03</div>
+      <div class="mistake-q">What are Microsoft's current co-op priority areas?</div>
+      <div class="mistake-a">They shift quarterly. <em>Co-Pilot today. Azure security last cycle. Modern Work before that.</em> Campaigns built on last quarter's priorities lose alignment funding. Brief and budget must be rebuilt each cycle — not recycled.</div>
+    </div>
+  </div>
+  <div class="mistakes-bottom">
+    <div class="mistake-card">
+      <div class="mistake-bg-num">4</div>
+      <div class="mistake-num">Mistake 04</div>
+      <div class="mistake-q">Should co-op campaigns focus on partner services or vendor products?</div>
+      <div class="mistake-a">Campaigns that lead with partner services rather than Microsoft's strategic products often lose eligibility. <em>Your partner brand and Microsoft's goals must ladder together.</em> The campaign stays eligible when Microsoft's priorities are front and centre.</div>
+    </div>
+    <div class="mistake-card">
+      <div class="mistake-bg-num">5</div>
+      <div class="mistake-num">Mistake 05</div>
+      <div class="mistake-q">How do you avoid missing Microsoft co-op reporting deadlines?</div>
+      <div class="mistake-a">Treat reporting as a campaign milestone, not an afterthought. <em>Build reporting dates into the schedule from day one.</em> Deadlines missed when partners start thinking about reporting after the campaign ends — not before it begins.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     INFOGRAPHIC 09 — ADEPT ICT CASE STUDY STATS
+════════════════════════════════════════════ -->
+<div class="ig-section reveal" id="ig9">
+  <p class="ig-tag">09 · Work · Stats Dashboard Card</p>
+  <h2 class="ig-title">Adept ICT — <em>Real Numbers</em></h2>
+  <p class="ig-desc">How Adept ICT, a Microsoft Solutions Partner, doubled partner pipeline in 9 months by changing the conversation about Azure.</p>
+
+  <div class="case-wrap">
+    <div class="case-header">
+      <div>
+        <span class="case-badge">Microsoft Solutions Partner</span>
+        <div class="case-headline" style="margin-top:14px;">How Adept ICT <em>doubled partner pipeline</em><br>in 9 months.</div>
+      </div>
+      <div style="margin-left:auto;text-align:right;flex-shrink:0;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(233,92,37,0.6);margin-bottom:6px;">Campaign Focus</div>
+        <div style="font-size:15px;font-weight:800;color:var(--orange);">Microsoft Azure · Channel Marketing</div>
+        <div style="font-size:12px;color:rgba(233,92,37,0.6);margin-top:4px;">South Africa · 9-month engagement</div>
+      </div>
+    </div>
+
+    <div class="case-stats-grid">
+      <div class="case-stat">
+        <div class="case-stat-num">2×</div>
+        <div class="case-stat-label">Partner pipeline growth</div>
+        <div class="case-stat-sub">In 9 months of engagement</div>
+        <div class="case-stat-bg">2×</div>
+      </div>
+      <div class="case-stat">
+        <div class="case-stat-num">47</div>
+        <div class="case-stat-label">Dormant Microsoft partners reactivated</div>
+        <div class="case-stat-sub">Back into active sales conversations</div>
+        <div class="case-stat-bg">47</div>
+      </div>
+      <div class="case-stat">
+        <div class="case-stat-num">4mo</div>
+        <div class="case-stat-label">Sales cycle — down from 8 months</div>
+        <div class="case-stat-sub">50% reduction in time to close</div>
+        <div class="case-stat-bg">4</div>
+      </div>
+      <div class="case-stat">
+        <div class="case-stat-num">10:1</div>
+        <div class="case-stat-label">ROI on Microsoft co-op campaign spend</div>
+        <div class="case-stat-sub">Pipeline ACV vs campaign investment</div>
+        <div class="case-stat-bg">10×</div>
+      </div>
+    </div>
+
+    <div class="case-footer">
+      <div>
+        <div class="case-footer-tag">Client</div>
+        <div style="font-size:13px;font-weight:800;color:var(--light);margin-top:4px;">Rory Killin · Adept ICT</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px;font-style:italic;">"Blacfox shifted how we talked about Azure to our channel."</div>
+      </div>
+      <div class="case-tags">
+        <span class="case-tag">Channel</span>
+        <span class="case-tag">Microsoft</span>
+        <span class="case-tag">Azure</span>
+        <span class="case-tag">Co-op Funded</span>
+        <span class="case-tag">South Africa</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     INFOGRAPHIC 10 — TECHNICAL SEO CHECKLIST
+════════════════════════════════════════════ -->
+<div class="ig-section reveal" id="ig10">
+  <p class="ig-tag">10 · Technical SEO · Kanban Board</p>
+  <h2 class="ig-title">SEO Implementation<br><em>Checklist</em></h2>
+  <p class="ig-desc">Technical actions the build team needs to implement alongside updated copy. Organised by priority. Copy changes alone deliver only a portion of SEO value — the technical layer is what makes them discoverable.</p>
+
+  <div class="checklist-wrap">
+    <!-- HIGH PRIORITY -->
+    <div class="checklist-priority">
+      <div class="checklist-header">
+        <span class="priority-badge badge-high">High Priority</span>
+        <span class="checklist-count">10 items</span>
+      </div>
+      <div class="checklist-items">
+        <div class="checklist-item" style="color:var(--muted);">
+          <div class="check-box" style="border-color:rgba(233,92,37,0.4);"></div>
+          <span>Unique &lt;title&gt; tag on every page</span>
+          <span class="owner-tag">Dev</span>
+        </div>
+        <div class="checklist-item" style="color:var(--muted);">
+          <div class="check-box" style="border-color:rgba(233,92,37,0.4);"></div>
+          <span>Meta description on every page</span>
+          <span class="owner-tag">Dev</span>
+        </div>
+        <div class="checklist-item" style="color:var(--muted);">
+          <div class="check-box" style="border-color:rgba(233,92,37,0.4);"></div>
+          <span>H1 tags match primary keyword — one per page</span>
+          <span class="owner-tag">Dev</span>
+        </div>
+        <div class="checklist-item" style="color:var(--muted);">
+          <div class="check-box" style="border-color:rgba(233,92,37,0.4);"></div>
+          <span>FAQPage JSON-LD schema on 4 pages</span>
+          <span class="owner-tag">Dev</span>
+        </div>
+        <div class="checklist-item" style="color:var(--muted);">
+          <div class="check-box" style="border-color:rgba(233,92,37,0.4);"></div>
+          <span>LocalBusiness JSON-LD on Contact page</span>
+          <span class="owner-tag">Dev</span>
+        </div>
+        <div class="checklist-item" style="color:var(--muted);">
+          <div class="check-box" style="border-color:rgba(233,92,37,0.4);"></div>
+          <span>Organization JSON-LD on About page</span>
+          <span class="owner-tag">Dev</span>
+        </div>
+        <div class="checklist-item" style="color:var(--muted);">
+          <div class="check-box" style="border-color:rgba(233,92,37,0.4);"></div>
+          <span>Google Search Console — verify domain</span>
+          <span class="owner-tag">Dev</span>
+        </div>
+        <div class="checklist-item" style="color:var(--muted);">
+          <div class="check-box" style="border-color:rgba(233,92,37,0.4);"></div>
+          <span>Submit XML sitemap on launch day</span>
+          <span class="owner-tag">Dev</span>
+        </div>
+        <div class="checklist-item" style="color:var(--muted);">
+          <div class="check-box" style="border-color:rgba(233,92,37,0.4);"></div>
+          <span>FAQ sections render as visible H3+paragraph pairs (not JS-gated)</span>
+          <span class="owner-tag">Dev</span>
+        </div>
+        <div class="checklist-item" style="color:var(--muted);">
+          <div class="check-box" style="border-color:rgba(233,92,37,0.4);"></div>
+          <span>SSL certificate active — HTTPS all pages</span>
+          <span class="owner-tag">Dev</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MEDIUM PRIORITY -->
+    <div class="checklist-priority">
+      <div class="checklist-header">
+        <span class="priority-badge badge-medium">Medium Priority</span>
+        <span class="checklist-count">7 items</span>
+      </div>
+      <div class="checklist-items">
+        <div class="checklist-item">
+          <div class="check-box"></div>
+          <span>Create llms.txt at root — AI crawler instructions</span>
+          <span class="owner-tag">Dev</span>
+        </div>
+        <div class="checklist-item">
+          <div class="check-box"></div>
+          <span>Confirm robots.txt allows GPTBot, ClaudeBot, PerplexityBot</span>
+          <span class="owner-tag">Dev</span>
+        </div>
+        <div class="checklist-item">
+          <div class="check-box"></div>
+          <span>Set canonical tags on all pages</span>
+          <span class="owner-tag">Dev</span>
+        </div>
+        <div class="checklist-item">
+          <div class="check-box"></div>
+          <span>Breadcrumb schema on all sub-pages</span>
+          <span class="owner-tag">Dev</span>
+        </div>
+        <div class="checklist-item">
+          <div class="check-box"></div>
+          <span>Image alt text — keyword-relevant where natural</span>
+          <span class="owner-tag">Dev</span>
+        </div>
+        <div class="checklist-item">
+          <div class="check-box"></div>
+          <span>Internal linking: Partners ↔ Method ↔ Home ↔ ISVs ↔ Work</span>
+          <span class="owner-tag">Dev</span>
+        </div>
+        <div class="checklist-item">
+          <div class="check-box"></div>
+          <span>Core Web Vitals pass on mobile — LCP under 2.5s</span>
+          <span class="owner-tag">Dev</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOW PRIORITY -->
+    <div class="checklist-priority">
+      <div class="checklist-header">
+        <span class="priority-badge badge-low">Low Priority</span>
+        <span class="checklist-count">1 item</span>
+      </div>
+      <div class="checklist-items">
+        <div class="checklist-item" style="color:var(--muted2);">
+          <div class="check-box" style="border-color:var(--muted2);"></div>
+          <span>'Last updated' timestamp on Method page and case study pages — freshness signal for AI engines</span>
+          <span class="owner-tag">Dev</span>
+        </div>
+      </div>
+
+      <!-- GEO NOTE -->
+      <div style="margin:16px 24px 24px;padding:20px;background:var(--orange-glow);border:1px solid rgba(233,92,37,0.12);border-radius:10px;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--orange);margin-bottom:8px;">GEO Note</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.65;">B2B buyers complete 70%+ of their research before contacting a vendor. GEO means Blacfox appears in AI-generated answers during that research phase — before buyers ever visit the website.</div>
+      </div>
+
+      <!-- QUICK STATS -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin:0 0 0 0;border-top:1px solid var(--border);">
+        <div style="padding:20px 24px;border-right:1px solid var(--border);">
+          <div style="font-size:24px;font-weight:900;color:var(--orange);line-height:1;">18</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px;font-weight:600;">Total action items</div>
+        </div>
+        <div style="padding:20px 24px;">
+          <div style="font-size:24px;font-weight:900;color:var(--orange);line-height:1;">0</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px;font-weight:600;">Cost beyond dev time</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     INFOGRAPHIC 11 — POST-LAUNCH CONTENT ROADMAP
+════════════════════════════════════════════ -->
+<div class="ig-section reveal" id="ig11">
+  <p class="ig-tag">11 · Content Strategy · Phased Roadmap</p>
+  <h2 class="ig-title">Post-Launch Content<br><em>Roadmap</em></h2>
+  <p class="ig-desc">Ten articles and guides that build long-term organic authority. Ordered by priority. Google rewards sites that consistently publish useful, keyword-aligned content — the website copy alone is not enough.</p>
+
+  <!-- PHASE 1 -->
+  <div class="roadmap-phases">
+    <div class="phase-1">
+      <div class="roadmap-phase-header">
+        <div>
+          <div class="phase-label">Phase 1 — High</div>
+          <div class="phase-title" style="margin-top:4px;">4 articles · Launch immediately</div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span class="case-tag" style="border-color:rgba(233,92,37,0.2);color:var(--orange);">Informational</span>
+          <span class="case-tag" style="border-color:rgba(233,92,37,0.2);color:var(--orange);">Commercial</span>
+        </div>
+      </div>
+      <div class="roadmap-articles">
+        <div class="roadmap-article phase-1">
+          <div class="ra-num">Article 01</div>
+          <div><div class="ra-title">How does Microsoft co-op funding work? The complete guide for partners</div><div class="ra-keyword">Target: microsoft co-op funding guide</div></div>
+          <span class="ra-intent intent-info">Informational</span>
+          <div class="ra-priority">
+            <div class="priority-bar-wrap">
+              <div class="priority-bar"><div class="priority-bar-fill" style="width:100%"></div></div>
+              <div class="priority-label">Priority 1</div>
+            </div>
+          </div>
+        </div>
+        <div class="roadmap-article phase-1">
+          <div class="ra-num">Article 02</div>
+          <div><div class="ra-title">What is pipeline ACV? A plain-English guide for B2B marketing leaders</div><div class="ra-keyword">Target: pipeline ACV meaning</div></div>
+          <span class="ra-intent intent-info">Informational</span>
+          <div class="ra-priority">
+            <div class="priority-bar-wrap">
+              <div class="priority-bar"><div class="priority-bar-fill" style="width:100%"></div></div>
+              <div class="priority-label">Priority 1</div>
+            </div>
+          </div>
+        </div>
+        <div class="roadmap-article phase-1">
+          <div class="ra-num">Article 03</div>
+          <div><div class="ra-title">Microsoft partner marketing: how to stand out in a commoditised channel</div><div class="ra-keyword">Target: microsoft partner marketing</div></div>
+          <span class="ra-intent intent-comm">Commercial</span>
+          <div class="ra-priority">
+            <div class="priority-bar-wrap">
+              <div class="priority-bar"><div class="priority-bar-fill" style="width:100%"></div></div>
+              <div class="priority-label">Priority 1</div>
+            </div>
+          </div>
+        </div>
+        <div class="roadmap-article phase-1" style="border-bottom:none;">
+          <div class="ra-num">Article 04</div>
+          <div><div class="ra-title">ISV channel enablement: why your partners aren't selling your product</div><div class="ra-keyword">Target: ISV channel enablement</div></div>
+          <span class="ra-intent intent-info">Informational</span>
+          <div class="ra-priority">
+            <div class="priority-bar-wrap">
+              <div class="priority-bar"><div class="priority-bar-fill" style="width:100%"></div></div>
+              <div class="priority-label">Priority 1</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="phase-2" style="margin-top:2px;">
+      <div class="roadmap-phase-header">
+        <div>
+          <div class="phase-label" style="color:#c0a060;">Phase 2 — High</div>
+          <div class="phase-title" style="margin-top:4px;">4 articles · Within 60 days of launch</div>
+        </div>
+      </div>
+      <div class="roadmap-articles">
+        <div class="roadmap-article phase-2">
+          <div class="ra-num">Article 05</div>
+          <div><div class="ra-title">Positioning vs messaging: what's the difference and why it matters</div><div class="ra-keyword">Target: positioning vs messaging B2B</div></div>
+          <span class="ra-intent intent-info">Informational</span>
+          <div class="ra-priority">
+            <div class="priority-bar-wrap">
+              <div class="priority-bar"><div class="priority-bar-fill" style="width:66%"></div></div>
+              <div class="priority-label">Priority 2</div>
+            </div>
+          </div>
+        </div>
+        <div class="roadmap-article phase-2">
+          <div class="ra-num">Article 06</div>
+          <div><div class="ra-title">How to get Microsoft co-op claims approved first time</div><div class="ra-keyword">Target: microsoft co-op PoE requirements</div></div>
+          <span class="ra-intent intent-info">Informational</span>
+          <div class="ra-priority">
+            <div class="priority-bar-wrap">
+              <div class="priority-bar"><div class="priority-bar-fill" style="width:66%"></div></div>
+              <div class="priority-label">Priority 2</div>
+            </div>
+          </div>
+        </div>
+        <div class="roadmap-article phase-2">
+          <div class="ra-num">Article 07</div>
+          <div><div class="ra-title">B2B demand generation for tech companies: a 2026 guide</div><div class="ra-keyword">Target: B2B demand generation tech</div></div>
+          <span class="ra-intent intent-info">Informational</span>
+          <div class="ra-priority">
+            <div class="priority-bar-wrap">
+              <div class="priority-bar"><div class="priority-bar-fill" style="width:66%"></div></div>
+              <div class="priority-label">Priority 2</div>
+            </div>
+          </div>
+        </div>
+        <div class="roadmap-article phase-2" style="border-bottom:none;">
+          <div class="ra-num">Article 08</div>
+          <div><div class="ra-title">SAP partner marketing: how to differentiate as a reseller</div><div class="ra-keyword">Target: SAP partner marketing</div></div>
+          <span class="ra-intent intent-comm">Commercial</span>
+          <div class="ra-priority">
+            <div class="priority-bar-wrap">
+              <div class="priority-bar"><div class="priority-bar-fill" style="width:66%"></div></div>
+              <div class="priority-label">Priority 2</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="phase-3" style="margin-top:2px;">
+      <div class="roadmap-phase-header">
+        <div>
+          <div class="phase-label" style="color:var(--muted);">Phase 3 — Medium</div>
+          <div class="phase-title" style="margin-top:4px;">2 articles · Within 90 days of launch</div>
+        </div>
+      </div>
+      <div class="roadmap-articles">
+        <div class="roadmap-article phase-3">
+          <div class="ra-num">Article 09</div>
+          <div><div class="ra-title">What is a Positioning & Messaging Framework? With examples</div><div class="ra-keyword">Target: positioning and messaging framework</div></div>
+          <span class="ra-intent intent-info">Informational</span>
+          <div class="ra-priority">
+            <div class="priority-bar-wrap">
+              <div class="priority-bar"><div class="priority-bar-fill" style="width:33%"></div></div>
+              <div class="priority-label">Priority 3</div>
+            </div>
+          </div>
+        </div>
+        <div class="roadmap-article phase-3" style="border-bottom:none;">
+          <div class="ra-num">Article 10</div>
+          <div><div class="ra-title">How to build a B2B SDR function that books qualified meetings</div><div class="ra-keyword">Target: B2B SDR function setup</div></div>
+          <span class="ra-intent intent-info">Informational</span>
+          <div class="ra-priority">
+            <div class="priority-bar-wrap">
+              <div class="priority-bar"><div class="priority-bar-fill" style="width:33%"></div></div>
+              <div class="priority-label">Priority 3</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">Blacfox</div>
+  <p>Infographic Suite · Derived from Copy Deck v2.0 · May 2026</p>
+  <p>B2B Tech Marketing Agency — Cape Town, South Africa</p>
+</footer>
+
+<script>
+  // Cursor glow
+  const glow = document.getElementById('cursor-glow');
+  document.addEventListener('mousemove', e => {
+    glow.style.left = e.clientX + 'px';
+    glow.style.top = e.clientY + 'px';
+  });
+
+  // Scroll reveal
+  const ro = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+</script>
+
+</body>
+</html>

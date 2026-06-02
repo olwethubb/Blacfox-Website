@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>SEO Implementation Checklist &amp; Content Roadmap | Blacfox Internal</title>
+  <meta name="description" content="Internal SEO implementation checklist and post-launch content roadmap for the Blacfox website. Technical actions and content priorities."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,800&display=swap" rel="stylesheet"/>
+  <link rel="icon" href="fox-icon.svg" type="image/svg+xml"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>
+    :root { --muted2: rgba(255,255,255,0.28); }
+
+    /* ══ #ig10 — Technical SEO Checklist ══ */
+    .checklist-wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
+    .checklist-priority{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+    .checklist-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
+    .priority-badge{font-size:9px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;border-radius:100px;padding:4px 12px}
+    .badge-high{background:rgba(233,92,37,0.15);color:var(--orange);border:1px solid rgba(233,92,37,0.3)}
+    .badge-medium{background:rgba(255,255,255,0.06);color:var(--muted);border:1px solid var(--border)}
+    .badge-low{background:rgba(255,255,255,0.03);color:var(--muted2);border:1px solid rgba(255,255,255,0.04)}
+    .checklist-count{font-size:11px;font-weight:700;color:var(--muted);margin-left:auto}
+    .checklist-items{padding:8px 0}
+    .checklist-item{padding:12px 24px;font-size:12px;font-weight:600;color:var(--muted);border-bottom:1px solid rgba(255,255,255,0.04);display:flex;align-items:flex-start;gap:10px;line-height:1.5;transition:background 0.15s}
+    .checklist-item:last-child{border-bottom:none}
+    .checklist-item:hover{background:rgba(255,255,255,0.02)}
+    .check-box{width:16px;height:16px;border-radius:4px;border:1px solid var(--muted2);flex-shrink:0;margin-top:1px}
+    .check-high{border-color:rgba(233,92,37,0.4)}
+    .owner-tag{margin-left:auto;font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted2);background:rgba(255,255,255,0.04);border-radius:4px;padding:2px 6px;flex-shrink:0}
+    .geo-note{margin:16px 24px 24px;padding:20px;background:rgba(233,92,37,0.08);border:1px solid rgba(233,92,37,0.12);border-radius:10px}
+    .geo-note-label{font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--orange);margin-bottom:8px}
+    .geo-note-body{font-size:12px;color:var(--muted);line-height:1.65}
+    .checklist-quick-stats{display:grid;grid-template-columns:1fr 1fr;gap:2px;border-top:1px solid var(--border)}
+    .qs-item{padding:20px 24px;border-right:1px solid var(--border)}
+    .qs-item:last-child{border-right:none}
+    .qs-num{font-size:24px;font-weight:900;color:var(--orange);line-height:1}
+    .qs-label{font-size:11px;color:var(--muted);margin-top:4px;font-weight:600}
+
+    /* ══ #ig11 — Post-Launch Content Roadmap ══ */
+    .roadmap-phases{display:flex;flex-direction:column;gap:2px;border-radius:20px;overflow:hidden;border:1px solid var(--border);margin-top:48px}
+    .roadmap-phase-header{padding:20px 32px;display:grid;grid-template-columns:180px 1fr;align-items:center;gap:32px;border-bottom:1px solid var(--border)}
+    .phase-label{font-size:10px;font-weight:800;letter-spacing:0.16em;text-transform:uppercase}
+    .phase-title{font-size:13px;font-weight:700;color:var(--muted)}
+    .roadmap-articles{display:grid}
+    .roadmap-article{display:grid;grid-template-columns:180px 1fr 140px 100px;align-items:start;gap:32px;padding:20px 32px;border-bottom:1px solid rgba(255,255,255,0.04);transition:background 0.15s}
+    .roadmap-article:last-child{border-bottom:none}
+    .roadmap-article:hover{background:rgba(255,255,255,0.02)}
+    .ra-num{font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase}
+    .ra-title{font-size:13px;font-weight:700;color:var(--light);line-height:1.45}
+    .ra-keyword{font-size:11px;color:var(--muted);font-weight:500;margin-top:4px}
+    .ra-intent{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;border-radius:6px;padding:4px 10px;display:inline-block;align-self:start}
+    .intent-info{background:rgba(255,255,255,0.05);color:var(--muted)}
+    .intent-comm{background:rgba(233,92,37,0.15);color:var(--orange);border:1px solid rgba(233,92,37,0.2)}
+    .priority-bar-wrap{display:flex;flex-direction:column;gap:4px}
+    .priority-bar{height:4px;border-radius:2px;background:var(--border);overflow:hidden}
+    .priority-bar-fill{height:100%;border-radius:2px}
+    .priority-label{font-size:10px;font-weight:700;color:var(--muted2);letter-spacing:0.08em}
+    .rp1{background:#171510}
+    .rp2{background:var(--mid)}
+    .rp3{background:var(--card)}
+    .rp1 .phase-label{color:var(--orange)}
+    .rp2 .phase-label{color:#c0a060}
+    .rp3 .phase-label{color:var(--muted)}
+    .rp1 .ra-num{color:var(--orange)}
+    .rp2 .ra-num{color:#c0a060}
+    .rp3 .ra-num{color:var(--muted2)}
+    .rp1 .priority-bar-fill{background:var(--orange)}
+    .rp2 .priority-bar-fill{background:#c0a060}
+    .rp3 .priority-bar-fill{background:var(--muted2)}
+    .phase-tags{display:flex;gap:8px;flex-wrap:wrap}
+    .phase-tag{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--orange);border:1px solid rgba(233,92,37,0.2);border-radius:100px;padding:4px 12px}
+
+    @media(max-width:900px){
+      .checklist-wrap{grid-template-columns:1fr}
+      .roadmap-article{grid-template-columns:1fr;gap:6px}
+      .roadmap-phase-header{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<div id="cursor-glow"></div>
+
+<div id="orbs-bg" aria-hidden="true">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="orb orb-4"></div>
+  <div class="orb orb-5"></div>
+</div>
+
+<div id="bottom-nav">
+  <a href="index.html" class="nav-logo nav-pill-glass" aria-label="Blacfox">
+    <img src="fox-icon.svg" class="nav-logo-svg" alt="Blacfox"/>
+  </a>
+  <nav class="nav-links-pill nav-pill-glass">
+    <a href="index.html" data-page="index">Home</a>
+    <a href="method.html" data-page="method">Method</a>
+    <a href="for-partners.html" data-page="for-partners">Partners</a>
+    <a href="for-isvs.html" data-page="for-isvs">ISVs</a>
+    <a href="services.html" data-page="services">Services</a>
+    <a href="work.html" data-page="work">Work</a>
+    <a href="about.html" data-page="about">About</a>
+    <a href="contact.html" data-page="contact">Contact</a>
+  </nav>
+</div>
+
+<!-- PAGE HERO -->
+<section class="section-mid">
+  <div class="section-inner" style="padding-bottom:48px;">
+    <div class="case-badge" style="margin-bottom:24px;">Internal · SEO &amp; Content</div>
+    <h1 class="section-h reveal">SEO Implementation<br>&amp; Content <em>Roadmap.</em></h1>
+    <p class="section-p reveal">Technical actions the build team needs to implement alongside updated copy — and the ten content assets that build long-term organic authority. Derived from Blacfox Copy Deck v2.0.</p>
+  </div>
+</section>
+
+<!-- #ig10 — TECHNICAL SEO CHECKLIST -->
+<section>
+  <div class="section-inner">
+    <p class="section-tag reveal">10 · Technical SEO</p>
+    <h2 class="section-h reveal">SEO Implementation <em>Checklist.</em></h2>
+    <p class="section-p reveal">Technical actions organised by priority. Copy changes alone deliver only a portion of SEO value — the technical layer is what makes them discoverable.</p>
+
+    <div class="checklist-wrap stagger">
+      <!-- HIGH PRIORITY -->
+      <div class="checklist-priority">
+        <div class="checklist-header">
+          <span class="priority-badge badge-high">High Priority</span>
+          <span class="checklist-count">10 items</span>
+        </div>
+        <div class="checklist-items">
+          <div class="checklist-item"><div class="check-box check-high"></div><span>Unique &lt;title&gt; tag on every page</span><span class="owner-tag">Dev</span></div>
+          <div class="checklist-item"><div class="check-box check-high"></div><span>Meta description on every page</span><span class="owner-tag">Dev</span></div>
+          <div class="checklist-item"><div class="check-box check-high"></div><span>H1 tags match primary keyword — one per page</span><span class="owner-tag">Dev</span></div>
+          <div class="checklist-item"><div class="check-box check-high"></div><span>FAQPage JSON-LD schema on 4 pages</span><span class="owner-tag">Dev</span></div>
+          <div class="checklist-item"><div class="check-box check-high"></div><span>LocalBusiness JSON-LD on Contact page</span><span class="owner-tag">Dev</span></div>
+          <div class="checklist-item"><div class="check-box check-high"></div><span>Organization JSON-LD on About page</span><span class="owner-tag">Dev</span></div>
+          <div class="checklist-item"><div class="check-box check-high"></div><span>Google Search Console — verify domain</span><span class="owner-tag">Dev</span></div>
+          <div class="checklist-item"><div class="check-box check-high"></div><span>Submit XML sitemap on launch day</span><span class="owner-tag">Dev</span></div>
+          <div class="checklist-item"><div class="check-box check-high"></div><span>FAQ sections render as visible H3+paragraph pairs (not JS-gated)</span><span class="owner-tag">Dev</span></div>
+          <div class="checklist-item"><div class="check-box check-high"></div><span>SSL certificate active — HTTPS all pages</span><span class="owner-tag">Dev</span></div>
+        </div>
+      </div>
+
+      <!-- MEDIUM PRIORITY -->
+      <div class="checklist-priority">
+        <div class="checklist-header">
+          <span class="priority-badge badge-medium">Medium Priority</span>
+          <span class="checklist-count">7 items</span>
+        </div>
+        <div class="checklist-items">
+          <div class="checklist-item"><div class="check-box"></div><span>Create llms.txt at root — AI crawler instructions</span><span class="owner-tag">Dev</span></div>
+          <div class="checklist-item"><div class="check-box"></div><span>Confirm robots.txt allows GPTBot, ClaudeBot, PerplexityBot</span><span class="owner-tag">Dev</span></div>
+          <div class="checklist-item"><div class="check-box"></div><span>Set canonical tags on all pages</span><span class="owner-tag">Dev</span></div>
+          <div class="checklist-item"><div class="check-box"></div><span>Breadcrumb schema on all sub-pages</span><span class="owner-tag">Dev</span></div>
+          <div class="checklist-item"><div class="check-box"></div><span>Image alt text — keyword-relevant where natural</span><span class="owner-tag">Dev</span></div>
+          <div class="checklist-item"><div class="check-box"></div><span>Internal linking: Partners ↔ Method ↔ Home ↔ ISVs ↔ Work</span><span class="owner-tag">Dev</span></div>
+          <div class="checklist-item"><div class="check-box"></div><span>Core Web Vitals pass on mobile — LCP under 2.5s</span><span class="owner-tag">Dev</span></div>
+        </div>
+      </div>
+
+      <!-- LOW PRIORITY -->
+      <div class="checklist-priority">
+        <div class="checklist-header">
+          <span class="priority-badge badge-low">Low Priority</span>
+          <span class="checklist-count">1 item</span>
+        </div>
+        <div class="checklist-items">
+          <div class="checklist-item" style="color:var(--muted2);"><div class="check-box"></div><span>'Last updated' timestamp on Method page and case study pages — freshness signal for AI engines</span><span class="owner-tag">Dev</span></div>
+        </div>
+        <div class="geo-note">
+          <div class="geo-note-label">GEO Note</div>
+          <div class="geo-note-body">B2B buyers complete 70%+ of their research before contacting a vendor. GEO means Blacfox appears in AI-generated answers during that research phase — before buyers ever visit the website.</div>
+        </div>
+        <div class="checklist-quick-stats">
+          <div class="qs-item"><div class="qs-num">18</div><div class="qs-label">Total action items</div></div>
+          <div class="qs-item"><div class="qs-num">0</div><div class="qs-label">Cost beyond dev time</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- #ig11 — POST-LAUNCH CONTENT ROADMAP -->
+<section class="section-mid">
+  <div class="section-inner">
+    <p class="section-tag reveal">11 · Content Strategy</p>
+    <h2 class="section-h reveal">Post-Launch Content <em>Roadmap.</em></h2>
+    <p class="section-p reveal">Ten articles and guides that build long-term organic authority. Ordered by priority. Google rewards sites that consistently publish useful, keyword-aligned content — the website copy alone is not enough.</p>
+
+    <div class="roadmap-phases reveal">
+      <!-- PHASE 1 -->
+      <div class="rp1">
+        <div class="roadmap-phase-header">
+          <div>
+            <div class="phase-label">Phase 1 — High</div>
+            <div class="phase-title" style="margin-top:4px;">4 articles · Launch immediately</div>
+          </div>
+          <div class="phase-tags">
+            <span class="phase-tag">Informational</span>
+            <span class="phase-tag">Commercial</span>
+          </div>
+        </div>
+        <div class="roadmap-articles">
+          <div class="roadmap-article rp1">
+            <div class="ra-num">Article 01</div>
+            <div><div class="ra-title">How does Microsoft co-op funding work? The complete guide for partners</div><div class="ra-keyword">Target: microsoft co-op funding guide</div></div>
+            <span class="ra-intent intent-info">Informational</span>
+            <div><div class="priority-bar-wrap"><div class="priority-bar"><div class="priority-bar-fill" style="width:100%"></div></div><div class="priority-label">Priority 1</div></div></div>
+          </div>
+          <div class="roadmap-article rp1">
+            <div class="ra-num">Article 02</div>
+            <div><div class="ra-title">What is pipeline ACV? A plain-English guide for B2B marketing leaders</div><div class="ra-keyword">Target: pipeline ACV meaning</div></div>
+            <span class="ra-intent intent-info">Informational</span>
+            <div><div class="priority-bar-wrap"><div class="priority-bar"><div class="priority-bar-fill" style="width:100%"></div></div><div class="priority-label">Priority 1</div></div></div>
+          </div>
+          <div class="roadmap-article rp1">
+            <div class="ra-num">Article 03</div>
+            <div><div class="ra-title">Microsoft partner marketing: how to stand out in a commoditised channel</div><div class="ra-keyword">Target: microsoft partner marketing</div></div>
+            <span class="ra-intent intent-comm">Commercial</span>
+            <div><div class="priority-bar-wrap"><div class="priority-bar"><div class="priority-bar-fill" style="width:100%"></div></div><div class="priority-label">Priority 1</div></div></div>
+          </div>
+          <div class="roadmap-article rp1" style="border-bottom:none;">
+            <div class="ra-num">Article 04</div>
+            <div><div class="ra-title">ISV channel enablement: why your partners aren't selling your product</div><div class="ra-keyword">Target: ISV channel enablement</div></div>
+            <span class="ra-intent intent-info">Informational</span>
+            <div><div class="priority-bar-wrap"><div class="priority-bar"><div class="priority-bar-fill" style="width:100%"></div></div><div class="priority-label">Priority 1</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 2 -->
+      <div class="rp2" style="margin-top:2px;">
+        <div class="roadmap-phase-header">
+          <div>
+            <div class="phase-label">Phase 2 — High</div>
+            <div class="phase-title" style="margin-top:4px;">4 articles · Within 60 days of launch</div>
+          </div>
+        </div>
+        <div class="roadmap-articles">
+          <div class="roadmap-article rp2">
+            <div class="ra-num">Article 05</div>
+            <div><div class="ra-title">Positioning vs messaging: what's the difference and why it matters</div><div class="ra-keyword">Target: positioning vs messaging B2B</div></div>
+            <span class="ra-intent intent-info">Informational</span>
+            <div><div class="priority-bar-wrap"><div class="priority-bar"><div class="priority-bar-fill" style="width:66%"></div></div><div class="priority-label">Priority 2</div></div></div>
+          </div>
+          <div class="roadmap-article rp2">
+            <div class="ra-num">Article 06</div>
+            <div><div class="ra-title">How to get Microsoft co-op claims approved first time</div><div class="ra-keyword">Target: microsoft co-op PoE requirements</div></div>
+            <span class="ra-intent intent-info">Informational</span>
+            <div><div class="priority-bar-wrap"><div class="priority-bar"><div class="priority-bar-fill" style="width:66%"></div></div><div class="priority-label">Priority 2</div></div></div>
+          </div>
+          <div class="roadmap-article rp2">
+            <div class="ra-num">Article 07</div>
+            <div><div class="ra-title">B2B demand generation for tech companies: a 2026 guide</div><div class="ra-keyword">Target: B2B demand generation tech</div></div>
+            <span class="ra-intent intent-info">Informational</span>
+            <div><div class="priority-bar-wrap"><div class="priority-bar"><div class="priority-bar-fill" style="width:66%"></div></div><div class="priority-label">Priority 2</div></div></div>
+          </div>
+          <div class="roadmap-article rp2" style="border-bottom:none;">
+            <div class="ra-num">Article 08</div>
+            <div><div class="ra-title">SAP partner marketing: how to differentiate as a reseller</div><div class="ra-keyword">Target: SAP partner marketing</div></div>
+            <span class="ra-intent intent-comm">Commercial</span>
+            <div><div class="priority-bar-wrap"><div class="priority-bar"><div class="priority-bar-fill" style="width:66%"></div></div><div class="priority-label">Priority 2</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 3 -->
+      <div class="rp3" style="margin-top:2px;">
+        <div class="roadmap-phase-header">
+          <div>
+            <div class="phase-label">Phase 3 — Medium</div>
+            <div class="phase-title" style="margin-top:4px;">2 articles · Within 90 days of launch</div>
+          </div>
+        </div>
+        <div class="roadmap-articles">
+          <div class="roadmap-article rp3">
+            <div class="ra-num">Article 09</div>
+            <div><div class="ra-title">What is a Positioning &amp; Messaging Framework? With examples</div><div class="ra-keyword">Target: positioning and messaging framework</div></div>
+            <span class="ra-intent intent-info">Informational</span>
+            <div><div class="priority-bar-wrap"><div class="priority-bar"><div class="priority-bar-fill" style="width:33%"></div></div><div class="priority-label">Priority 3</div></div></div>
+          </div>
+          <div class="roadmap-article rp3" style="border-bottom:none;">
+            <div class="ra-num">Article 10</div>
+            <div><div class="ra-title">How to build a B2B SDR function that books qualified meetings</div><div class="ra-keyword">Target: B2B SDR function setup</div></div>
+            <span class="ra-intent intent-info">Informational</span>
+            <div><div class="priority-bar-wrap"><div class="priority-bar"><div class="priority-bar-fill" style="width:33%"></div></div><div class="priority-label">Priority 3</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr;">
+    <div class="footer-brand">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <img src="fox-icon.svg" width="28" height="28" alt="Blacfox" style="object-fit:contain;"/>
+        <span style="font-size:16px;font-weight:800;letter-spacing:-0.01em;">Blacfox</span>
+      </div>
+      <p>A research-led B2B tech growth consultancy for Microsoft &amp; SAP partners and ISVs. Paid on outcomes — we don't get paid until you do.</p>
+      <div class="footer-socials">
+        <a class="soc" href="https://www.linkedin.com/company/blacfox-enterprises" aria-label="LinkedIn" target="_blank" rel="noopener">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1.5" y="1.5" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M4.5 6.5v4M4.5 4.5v.6M7.5 10.5v-3a1.5 1.5 0 013 0v3M7.5 6.5v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-col"><h5>Pages</h5><ul><li><a href="index.html">Home</a></li><li><a href="method.html">Method</a></li><li><a href="for-partners.html">For Partners</a></li><li><a href="for-isvs.html">For ISVs</a></li><li><a href="services.html">Services</a></li><li><a href="work.html">Work</a></li></ul></div>
+    <div class="footer-col"><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+    <div class="footer-col"><h5>Contact</h5><ul><li><a href="mailto:info@blacfox.com">info@blacfox.com</a></li><li><a href="tel:+27214939327">+27 21 493 9327</a></li><li><a href="https://www.linkedin.com/company/blacfox-enterprises" target="_blank" rel="noopener">LinkedIn</a></li></ul></div>
+    <div class="footer-col"><h5>Internal</h5><ul><li><a href="seo-checklist.html">SEO Checklist</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><p>&copy; 2026 Blacfox Enterprises. All rights reserved.</p><p>Cape Town, South Africa</p></div>
+</footer>
+
+<script>
+  const glow = document.getElementById('cursor-glow');
+  document.addEventListener('mousemove', e => { glow.style.left = e.clientX+'px'; glow.style.top = e.clientY+'px'; });
+  const pg = (location.pathname.split('/').pop()||'index.html').replace('.html','') || 'index';
+  document.querySelectorAll('.nav-links-pill a[data-page]').forEach(a => { if(a.dataset.page===pg) a.classList.add('active'); });
+  const ro = new IntersectionObserver(entries => { entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('visible');}else{e.target.classList.remove('visible');} }); }, {threshold:0.12});
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.stagger').forEach(el => ro.observe(el));
+</script>
+</body>
+</html>
