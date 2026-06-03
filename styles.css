@@ -1,5 +1,5 @@
-/* =========================================================
-   BLACFOX — Shared Design System
+﻿/* =========================================================
+   BLACFOX â€” Shared Design System
    ========================================================= */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
@@ -18,7 +18,7 @@ body{
   font-family:'Montserrat',sans-serif;color:var(--light);
   -webkit-font-smoothing:antialiased;overflow-x:hidden;
   padding-top:112px;padding-bottom:0;
-  /* Orange grid — fixed so it never scrolls away */
+  /* Orange grid â€” fixed so it never scrolls away */
   background-color:#000;
   background-image:
     linear-gradient(rgba(233,92,37,0.18) 1px, transparent 1px),
@@ -27,7 +27,7 @@ body{
   background-attachment:fixed;
 }
 
-/* ── Cursor glow ── */
+/* â”€â”€ Cursor glow â”€â”€ */
 #cursor-glow{
   position:fixed;width:500px;height:500px;border-radius:50%;
   background:radial-gradient(circle,rgba(233,92,37,0.06) 0%,transparent 70%);
@@ -35,12 +35,12 @@ body{
 }
 
 /* =========================================================
-   BOTTOM NAV — TWO PILLS
+   BOTTOM NAV â€” TWO PILLS
    ========================================================= */
 #bottom-nav{
   position:fixed;top:20px;left:50%;transform:translateX(-50%);
   z-index:1000;display:flex;align-items:center;gap:18px;
-  animation:navSlideDown 0.9s 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+  animation:navSlideDown 0.9s 0.4s cubic-bezier(0.22, 0.61, 0.36, 1) both;
   white-space:nowrap;
 }
 
@@ -79,7 +79,7 @@ body{
   content:'';position:absolute;bottom:9px;left:50%;
   transform:translateX(-50%) scaleX(0);width:16px;height:2px;
   border-radius:2px;background:var(--orange);
-  transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  transition:transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 .nav-links-pill a.active::after{transform:translateX(-50%) scaleX(1)}
 
@@ -245,11 +245,11 @@ section{position:relative;overflow:clip}
 
 .section-mid{background:rgba(0,0,0,0.62)}
 
-/* Chart pair grid — 2 cols desktop, stacked on mobile */
+/* Chart pair grid â€” 2 cols desktop, stacked on mobile */
 .chart-pair{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:32px;}
 @media(max-width:640px){.chart-pair{grid-template-columns:1fr;}}
 
-/* PMF wave wrapper — matches section-inner horizontal padding */
+/* PMF wave wrapper â€” matches section-inner horizontal padding */
 .pmf-wave-pad { padding: 0 60px; }
 @media(max-width:1024px){ .pmf-wave-pad { padding: 0 32px; } }
 @media(max-width:640px) { .pmf-wave-pad { padding: 0 20px; } }
@@ -285,7 +285,7 @@ section{position:relative;overflow:clip}
 .dark-card{
   background:var(--card);border:1px solid var(--border);border-radius:20px;
   padding:36px 28px;cursor:default;
-  transition:border-color 0.25s,transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  transition:border-color 0.25s,transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
   position:relative;overflow:hidden;
 }
 .dark-card::before{
@@ -340,7 +340,7 @@ section{position:relative;overflow:clip}
 }
 .faq-item.open .faq-q{margin-bottom:14px}
 
-/* + → × indicator */
+/* + â†’ Ã— indicator */
 .faq-q::after{
   content:'+';flex-shrink:0;
   width:24px;height:24px;border-radius:50%;
@@ -348,7 +348,7 @@ section{position:relative;overflow:clip}
   color:var(--orange);
   display:inline-flex;align-items:center;justify-content:center;
   font-size:16px;font-weight:400;line-height:1;
-  transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1),background 0.2s,border-color 0.2s,color 0.2s;
+  transition:transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1),background 0.2s,border-color 0.2s,color 0.2s;
   margin-top:1px;
 }
 .faq-item.open .faq-q::after{
@@ -428,7 +428,7 @@ section{position:relative;overflow:clip}
 
 .service-list{list-style:none;display:flex;flex-direction:column;gap:10px}
 .service-list li{font-size:14px;color:var(--muted);padding-left:22px;position:relative;line-height:1.5}
-.service-list li::before{content:'—';position:absolute;left:0;color:var(--orange)}
+.service-list li::before{content:'â€”';position:absolute;left:0;color:var(--orange)}
 
 /* =========================================================
    CASE STUDY
@@ -602,12 +602,12 @@ footer{
 }
 
 /* =========================================================
-   LIQUID GLASS — all grey cards & panels
+   LIQUID GLASS â€” all grey cards & panels
    Background refracts through the glass layer.
    Orange output states (.is-output, .col-good) are excluded.
    ========================================================= */
 
-/* Core glass recipe — shared by every card type */
+/* Core glass recipe â€” shared by every card type */
 .dark-card,
 .faq-item,
 .step-item:not(.is-output),
@@ -652,7 +652,7 @@ footer{
     inset 0 -1px 0 rgba(0,0,0,0.1);
 }
 
-/* Stats bar — full-width glass band */
+/* Stats bar â€” full-width glass band */
 .stats-section {
   background: linear-gradient(
     180deg,
@@ -666,7 +666,7 @@ footer{
   box-shadow: inset 0 1.5px 0 rgba(255,255,255,0.14);
 }
 
-/* Nav pills — elevated glass (already partially glass; enhance) */
+/* Nav pills â€” elevated glass (already partially glass; enhance) */
 .nav-pill-glass {
   background: rgba(0,0,0,0.22);
   backdrop-filter: blur(32px) saturate(2.1) brightness(1.18);
@@ -678,7 +678,7 @@ footer{
     inset 0 -1px 0 rgba(0,0,0,0.18);
 }
 
-/* Open FAQ item — slightly stronger glass on expand */
+/* Open FAQ item â€” slightly stronger glass on expand */
 .faq-item.open {
   background: linear-gradient(
     135deg,
@@ -694,7 +694,7 @@ footer{
     inset 0 -1px 0 rgba(0,0,0,0.08);
 }
 
-/* Case study stats strip — slightly darker glass */
+/* Case study stats strip â€” slightly darker glass */
 .case-stats-strip {
   background: linear-gradient(
     135deg,
@@ -705,7 +705,7 @@ footer{
   -webkit-backdrop-filter: blur(12px) saturate(1.5);
 }
 
-/* Callout boxes — warm-tinted glass */
+/* Callout boxes â€” warm-tinted glass */
 .callout-box {
   background: linear-gradient(
     135deg,
@@ -732,7 +732,7 @@ footer{
   box-shadow: 0 2px 16px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.14);
 }
 
-/* Form inputs — frosted glass fields */
+/* Form inputs â€” frosted glass fields */
 .form-input,
 .form-select,
 .form-textarea {
@@ -752,9 +752,9 @@ footer{
   box-shadow: 0 0 0 3px rgba(233,92,37,0.12), inset 0 1px 0 rgba(255,255,255,0.1);
 }
 
-/* ── Body background is now defined at the top (orange grid) ── */
+/* â”€â”€ Body background is now defined at the top (orange grid) â”€â”€ */
 
-/* ── .glass-card — utility for inline-styled elements ── */
+/* â”€â”€ .glass-card â€” utility for inline-styled elements â”€â”€ */
 /* Uses !important to override inline background & border */
 .glass-card {
   background: linear-gradient(
@@ -772,7 +772,7 @@ footer{
     inset 0 -1px 0 rgba(0,0,0,0.08) !important;
 }
 
-/* ── Biz card / letterhead in stationery mockups ── */
+/* â”€â”€ Biz card / letterhead in stationery mockups â”€â”€ */
 .biz-card {
   background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
   backdrop-filter: blur(16px) saturate(1.8) brightness(1.1);
@@ -781,7 +781,7 @@ footer{
   box-shadow: 0 4px 20px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.15);
 }
 
-/* ── Laptop mockup screen wrap ── */
+/* â”€â”€ Laptop mockup screen wrap â”€â”€ */
 .lp-screen-wrap {
   background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%);
   backdrop-filter: blur(10px) saturate(1.5);
@@ -789,7 +789,7 @@ footer{
   border-color: rgba(255,255,255,0.12);
 }
 
-/* ── Section mid — liquid glass over the body grid ── */
+/* â”€â”€ Section mid â€” liquid glass over the body grid â”€â”€ */
 .section-mid {
   background: linear-gradient(
     135deg,
@@ -804,7 +804,7 @@ footer{
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
 }
 
-/* ── Regular sections — very light glass so grid bleeds through ── */
+/* â”€â”€ Regular sections â€” very light glass so grid bleeds through â”€â”€ */
 section:not(.cta-section):not(.section-mid) {
   backdrop-filter: blur(2px) saturate(1.1);
   -webkit-backdrop-filter: blur(2px) saturate(1.1);
@@ -901,7 +901,7 @@ section:not(.cta-section):not(.section-mid) {
 }
 
 /* =========================================================
-   HEADER GLASS BAR — full-width frosted bar behind nav pills
+   HEADER GLASS BAR â€” full-width frosted bar behind nav pills
    ========================================================= */
 body::before {
   content: '';
@@ -923,7 +923,7 @@ body::before {
   border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
-/* ── Trust bar ── */
+/* â”€â”€ Trust bar â”€â”€ */
 .trust-bar {
   background: linear-gradient(90deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.03) 100%);
   backdrop-filter: blur(16px) saturate(1.5);
@@ -935,7 +935,7 @@ body::before {
    ORANGE-TINTED LIQUID GLASS
    ========================================================= */
 
-/* Nav links pill — orange glass (overrides the neutral .nav-pill-glass) */
+/* Nav links pill â€” orange glass (overrides the neutral .nav-pill-glass) */
 .nav-links-pill.nav-pill-glass {
   background: linear-gradient(
     135deg,
@@ -953,7 +953,7 @@ body::before {
     inset 0 -1px 0 rgba(100,28,0,0.28);
 }
 
-/* Nav link text — warm white on orange glass */
+/* Nav link text â€” warm white on orange glass */
 .nav-links-pill a {
   color: rgba(255,230,215,0.6);
 }
@@ -965,9 +965,9 @@ body::before {
   color: #fff;
 }
 
-/* ── Orange solid cards → orange-tinted liquid glass ── */
+/* â”€â”€ Orange solid cards â†’ orange-tinted liquid glass â”€â”€ */
 
-/* Comparison right column ("Blacfox" card) — both old and infographic class names */
+/* Comparison right column ("Blacfox" card) â€” both old and infographic class names */
 .compare-col.col-good,
 .cmp-col.good {
   background: linear-gradient(
@@ -1019,7 +1019,7 @@ body::before {
     inset 0 -1px 0 rgba(100,28,0,0.22);
 }
 
-/* Text colours on orange glass cards — keep readable */
+/* Text colours on orange glass cards â€” keep readable */
 .compare-col.col-good .compare-label { color: rgba(255,220,190,0.80); }
 .compare-col.col-good .compare-step  { color: #fff; border-color: rgba(255,255,255,0.20); }
 
@@ -1055,7 +1055,7 @@ body::before {
 .method-card.is-output .card-title   { color: #fff; }
 .method-card.is-output .card-body    { color: rgba(255,230,210,0.85); }
 
-/* CTA section — orange-tinted liquid glass instead of solid orange */
+/* CTA section â€” orange-tinted liquid glass instead of solid orange */
 .cta-section {
   background: linear-gradient(
     135deg,
@@ -1078,7 +1078,7 @@ body::before {
    LIQUID GLASS BUTTONS
    ========================================================= */
 
-/* Primary — orange glass */
+/* Primary â€” orange glass */
 .btn-primary {
   background: linear-gradient(
     135deg,
@@ -1109,7 +1109,7 @@ body::before {
   transform: translateY(-2px);
 }
 
-/* Ghost — neutral glass */
+/* Ghost â€” neutral glass */
 .btn-ghost {
   background: linear-gradient(
     135deg,
@@ -1142,7 +1142,7 @@ body::before {
   transform: translateY(-2px);
 }
 
-/* White — light glass (CTA section, light surfaces) */
+/* White â€” light glass (CTA section, light surfaces) */
 .btn-white {
   background: linear-gradient(
     135deg,
@@ -1174,7 +1174,7 @@ body::before {
 }
 
 /* =========================================================
-   PREVENT ORPHANED WORDS — global
+   PREVENT ORPHANED WORDS â€” global
    ========================================================= */
 
 /* All headings: pretty avoids orphans without constraining line width */
@@ -1190,11 +1190,11 @@ p, li, blockquote,
 .case-stat-label, .w-name, .card-title { text-wrap: pretty; }
 
 /* =========================================================
-   CONSISTENT SITE MARGINS — single source of truth
+   CONSISTENT SITE MARGINS â€” single source of truth
    --site-px auto-updates at every breakpoint via :root
    ========================================================= */
 
-/* Centred content columns — all the same max-width */
+/* Centred content columns â€” all the same max-width */
 .section-inner,
 .stats-inner,
 .footer-grid,
@@ -1209,5 +1209,5 @@ p, li, blockquote,
 .trust-bar,
 footer { padding-left: var(--site-px); padding-right: var(--site-px); }
 
-/* CTA section — keep its own top/bottom, just align left/right */
+/* CTA section â€” keep its own top/bottom, just align left/right */
 .cta-section { padding-left: var(--site-px); padding-right: var(--site-px); }

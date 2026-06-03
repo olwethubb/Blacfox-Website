@@ -9,6 +9,9 @@ desktop.ini
 *.swp
 *.swo
 
+# Impeccable skill (installed globally in ~/.claude — not part of this repo)
+impeccable/
+
 # Local dev
 *.local
 .env
