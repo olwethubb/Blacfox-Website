@@ -1909,23 +1909,7 @@ footer { padding-left: var(--site-px); padding-right: var(--site-px); }
       if (!isOpen) item.classList.add('open');
     });
   });
-  (function(){
-    const ham = document.querySelector('.nav-hamburger');
-    const nav = document.getElementById('bottom-nav');
-    if (!ham) return;
-    ham.addEventListener('click', () => {
-      const open = nav.classList.toggle('nav-mobile-open');
-      ham.setAttribute('aria-expanded', open);
-    });
-    document.querySelectorAll('.nav-links-pill a, .nav-mobile-dropdown a').forEach(a => {
-      a.addEventListener('click', () => {
-        nav.classList.remove('nav-mobile-open');
-        ham.setAttribute('aria-expanded', 'false');
-      });
-    });
-    const pgDrop = (location.pathname.split('/').pop()||'index.html').replace('.html','') || 'index';
-    document.querySelectorAll('.nav-mobile-dropdown a[data-page]').forEach(a => { if(a.dataset.page===pgDrop) a.classList.add('active'); });
-  })();</script>
+</script>
 
 </div><!-- /other-page-content --></body>
 </html>
