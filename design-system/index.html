@@ -1,0 +1,2325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blacfox Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --dark:#000000;--mid:#1a1a1a;--card:#1a1a1a;--light:#e0e0e0;
+  --orange:#e95c25;--muted:#888888;--border:rgba(255,255,255,0.10);
+}
+
+html{font-size:16px;scroll-behavior:smooth}
+
+body{
+  font-family:'Montserrat',sans-serif;
+  background:#000;color:var(--light);
+  -webkit-font-smoothing:antialiased;
+  background-image:
+    linear-gradient(rgba(233,92,37,0.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(233,92,37,0.04) 1px,transparent 1px);
+  background-size:64px 64px;
+  background-attachment:fixed;
+}
+
+
+/* ── DS Shell ── */
+.ds-layout{display:flex;min-height:100vh}
+
+.ds-sidebar{
+  width:240px;flex-shrink:0;position:fixed;top:0;left:0;
+  height:100vh;overflow-y:auto;
+  background:rgba(0,0,0,0.95);
+  border-right:1px solid var(--border);
+  z-index:100;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.1) transparent;
+}
+.ds-sidebar::-webkit-scrollbar{width:4px}
+.ds-sidebar::-webkit-scrollbar-track{background:transparent}
+.ds-sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:4px}
+
+.ds-logo-area{
+  padding:24px 20px 20px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+}
+.ds-logo-area svg{width:28px;height:28px;flex-shrink:0}
+.ds-logo-text{font-size:13px;font-weight:800;letter-spacing:0.02em;color:#fff}
+.ds-logo-sub{font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--orange);display:block;margin-top:1px}
+
+.ds-nav{padding:16px 0 24px}
+.ds-nav-group{margin-bottom:4px}
+.ds-nav-group-label{
+  font-size:9px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;
+  color:rgba(255,255,255,0.22);padding:10px 20px 6px;display:block;
+}
+.ds-nav-link{
+  display:flex;align-items:center;gap:8px;
+  padding:7px 20px;font-size:12px;font-weight:500;
+  color:rgba(255,255,255,0.45);text-decoration:none;
+  transition:color 0.2s,background 0.15s;border-left:2px solid transparent;
+}
+.ds-nav-link:hover{color:rgba(255,255,255,0.85);background:rgba(255,255,255,0.04)}
+.ds-nav-link.active{color:var(--orange);border-left-color:var(--orange);background:rgba(233,92,37,0.06)}
+.ds-nav-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.2);flex-shrink:0}
+.ds-nav-link.active .ds-nav-dot{background:var(--orange)}
+
+.ds-nav-divider{height:1px;background:var(--border);margin:12px 20px}
+
+.ds-main{margin-left:240px;flex:1;min-width:0}
+
+/* ── DS Section ── */
+.ds-section{padding:64px 56px;border-top:1px solid rgba(255,255,255,0.05)}
+.ds-section:first-child{border-top:none;padding-top:72px}
+
+.ds-section-head{margin-bottom:48px}
+.ds-eyebrow{
+  font-size:9px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--orange);margin-bottom:10px;display:flex;align-items:center;gap:8px;
+}
+.ds-eyebrow::before{content:'';display:block;width:18px;height:1.5px;background:var(--orange)}
+.ds-section-title{font-size:28px;font-weight:800;letter-spacing:-0.03em;color:#fff;margin-bottom:8px}
+.ds-section-desc{font-size:14px;color:var(--muted);line-height:1.7;max-width:540px}
+
+/* ── Component block ── */
+.ds-component{margin-bottom:56px}
+.ds-component-header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px}
+.ds-component-title{font-size:15px;font-weight:700;color:#fff}
+.ds-component-desc{font-size:12px;color:rgba(255,255,255,0.4);line-height:1.6;margin-top:3px}
+.ds-class-tag{
+  font-size:10px;font-weight:600;font-family:monospace;
+  background:rgba(233,92,37,0.1);border:1px solid rgba(233,92,37,0.25);
+  color:var(--orange);padding:3px 8px;border-radius:4px;white-space:nowrap;flex-shrink:0;
+}
+
+.ds-preview{
+  border:1px solid var(--border);border-radius:14px;
+  overflow:hidden;background:rgba(0,0,0,0.4);
+  position:relative;
+}
+.ds-preview-inner{padding:40px}
+.ds-preview-inner.padded-lg{padding:56px}
+.ds-preview-inner.padded-sm{padding:24px}
+.ds-preview-bg-orange{background:var(--orange)}
+.ds-preview-label{
+  position:absolute;top:12px;right:12px;
+  font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  color:rgba(255,255,255,0.2);background:rgba(0,0,0,0.4);
+  padding:3px 8px;border-radius:4px;pointer-events:none;
+}
+
+/* ── Template cards ── */
+.ds-template-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:32px}
+.ds-template-card{
+  border:1px solid var(--border);border-radius:14px;overflow:hidden;
+  text-decoration:none;transition:border-color 0.2s,transform 0.2s;display:block;
+}
+.ds-template-card:hover{border-color:rgba(233,92,37,0.4);transform:translateY(-3px)}
+.ds-template-thumb{height:180px;background:var(--mid);position:relative;overflow:hidden}
+.ds-template-thumb-inner{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(233,92,37,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(233,92,37,0.04) 1px,transparent 1px);
+  background-size:32px 32px;
+  display:flex;align-items:center;justify-content:center;
+}
+.ds-template-thumb-label{
+  font-size:22px;font-weight:900;letter-spacing:-0.04em;color:rgba(255,255,255,0.12);
+}
+.ds-template-info{padding:16px 18px}
+.ds-template-name{font-size:13px;font-weight:700;color:#fff;margin-bottom:4px}
+.ds-template-meta{font-size:11px;color:var(--muted)}
+
+.ds-social-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:32px}
+.ds-social-card{
+  border:1px solid var(--border);border-radius:14px;overflow:hidden;
+  text-decoration:none;transition:border-color 0.2s,transform 0.2s;display:block;
+}
+.ds-social-card:hover{border-color:rgba(233,92,37,0.4);transform:translateY(-3px)}
+.ds-social-thumb{background:var(--mid);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.ds-social-thumb-bg{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(233,92,37,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(233,92,37,0.06) 1px,transparent 1px);
+  background-size:24px 24px;
+}
+.ds-social-dim{font-size:11px;font-weight:700;color:rgba(255,255,255,0.25);position:relative;z-index:1;font-family:monospace}
+.ds-social-info{padding:12px 14px}
+.ds-social-name{font-size:12px;font-weight:700;color:#fff;margin-bottom:3px}
+.ds-social-meta{font-size:10px;color:var(--muted)}
+
+/* ── Color swatches ── */
+.ds-color-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-top:28px}
+.ds-swatch{border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.ds-swatch-color{height:64px}
+.ds-swatch-info{padding:10px 12px;background:rgba(255,255,255,0.03)}
+.ds-swatch-name{font-size:12px;font-weight:700;color:#fff;margin-bottom:2px}
+.ds-swatch-val{font-size:10px;color:var(--muted);font-family:monospace}
+
+/* ── Typography scale ── */
+.ds-type-scale{display:flex;flex-direction:column;gap:0;margin-top:28px}
+.ds-type-row{
+  display:grid;grid-template-columns:160px 1fr;align-items:center;gap:24px;
+  padding:16px 0;border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.ds-type-meta{font-size:10px;color:rgba(255,255,255,0.3);font-family:monospace;line-height:1.6}
+
+/* ── Spacing scale ── */
+.ds-space-list{display:flex;flex-direction:column;gap:10px;margin-top:28px}
+.ds-space-row{display:flex;align-items:center;gap:20px}
+.ds-space-bar{background:rgba(233,92,37,0.5);height:20px;border-radius:3px;flex-shrink:0}
+.ds-space-label{font-size:10px;font-family:monospace;color:var(--muted)}
+
+/* ────────────────────────────────────────────────
+   COMPONENT CSS — extracted from styles.css
+──────────────────────────────────────────────── */
+
+/* Buttons */
+.btn-primary{
+  text-decoration:none;
+  background:linear-gradient(135deg,rgba(233,92,37,0.78) 0%,rgba(233,92,37,0.52) 50%,rgba(233,92,37,0.70) 100%);
+  backdrop-filter:blur(18px) saturate(2.1) brightness(1.22);
+  -webkit-backdrop-filter:blur(18px) saturate(2.1) brightness(1.22);
+  border:1px solid rgba(255,165,85,0.50);
+  box-shadow:0 4px 22px rgba(233,92,37,0.32),inset 0 1.5px 0 rgba(255,185,110,0.45),inset 0 -1px 0 rgba(100,28,0,0.22);
+  color:#fff;font-size:14px;font-weight:700;padding:14px 30px;border-radius:100px;
+  display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-family:'Montserrat',sans-serif;
+  transition:transform 0.2s,box-shadow 0.2s;
+}
+.btn-primary:hover{
+  background:linear-gradient(135deg,rgba(233,92,37,0.92) 0%,rgba(233,92,37,0.68) 50%,rgba(233,92,37,0.84) 100%);
+  box-shadow:0 8px 36px rgba(233,92,37,0.44),inset 0 1.5px 0 rgba(255,190,115,0.55),inset 0 -1px 0 rgba(100,28,0,0.28);
+  transform:translateY(-2px);
+}
+.btn-ghost{
+  text-decoration:none;
+  background:linear-gradient(135deg,rgba(255,255,255,0.10) 0%,rgba(255,255,255,0.03) 50%,rgba(255,255,255,0.08) 100%);
+  backdrop-filter:blur(18px) saturate(1.8) brightness(1.10);
+  -webkit-backdrop-filter:blur(18px) saturate(1.8) brightness(1.10);
+  border:1px solid rgba(255,255,255,0.18);
+  box-shadow:0 2px 14px rgba(0,0,0,0.22),inset 0 1.5px 0 rgba(255,255,255,0.14),inset 0 -1px 0 rgba(0,0,0,0.08);
+  color:rgba(255,255,255,0.72);font-size:14px;font-weight:500;padding:14px 30px;border-radius:100px;
+  display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-family:'Montserrat',sans-serif;
+  transition:color 0.2s,border-color 0.2s,transform 0.2s;
+}
+.btn-ghost:hover{
+  background:linear-gradient(135deg,rgba(255,255,255,0.15) 0%,rgba(255,255,255,0.05) 50%,rgba(255,255,255,0.12) 100%);
+  border-color:rgba(255,255,255,0.28);color:#fff;transform:translateY(-2px);
+}
+.btn-white{
+  text-decoration:none;
+  background:linear-gradient(135deg,rgba(255,255,255,0.82) 0%,rgba(255,255,255,0.64) 50%,rgba(255,255,255,0.76) 100%);
+  backdrop-filter:blur(20px) saturate(1.6) brightness(1.18);
+  -webkit-backdrop-filter:blur(20px) saturate(1.6) brightness(1.18);
+  border:1px solid rgba(255,255,255,0.70);
+  box-shadow:0 4px 20px rgba(0,0,0,0.16),inset 0 1.5px 0 rgba(255,255,255,0.95),inset 0 -1px 0 rgba(0,0,0,0.06);
+  color:var(--orange);font-size:15px;font-weight:700;padding:16px 36px;border-radius:100px;
+  display:inline-flex;align-items:center;gap:10px;cursor:pointer;font-family:'Montserrat',sans-serif;
+  transition:transform 0.2s,box-shadow 0.2s;
+}
+.btn-white:hover{
+  background:linear-gradient(135deg,rgba(255,255,255,0.94) 0%,rgba(255,255,255,0.78) 50%,rgba(255,255,255,0.88) 100%);
+  box-shadow:0 8px 32px rgba(0,0,0,0.22),inset 0 1.5px 0 rgba(255,255,255,1),inset 0 -1px 0 rgba(0,0,0,0.08);
+  transform:translateY(-3px);
+}
+.btn-sm{padding:10px 22px;font-size:12px}
+
+/* Section Tag */
+.section-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--orange);margin-bottom:20px;
+}
+.section-tag::before{content:'';display:block;width:20px;height:1.5px;background:var(--orange)}
+
+.section-h{
+  font-size:clamp(26px,3.2vw,44px);font-weight:800;letter-spacing:-0.03em;
+  line-height:1.0;margin-bottom:18px;text-wrap:pretty;
+}
+.section-h em{font-style:italic;font-weight:800;color:var(--orange)}
+.section-p{font-size:16px;color:var(--muted);line-height:1.75;text-wrap:pretty}
+
+/* Stats Bar */
+.stats-section{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:40px 0}
+.stats-inner{max-width:100%;display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.stat-item{text-align:center}
+.stat-num{font-size:38px;font-weight:800;letter-spacing:-0.03em;color:var(--light);line-height:1}
+.stat-num em{font-style:italic;color:var(--orange)}
+.stat-label{font-size:13px;color:var(--muted);margin-top:8px;font-weight:400;line-height:1.5}
+
+/* Trust Bar */
+.trust-bar{
+  padding:24px 0;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap;
+  background:linear-gradient(90deg,rgba(255,255,255,0.03) 0%,rgba(255,255,255,0.06) 50%,rgba(255,255,255,0.03) 100%);
+}
+.trust-label{font-size:12px;font-weight:600;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase}
+.trust-logo{font-size:13px;font-weight:700;color:rgba(255,255,255,0.25);letter-spacing:0.05em}
+
+/* Dark Cards */
+.card-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card-grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.dark-card{
+  background:transparent;border:1px solid rgba(255,255,255,0.18);border-radius:20px;
+  padding:36px 28px;cursor:default;
+  transition:border-color 0.25s,transform 0.3s cubic-bezier(0.22,0.61,0.36,1);
+  position:relative;overflow:hidden;
+}
+.dark-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(233,92,37,0.06),transparent 60%);
+  opacity:0;transition:opacity 0.3s;
+}
+.dark-card:hover{border-color:rgba(233,92,37,0.45);transform:translateY(-4px)}
+.dark-card:hover::before{opacity:1}
+.card-num{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange);margin-bottom:18px}
+.card-title{font-size:18px;font-weight:700;letter-spacing:-0.01em;margin-bottom:10px;color:var(--light)}
+.card-body{font-size:14px;color:var(--muted);line-height:1.65}
+
+/* Callout Box */
+.callout-box{
+  border:1px solid rgba(233,92,37,0.4);border-radius:14px;padding:28px 32px;
+  background:rgba(233,92,37,0.06);
+}
+.callout-box p{font-size:18px;font-weight:700;color:var(--light);line-height:1.5}
+
+/* Comparison Grid — simple variant */
+.compare-wrap{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.compare-col{border-radius:20px;padding:40px 32px}
+.compare-col.col-bad{background:transparent;border:1px solid rgba(255,255,255,0.18)}
+.compare-col.col-good{background:transparent;border:1px solid var(--orange)}
+.compare-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:28px;color:var(--muted)}
+.col-good .compare-label{color:rgba(255,220,190,0.80)}
+.compare-step{font-size:15px;font-weight:600;color:var(--light);padding:14px 0;border-bottom:1px solid var(--border)}
+.col-good .compare-step{color:white;border-color:rgba(255,255,255,0.2)}
+.compare-step:last-child{border-bottom:none}
+
+/* Comparison Grid — rich variant (.cmp-col) */
+.cmp-col{
+  border-radius:20px;padding:40px 36px;
+  display:flex;flex-direction:column;gap:0;
+}
+.cmp-col.bad{background:transparent;border:1px solid rgba(255,255,255,0.18)}
+.cmp-col.good{background:transparent;border:1px solid var(--orange)}
+.cmp-col-label{
+  font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:16px;
+}
+.cmp-col.good .cmp-col-label{color:var(--orange)}
+.cmp-col-title{
+  font-size:clamp(20px,2.2vw,26px);font-weight:800;letter-spacing:-0.03em;
+  line-height:1.1;color:var(--light);margin-bottom:24px;
+}
+.cmp-col.good .cmp-col-title{color:#fff}
+.cmp-steps{display:flex;flex-direction:column;flex:1}
+.cmp-step{
+  display:grid;grid-template-columns:28px 1fr 18px;
+  align-items:center;gap:14px;
+  padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.08);
+}
+.cmp-step:last-child{border-bottom:none}
+.cmp-col.good .cmp-step{border-color:rgba(255,255,255,0.12)}
+.cmp-step-num{
+  font-size:10px;font-weight:700;letter-spacing:0.1em;
+  color:var(--muted);
+}
+.cmp-col.good .cmp-step-num{color:rgba(255,200,150,0.85)}
+.cmp-step-content{min-width:0}
+.cmp-step-text{font-size:15px;font-weight:700;color:var(--light);line-height:1.3}
+.cmp-col.good .cmp-step-text{color:#fff}
+.cmp-step-sub{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.5}
+.cmp-col.good .cmp-step-sub{color:rgba(255,220,200,0.70)}
+.cmp-step-icon{
+  font-size:13px;color:rgba(255,255,255,0.25);
+  text-align:right;font-weight:600;
+}
+.cmp-dead-end{
+  border:1px solid rgba(255,255,255,0.12);border-radius:12px;
+  padding:20px 24px;background:rgba(255,255,255,0.03);margin-top:20px;
+}
+.cmp-dead-end p{font-size:13px;font-style:italic;color:var(--muted);line-height:1.65}
+.cmp-outcome{
+  border:1px solid var(--orange);border-radius:12px;
+  padding:20px 24px;margin-top:20px;
+}
+.cmp-outcome-num{
+  font-size:40px;font-weight:900;letter-spacing:-0.05em;
+  color:var(--orange);line-height:1;margin-bottom:8px;
+}
+.cmp-outcome p{font-size:13px;color:rgba(255,255,255,0.6);line-height:1.55}
+
+/* FAQ */
+.faq-list{display:flex;flex-direction:column;gap:12px}
+.faq-item{
+  background:transparent;border:1px solid rgba(255,255,255,0.18);border-radius:16px;
+  padding:28px 32px;transition:border-color 0.25s;cursor:pointer;user-select:none;
+}
+.faq-item:hover{border-color:rgba(233,92,37,0.35)}
+.faq-item.open{border-color:rgba(233,92,37,0.5)}
+.faq-q{
+  font-size:16px;font-weight:700;color:var(--light);
+  display:flex;justify-content:space-between;align-items:flex-start;gap:16px;
+}
+.faq-q::after{
+  content:'+';flex-shrink:0;width:24px;height:24px;border-radius:50%;
+  background:rgba(233,92,37,0.12);border:1px solid rgba(233,92,37,0.3);
+  color:var(--orange);display:inline-flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:400;line-height:1;
+  transition:transform 0.35s cubic-bezier(0.22,0.61,0.36,1),background 0.2s;margin-top:1px;
+}
+.faq-item.open .faq-q::after{transform:rotate(45deg);background:var(--orange);border-color:var(--orange);color:white}
+.faq-a{
+  font-size:14px;color:var(--muted);line-height:1.75;
+  max-height:0;overflow:hidden;opacity:0;margin-top:0;
+  transition:max-height 0.45s cubic-bezier(0.4,0,0.2,1),opacity 0.3s,margin-top 0.3s;
+}
+.faq-item.open .faq-a{max-height:400px;opacity:1;margin-top:14px}
+
+/* Steps */
+.steps-list{display:flex;flex-direction:column;gap:4px}
+.step-item{
+  display:grid;grid-template-columns:120px 1fr;align-items:start;
+  gap:32px;padding:28px 32px;border:1px solid rgba(255,255,255,0.18);
+  border-radius:16px;transition:border-color 0.2s;
+}
+.step-item:hover{border-color:rgba(233,92,37,0.3)}
+.step-num{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange);padding-top:4px}
+.step-label{font-size:17px;font-weight:700;color:var(--light);margin-bottom:8px}
+.step-body{font-size:14px;color:var(--muted);line-height:1.65}
+.step-item.is-output{background:rgba(233,92,37,0.55);border-color:rgba(255,155,75,0.5)}
+.step-item.is-output .step-num{color:rgba(255,220,190,0.75)}
+.step-item.is-output .step-label{color:#fff}
+.step-item.is-output .step-body{color:rgba(255,230,210,0.85)}
+
+/* Method Cards */
+.method-preview{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.method-card{
+  background:transparent;border:1px solid rgba(255,255,255,0.18);border-radius:14px;
+  padding:24px 20px;transition:border-color 0.2s,transform 0.25s;
+}
+.method-card:hover{border-color:rgba(233,92,37,0.4);transform:translateY(-3px)}
+.method-card.is-output{background:rgba(233,92,37,0.52);border-color:rgba(255,150,70,0.5)}
+.method-card.is-output .card-num{color:rgba(255,220,190,0.75)}
+.method-card.is-output .card-title{color:#fff}
+.method-card.is-output .card-body{color:rgba(255,230,210,0.85)}
+
+/* Service Card */
+.service-card{
+  background:transparent;border:1px solid rgba(255,255,255,0.18);border-radius:24px;
+  padding:48px;transition:border-color 0.25s;
+}
+.service-card:hover{border-color:rgba(233,92,37,0.3)}
+.service-name{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--orange);margin-bottom:16px}
+.service-headline{
+  font-size:clamp(18px,2.2vw,28px);font-weight:800;letter-spacing:-0.02em;
+  color:var(--light);margin-bottom:16px;line-height:1.1;
+}
+.service-headline em{font-style:italic;color:var(--orange)}
+.service-lead{font-size:16px;color:var(--muted);line-height:1.7;max-width:640px;margin-bottom:32px}
+.service-meta{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--orange);padding-top:24px;border-top:1px solid var(--border);margin-top:32px}
+.service-includes-title{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;margin-top:28px}
+.service-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.service-list li{font-size:14px;color:var(--muted);padding-left:22px;position:relative;line-height:1.5}
+.service-list li::before{content:'—';position:absolute;left:0;color:var(--orange)}
+
+/* Case Study */
+.case-study-card{
+  background:transparent;border:1px solid rgba(255,255,255,0.18);
+  border-radius:24px;overflow:hidden;
+}
+.case-study-body{padding:48px}
+.case-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(233,92,37,0.1);border:1px solid rgba(233,92,37,0.3);
+  border-radius:100px;padding:6px 14px;font-size:11px;font-weight:700;
+  letter-spacing:0.08em;text-transform:uppercase;color:var(--orange);margin-bottom:24px;
+}
+.case-headline{
+  font-size:clamp(18px,2.8vw,34px);font-weight:800;letter-spacing:-0.02em;
+  line-height:1.1;color:var(--light);margin-bottom:24px;
+}
+.case-headline em{font-style:italic;color:var(--orange)}
+.case-meta{font-size:13px;color:var(--muted);margin-bottom:8px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em}
+.case-stats-strip{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:24px;
+  padding:36px 48px;border-top:1px solid var(--border);background:rgba(0,0,0,0.25);
+}
+.case-stat-num{font-size:28px;font-weight:800;letter-spacing:-0.03em;color:var(--orange);line-height:1;margin-bottom:6px}
+.case-stat-label{font-size:12px;color:var(--muted);line-height:1.4}
+
+/* Contact / Form */
+.contact-layout{display:grid;grid-template-columns:1fr 1.2fr;gap:80px}
+.contact-info{display:flex;flex-direction:column;gap:24px}
+.contact-item{
+  background:transparent;border:1px solid rgba(255,255,255,0.18);
+  border-radius:14px;padding:20px 24px;
+}
+.contact-item h4{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange);margin-bottom:8px}
+.contact-item p,.contact-item a{font-size:16px;color:var(--light);text-decoration:none;transition:color 0.2s;line-height:1.5}
+.contact-item a:hover{color:var(--orange)}
+.form-grid{display:flex;flex-direction:column;gap:16px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-label{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted)}
+.form-input,.form-select,.form-textarea{
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.14);
+  border-radius:10px;padding:14px 18px;
+  font-family:'Montserrat',sans-serif;font-size:14px;color:var(--light);
+  outline:none;transition:border-color 0.2s,background 0.2s,box-shadow 0.2s;width:100%;
+}
+.form-input:focus,.form-select:focus,.form-textarea:focus{
+  background:rgba(255,255,255,0.06);border-color:rgba(233,92,37,0.6);
+  box-shadow:0 0 0 3px rgba(233,92,37,0.12);
+}
+.form-textarea{min-height:120px;resize:vertical}
+.form-select{
+  appearance:none;cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 7L11 1' stroke='%23888888' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 18px center;
+}
+.form-select option{background:var(--mid)}
+
+/* CTA Banner */
+.cta-section{
+  background:var(--orange);padding:80px 60px;text-align:center;
+  position:relative;overflow:hidden;border-radius:20px;
+}
+.cta-section::before{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(0,0,0,0.10) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.10) 1px,transparent 1px);
+  background-size:64px 64px;
+}
+.cta-h{
+  font-size:clamp(28px,4vw,54px);font-weight:900;letter-spacing:-0.03em;
+  color:#000;line-height:1.0;margin-bottom:20px;position:relative;z-index:1;
+}
+.cta-h em{font-style:italic;font-weight:900;color:#fff}
+.cta-p{font-size:17px;color:rgba(0,0,0,0.65);margin-bottom:40px;position:relative;z-index:1}
+.cta-section .btn-primary,
+.cta-section .btn-white{
+  background:#000;border-color:#000;color:#fff;
+  box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;
+  position:relative;z-index:1;
+}
+.cta-section .btn-primary:hover,
+.cta-section .btn-white:hover{
+  background:#1a1a1a;border-color:#1a1a1a;
+  box-shadow:none;transform:translateY(-2px);
+}
+
+/* Nav Pills */
+.nav-pill-demo{display:flex;align-items:center;gap:18px;justify-content:center}
+.nav-pill-glass{
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(24px) saturate(1.8) brightness(1.1);
+  -webkit-backdrop-filter:blur(24px) saturate(1.8) brightness(1.1);
+  border:1px solid rgba(255,255,255,0.18);border-radius:100px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.35);
+}
+.nav-logo-demo{
+  display:flex;align-items:center;justify-content:center;
+  width:72px;height:72px;text-decoration:none;
+}
+.nav-links-pill{display:flex;align-items:center;gap:6px;padding:10px 18px;height:72px;border-color:rgba(233,92,37,0.6)!important}
+.nav-links-pill a{
+  position:relative;text-decoration:none;font-size:14px;font-weight:500;
+  color:rgba(255,255,255,0.5);padding:12px 20px;border-radius:100px;
+  transition:color 0.2s,background 0.2s;letter-spacing:0.01em;
+}
+.nav-links-pill a:hover{color:rgba(255,255,255,0.9);background:rgba(255,255,255,0.07)}
+.nav-links-pill a.active{color:#fff}
+.nav-links-pill a::after{
+  content:'';position:absolute;bottom:8px;left:50%;
+  transform:translateX(-50%) scaleX(0);width:16px;height:2px;
+  border-radius:2px;background:var(--orange);
+  transition:transform 0.3s cubic-bezier(0.22,0.61,0.36,1);
+}
+.nav-links-pill a.active::after{transform:translateX(-50%) scaleX(1)}
+
+/* Footer */
+.footer-demo{padding:56px 0 24px}
+.footer-grid{
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px;
+}
+.footer-brand p{font-size:14px;color:var(--muted);line-height:1.7;margin:16px 0 24px;max-width:260px}
+.footer-socials{display:flex;gap:10px}
+.soc{
+  width:38px;height:38px;border-radius:10px;border:1px solid var(--border);
+  background:rgba(255,255,255,0.03);display:flex;align-items:center;
+  justify-content:center;text-decoration:none;color:var(--muted);font-size:13px;
+  transition:background 0.2s,border-color 0.2s,color 0.2s,transform 0.2s;
+}
+.soc:hover{background:var(--orange);border-color:var(--orange);color:white;transform:translateY(-2px)}
+.footer-col h5{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--light);margin-bottom:20px}
+.footer-col ul{list-style:none}
+.footer-col li{margin-bottom:10px}
+.footer-col a{text-decoration:none;font-size:14px;color:var(--muted);transition:color 0.2s}
+.footer-col a:hover{color:var(--light)}
+.footer-bottom{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--muted);
+}
+
+/* Scroll Reveal classes (reference) */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* Hero quote panel */
+.hero-quote-panel{
+  background:rgba(0,0,0,0.75);border:1px solid rgba(0,0,0,0.3);border-radius:20px;
+  padding:36px;display:flex;flex-direction:column;gap:20px;
+}
+.hero-quote-panel blockquote{font-size:15px;line-height:1.75;color:#fff;font-style:normal}
+.hero-quote-panel blockquote em{font-style:italic;color:#fff;font-weight:700}
+.hero-attribution{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.55)}
+
+/* Hero split demo */
+.hero-split-demo{
+  display:grid;grid-template-columns:1fr 380px;gap:48px;align-items:center;
+  padding:60px;
+  background-color:#e95c25;
+  background-image:linear-gradient(rgba(0,0,0,0.10) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.10) 1px,transparent 1px);
+  background-size:64px 64px;
+  border-radius:14px;overflow:hidden;
+}
+.hero-title-demo{font-size:clamp(32px,4.5vw,64px);font-weight:900;line-height:0.95;letter-spacing:-0.04em;color:#000}
+.hero-title-demo em{font-style:italic;color:#fff}
+.hero-sub-demo{font-size:16px;color:rgba(0,0,0,0.65);line-height:1.75;margin:20px 0 32px}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap}
+
+/* Animations section demo */
+.anim-demo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+.anim-demo-item{
+  border:1px solid var(--border);border-radius:10px;padding:24px;text-align:center;
+}
+.anim-demo-label{font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+
+/* ── DS Hero ── */
+.ds-hero{
+  background-color:#e95c25;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.10) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,0,0,0.10) 1px,transparent 1px);
+  background-size:64px 64px;
+  border-bottom:1px solid var(--border);
+}
+.ds-hero-inner{padding:80px 56px 64px}
+.ds-hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(0,0,0,0.15);border:1px solid rgba(0,0,0,0.2);
+  border-radius:100px;padding:6px 14px;font-size:10px;font-weight:700;
+  letter-spacing:0.14em;text-transform:uppercase;color:rgba(0,0,0,0.6);margin-bottom:28px;
+}
+.ds-hero-title{
+  font-size:clamp(36px,4vw,60px);font-weight:900;letter-spacing:-0.04em;
+  color:#000;line-height:0.95;margin-bottom:16px;
+}
+.ds-hero-title em{font-style:italic;color:#fff}
+.ds-hero-sub{font-size:17px;color:rgba(0,0,0,0.65);line-height:1.7;max-width:560px;margin-bottom:40px}
+.ds-hero-meta{display:flex;gap:32px;flex-wrap:wrap}
+.ds-hero-stat{text-align:left}
+.ds-hero-stat strong{font-size:28px;font-weight:800;letter-spacing:-0.04em;color:#000;display:block}
+.ds-hero-stat span{font-size:11px;color:rgba(0,0,0,0.55);font-weight:500}
+
+/* ── Charts ── */
+.chart-pair{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:640px){.chart-pair{grid-template-columns:1fr}}
+.glass-card{background:transparent!important;border:1px solid rgba(255,255,255,0.18)!important;box-shadow:none!important}
+
+/* Bar chart animations */
+@keyframes barGrow   { to { width: 100%; } }
+@keyframes benchGrow { to { width: 30%;  } }
+@keyframes dotFade   { to { opacity: 1;  } }
+.bar-blacfox{
+  position:absolute;left:0;top:0;height:100%;width:0;border-radius:2px;
+  background:linear-gradient(to right,rgba(255,255,255,0.9) 70%,rgba(255,255,255,0.35) 100%);
+  box-shadow:0 0 10px rgba(255,255,255,0.25);
+  animation:barGrow 1.5s cubic-bezier(0.22,0.61,0.36,1) 0.4s forwards;
+}
+.bar-dot-blacfox{
+  position:absolute;right:0;top:50%;transform:translateY(-50%);
+  width:12px;height:12px;border-radius:50%;background:var(--orange);
+  box-shadow:0 0 18px rgba(233,92,37,0.8),0 0 6px rgba(233,92,37,1);
+  opacity:0;animation:dotFade 0.2s ease 1.85s forwards;
+}
+.bar-bench{
+  position:absolute;left:0;top:0;height:100%;width:0;border-radius:1px;
+  background:rgba(255,255,255,0.22);
+  animation:benchGrow 1.2s cubic-bezier(0.22,0.61,0.36,1) 0.6s forwards;
+}
+.bar-dot-bench{
+  position:absolute;left:30%;top:50%;transform:translateX(-50%) translateY(-50%);
+  width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.3);
+  opacity:0;animation:dotFade 0.2s ease 1.75s forwards;
+}
+/* Radial arc animations */
+@keyframes arcGrow    { to { stroke-dashoffset: 147; } }
+@keyframes arcDotFade { to { opacity: 1; } }
+.arc-fill{
+  stroke-dasharray:490;stroke-dashoffset:490;
+  animation:arcGrow 1.5s cubic-bezier(0.22,0.61,0.36,1) 0.4s forwards;
+  filter:drop-shadow(0 0 10px rgba(255,255,255,0.25));
+}
+#arcDotEnd{
+  opacity:0;
+  animation:arcDotFade 0.2s ease 1.85s forwards;
+  filter:drop-shadow(0 0 18px rgba(233,92,37,0.9)) drop-shadow(0 0 6px rgba(233,92,37,1));
+}
+
+/* ── PMF Expanded Radial Layout ── */
+.pmf-radial{display:grid;grid-template-columns:1fr 210px 1fr;gap:0;margin-top:48px;align-items:stretch}
+.pmf-left-col,.pmf-right-col{display:flex;flex-direction:column;gap:8px;padding:8px 0}
+.pmf-step-item{display:flex;align-items:center;gap:10px;position:relative;flex:1}
+.pmf-left-col .pmf-step-item,.pmf-right-col .pmf-step-item{flex-direction:row}
+.pmf-left-col .pmf-rcard,.pmf-right-col .pmf-rcard{flex:1}
+.pmf-n{width:44px;height:44px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;color:white;position:relative;z-index:2;background:var(--orange);border:2px solid rgba(255,165,90,0.45);box-shadow:0 4px 20px rgba(233,92,37,0.40)}
+.pmf-hub-col{position:relative;display:flex;align-items:center;justify-content:center}
+.pmf-hub-col::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,transparent,rgba(233,92,37,0.45) 8%,rgba(233,92,37,0.45) 36%,rgba(233,92,37,0.06) 44%,rgba(233,92,37,0.04) 50%,rgba(233,92,37,0.06) 56%,rgba(233,92,37,0.45) 64%,rgba(233,92,37,0.45) 92%,transparent);transform:translateX(-50%);z-index:0}
+.pmf-hub{width:188px;height:188px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;gap:4px;position:relative;z-index:1;background:transparent;border:1.5px solid rgba(255,255,255,0.18)}
+.pmf-hub-pre,.pmf-hub-post{font-size:10px;font-weight:500;color:var(--muted);margin:0}
+.pmf-hub-title{font-size:13px;font-weight:900;font-style:italic;color:var(--light);letter-spacing:-0.02em;line-height:1.25;display:block;margin:5px 0}
+.pmf-rcard{background:transparent;border:1px solid rgba(255,255,255,0.18);border-radius:16px;padding:14px 18px;transition:border-color 0.25s;cursor:default}
+.pmf-rcard:hover{border-color:rgba(233,92,37,0.42)}
+.pmf-rcard.output{border-color:var(--orange)}
+.pmf-rcard-num{font-size:9px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--orange);margin-bottom:4px}
+.pmf-rcard-name{font-size:16px;font-weight:900;font-style:italic;color:var(--light);letter-spacing:-0.02em;margin-bottom:3px}
+.pmf-rcard.output .pmf-rcard-name{color:#fff}
+.pmf-rcard-sub{font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.pmf-rcard-body{font-size:11px;color:var(--muted);line-height:1.6}
+.pmf-rcard.output .pmf-rcard-body{color:rgba(255,230,210,0.85)}
+@media(max-width:900px){.pmf-radial{grid-template-columns:1fr}.pmf-hub-col{display:none}}
+
+/* ── Logo variants ── */
+.logo-on-orange .cls-1 { fill: #000; }
+
+/* ── Misc utility ── */
+.flex-gap-12{display:flex;gap:12px;flex-wrap:wrap}
+.flex-gap-16{display:flex;gap:16px;flex-wrap:wrap}
+.mt-8{margin-top:8px}
+.mt-16{margin-top:16px}
+.mt-24{margin-top:24px}
+.mt-32{margin-top:32px}
+.mt-48{margin-top:48px}
+.text-orange{color:var(--orange)}
+.text-muted{color:var(--muted)}
+.font-mono{font-family:monospace}
+.ds-divider{height:1px;background:var(--border);margin:40px 0}
+</style>
+</head>
+<body>
+<div class="ds-layout">
+
+<!-- ═══════════════ SIDEBAR ═══════════════ -->
+<aside class="ds-sidebar">
+  <div class="ds-logo-area">
+    <svg viewBox="140 150 800 800" xmlns="http://www.w3.org/2000/svg">
+      <path fill="none" stroke="#e95c25" stroke-width="38" stroke-linejoin="round" d="M672.2,800.5c-9.9,0-18.9-5.3-23.9-14.5-21.9-40.6-67.9-99.4-98.3-96.9-17.1,1.5-35.2,27.5-49.8,71.5-4.6,16.6-21.1,28-38.9,26.7h-1.5c-20.5-1.7-36-19.7-34.5-40.2.7-9.8,3-23.7,5.6-39.7,6.3-38.5,15.7-95.4,9.5-140.7l-7.1-1.3c-55.8-10.5-132.2-24.8-183.8-81.1-41-44.8-63.4-85.1-63.6-85.5l-19.6-34.9,39.8-5.6c78.3-11.1,141.8,6.9,188.8,53.4,31.6,31.3,54.9,74.8,69.4,129.4h.2c43.8,0,88.1-17.9,131.8-53.2,71-57.4,112.7-140.7,130.5-176.3,9.8-19.6,18.3-36.5,40.4-31.2,10.6,2.5,21.5,12.1,21.5,28.1s4.6,107.2,96.3,107.9,24.6,8.7,27.7,21.1c5.3,21.6-11.7,30.7-26.7,38.6-125,66-188.3,148.6-188.3,245.5l2.1,50.2c.5,13.1-7.6,24.2-20.2,27.6-2.5.7-5.1,1-7.6,1Z"/>
+    </svg>
+    <div>
+      <div class="ds-logo-text">Blacfox</div>
+      <span class="ds-logo-sub">Design System v1</span>
+    </div>
+  </div>
+
+  <nav class="ds-nav">
+    <div class="ds-nav-group">
+      <span class="ds-nav-group-label">Foundation</span>
+      <a href="#logos" class="ds-nav-link"><span class="ds-nav-dot"></span>Logos</a>
+      <a href="#colors" class="ds-nav-link"><span class="ds-nav-dot"></span>Colors</a>
+      <a href="#typography" class="ds-nav-link"><span class="ds-nav-dot"></span>Typography</a>
+      <a href="#spacing" class="ds-nav-link"><span class="ds-nav-dot"></span>Spacing</a>
+      <a href="#animations" class="ds-nav-link"><span class="ds-nav-dot"></span>Animations</a>
+    </div>
+    <div class="ds-nav-divider"></div>
+    <div class="ds-nav-group">
+      <span class="ds-nav-group-label">Components</span>
+      <a href="#navigation" class="ds-nav-link"><span class="ds-nav-dot"></span>Navigation</a>
+      <a href="#buttons" class="ds-nav-link"><span class="ds-nav-dot"></span>Buttons</a>
+      <a href="#badges" class="ds-nav-link"><span class="ds-nav-dot"></span>Tags</a>
+      <a href="#hero" class="ds-nav-link"><span class="ds-nav-dot"></span>Hero Section</a>
+      <a href="#stats" class="ds-nav-link"><span class="ds-nav-dot"></span>Stats Bar</a>
+      <a href="#cards" class="ds-nav-link"><span class="ds-nav-dot"></span>Cards</a>
+      <a href="#comparison" class="ds-nav-link"><span class="ds-nav-dot"></span>Comparison Grid</a>
+      <a href="#faq" class="ds-nav-link"><span class="ds-nav-dot"></span>FAQ Accordion</a>
+      <a href="#steps" class="ds-nav-link"><span class="ds-nav-dot"></span>Steps / Method</a>
+      <a href="#callout" class="ds-nav-link"><span class="ds-nav-dot"></span>Callout Box</a>
+      <a href="#service" class="ds-nav-link"><span class="ds-nav-dot"></span>Service Card</a>
+      <a href="#casestudy" class="ds-nav-link"><span class="ds-nav-dot"></span>Case Study</a>
+      <a href="#charts" class="ds-nav-link"><span class="ds-nav-dot"></span>Charts</a>
+      <a href="#pmf-wave" class="ds-nav-link"><span class="ds-nav-dot"></span>PMF Wave</a>
+      <a href="#pmf-expanded" class="ds-nav-link"><span class="ds-nav-dot"></span>PMF Expanded</a>
+      <a href="#forms" class="ds-nav-link"><span class="ds-nav-dot"></span>Forms</a>
+      <a href="#cta" class="ds-nav-link"><span class="ds-nav-dot"></span>CTA Banner</a>
+      <a href="#footer" class="ds-nav-link"><span class="ds-nav-dot"></span>Footer</a>
+    </div>
+    <div class="ds-nav-divider"></div>
+    <div class="ds-nav-group">
+      <span class="ds-nav-group-label">Templates</span>
+      <a href="email.html" class="ds-nav-link" target="_blank"><span class="ds-nav-dot"></span>Email Template ↗</a>
+      <a href="ebook.html" class="ds-nav-link" target="_blank"><span class="ds-nav-dot"></span>eBook A4 ↗</a>
+      <a href="#social" class="ds-nav-link"><span class="ds-nav-dot"></span>Social Ads</a>
+      <a href="rainmakers.html" class="ds-nav-link" target="_blank"><span class="ds-nav-dot"></span>Rainmakers Sales Page ↗</a>
+    </div>
+  </nav>
+</aside>
+
+<!-- ═══════════════ MAIN ═══════════════ -->
+<main class="ds-main">
+
+  <!-- DS Hero -->
+  <div class="ds-hero">
+    <div class="ds-hero-inner">
+    <div class="ds-hero-tag">Design System</div>
+    <h1 class="ds-hero-title">Blacfox<br><em>Design System</em></h1>
+    <p class="ds-hero-sub">A complete set of design tokens, UI components, and production-ready templates for building Blacfox brand experiences.</p>
+    <div class="ds-hero-meta">
+      <div class="ds-hero-stat"><strong>16</strong><span>Components</span></div>
+      <div class="ds-hero-stat"><strong>7</strong><span>Templates</span></div>
+      <div class="ds-hero-stat"><strong>1</strong><span>Design language</span></div>
+    </div>
+    </div>
+  </div>
+
+  <!-- ═══ FOUNDATION ═══ -->
+
+  <!-- Logos -->
+  <section class="ds-section" id="logos">
+    <div class="ds-section-head">
+      <div class="ds-eyebrow">Foundation</div>
+      <h2 class="ds-section-title">Logos</h2>
+      <p class="ds-section-desc">Two brand assets — the fox icon mark and the full wordmark. The icon is used in navigation and compact placements; the wordmark appears on social ads, email templates, and ebooks.</p>
+    </div>
+
+    <!-- Fox Icon -->
+    <div class="ds-component">
+      <div class="ds-component-header">
+        <div>
+          <div class="ds-component-title">Fox Icon</div>
+          <div class="ds-component-desc">Standalone mark — navigation, favicons, and small-format placements</div>
+        </div>
+      </div>
+      <div class="ds-preview">
+        <div class="ds-preview-inner" style="display:flex;gap:48px;flex-wrap:wrap;align-items:flex-start">
+          <!-- On dark -->
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;gap:24px;align-items:center;padding:28px 32px;background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:12px">
+              <svg viewBox="140 150 800 800" width="64" height="64" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke="#e95c25" stroke-width="38" stroke-linejoin="round" d="M672.2,800.5c-9.9,0-18.9-5.3-23.9-14.5-21.9-40.6-67.9-99.4-98.3-96.9-17.1,1.5-35.2,27.5-49.8,71.5-4.6,16.6-21.1,28-38.9,26.7h-1.5c-20.5-1.7-36-19.7-34.5-40.2.7-9.8,3-23.7,5.6-39.7,6.3-38.5,15.7-95.4,9.5-140.7l-7.1-1.3c-55.8-10.5-132.2-24.8-183.8-81.1-41-44.8-63.4-85.1-63.6-85.5l-19.6-34.9,39.8-5.6c78.3-11.1,141.8,6.9,188.8,53.4,31.6,31.3,54.9,74.8,69.4,129.4h.2c43.8,0,88.1-17.9,131.8-53.2,71-57.4,112.7-140.7,130.5-176.3,9.8-19.6,18.3-36.5,40.4-31.2,10.6,2.5,21.5,12.1,21.5,28.1s4.6,107.2,96.3,107.9,24.6,8.7,27.7,21.1c5.3,21.6-11.7,30.7-26.7,38.6-125,66-188.3,148.6-188.3,245.5l2.1,50.2c.5,13.1-7.6,24.2-20.2,27.6-2.5.7-5.1,1-7.6,1Z"/></svg>
+              <svg viewBox="140 150 800 800" width="40" height="40" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke="#e95c25" stroke-width="38" stroke-linejoin="round" d="M672.2,800.5c-9.9,0-18.9-5.3-23.9-14.5-21.9-40.6-67.9-99.4-98.3-96.9-17.1,1.5-35.2,27.5-49.8,71.5-4.6,16.6-21.1,28-38.9,26.7h-1.5c-20.5-1.7-36-19.7-34.5-40.2.7-9.8,3-23.7,5.6-39.7,6.3-38.5,15.7-95.4,9.5-140.7l-7.1-1.3c-55.8-10.5-132.2-24.8-183.8-81.1-41-44.8-63.4-85.1-63.6-85.5l-19.6-34.9,39.8-5.6c78.3-11.1,141.8,6.9,188.8,53.4,31.6,31.3,54.9,74.8,69.4,129.4h.2c43.8,0,88.1-17.9,131.8-53.2,71-57.4,112.7-140.7,130.5-176.3,9.8-19.6,18.3-36.5,40.4-31.2,10.6,2.5,21.5,12.1,21.5,28.1s4.6,107.2,96.3,107.9,24.6,8.7,27.7,21.1c5.3,21.6-11.7,30.7-26.7,38.6-125,66-188.3,148.6-188.3,245.5l2.1,50.2c.5,13.1-7.6,24.2-20.2,27.6-2.5.7-5.1,1-7.6,1Z"/></svg>
+              <svg viewBox="140 150 800 800" width="24" height="24" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke="#e95c25" stroke-width="38" stroke-linejoin="round" d="M672.2,800.5c-9.9,0-18.9-5.3-23.9-14.5-21.9-40.6-67.9-99.4-98.3-96.9-17.1,1.5-35.2,27.5-49.8,71.5-4.6,16.6-21.1,28-38.9,26.7h-1.5c-20.5-1.7-36-19.7-34.5-40.2.7-9.8,3-23.7,5.6-39.7,6.3-38.5,15.7-95.4,9.5-140.7l-7.1-1.3c-55.8-10.5-132.2-24.8-183.8-81.1-41-44.8-63.4-85.1-63.6-85.5l-19.6-34.9,39.8-5.6c78.3-11.1,141.8,6.9,188.8,53.4,31.6,31.3,54.9,74.8,69.4,129.4h.2c43.8,0,88.1-17.9,131.8-53.2,71-57.4,112.7-140.7,130.5-176.3,9.8-19.6,18.3-36.5,40.4-31.2,10.6,2.5,21.5,12.1,21.5,28.1s4.6,107.2,96.3,107.9,24.6,8.7,27.7,21.1c5.3,21.6-11.7,30.7-26.7,38.6-125,66-188.3,148.6-188.3,245.5l2.1,50.2c.5,13.1-7.6,24.2-20.2,27.6-2.5.7-5.1,1-7.6,1Z"/></svg>
+            </div>
+            <span style="font-size:10px;font-family:monospace;color:var(--muted);text-align:center">On Dark — 64 / 40 / 24px</span>
+          </div>
+          <!-- On orange -->
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;gap:24px;align-items:center;padding:28px 32px;background:#e95c25;border-radius:12px">
+              <svg viewBox="140 150 800 800" width="64" height="64" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke="#000" stroke-width="38" stroke-linejoin="round" d="M672.2,800.5c-9.9,0-18.9-5.3-23.9-14.5-21.9-40.6-67.9-99.4-98.3-96.9-17.1,1.5-35.2,27.5-49.8,71.5-4.6,16.6-21.1,28-38.9,26.7h-1.5c-20.5-1.7-36-19.7-34.5-40.2.7-9.8,3-23.7,5.6-39.7,6.3-38.5,15.7-95.4,9.5-140.7l-7.1-1.3c-55.8-10.5-132.2-24.8-183.8-81.1-41-44.8-63.4-85.1-63.6-85.5l-19.6-34.9,39.8-5.6c78.3-11.1,141.8,6.9,188.8,53.4,31.6,31.3,54.9,74.8,69.4,129.4h.2c43.8,0,88.1-17.9,131.8-53.2,71-57.4,112.7-140.7,130.5-176.3,9.8-19.6,18.3-36.5,40.4-31.2,10.6,2.5,21.5,12.1,21.5,28.1s4.6,107.2,96.3,107.9,24.6,8.7,27.7,21.1c5.3,21.6-11.7,30.7-26.7,38.6-125,66-188.3,148.6-188.3,245.5l2.1,50.2c.5,13.1-7.6,24.2-20.2,27.6-2.5.7-5.1,1-7.6,1Z"/></svg>
+              <svg viewBox="140 150 800 800" width="40" height="40" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke="#000" stroke-width="38" stroke-linejoin="round" d="M672.2,800.5c-9.9,0-18.9-5.3-23.9-14.5-21.9-40.6-67.9-99.4-98.3-96.9-17.1,1.5-35.2,27.5-49.8,71.5-4.6,16.6-21.1,28-38.9,26.7h-1.5c-20.5-1.7-36-19.7-34.5-40.2.7-9.8,3-23.7,5.6-39.7,6.3-38.5,15.7-95.4,9.5-140.7l-7.1-1.3c-55.8-10.5-132.2-24.8-183.8-81.1-41-44.8-63.4-85.1-63.6-85.5l-19.6-34.9,39.8-5.6c78.3-11.1,141.8,6.9,188.8,53.4,31.6,31.3,54.9,74.8,69.4,129.4h.2c43.8,0,88.1-17.9,131.8-53.2,71-57.4,112.7-140.7,130.5-176.3,9.8-19.6,18.3-36.5,40.4-31.2,10.6,2.5,21.5,12.1,21.5,28.1s4.6,107.2,96.3,107.9,24.6,8.7,27.7,21.1c5.3,21.6-11.7,30.7-26.7,38.6-125,66-188.3,148.6-188.3,245.5l2.1,50.2c.5,13.1-7.6,24.2-20.2,27.6-2.5.7-5.1,1-7.6,1Z"/></svg>
+              <svg viewBox="140 150 800 800" width="24" height="24" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke="#000" stroke-width="38" stroke-linejoin="round" d="M672.2,800.5c-9.9,0-18.9-5.3-23.9-14.5-21.9-40.6-67.9-99.4-98.3-96.9-17.1,1.5-35.2,27.5-49.8,71.5-4.6,16.6-21.1,28-38.9,26.7h-1.5c-20.5-1.7-36-19.7-34.5-40.2.7-9.8,3-23.7,5.6-39.7,6.3-38.5,15.7-95.4,9.5-140.7l-7.1-1.3c-55.8-10.5-132.2-24.8-183.8-81.1-41-44.8-63.4-85.1-63.6-85.5l-19.6-34.9,39.8-5.6c78.3-11.1,141.8,6.9,188.8,53.4,31.6,31.3,54.9,74.8,69.4,129.4h.2c43.8,0,88.1-17.9,131.8-53.2,71-57.4,112.7-140.7,130.5-176.3,9.8-19.6,18.3-36.5,40.4-31.2,10.6,2.5,21.5,12.1,21.5,28.1s4.6,107.2,96.3,107.9,24.6,8.7,27.7,21.1c5.3,21.6-11.7,30.7-26.7,38.6-125,66-188.3,148.6-188.3,245.5l2.1,50.2c.5,13.1-7.6,24.2-20.2,27.6-2.5.7-5.1,1-7.6,1Z"/></svg>
+            </div>
+            <span style="font-size:10px;font-family:monospace;color:var(--muted);text-align:center">On Orange — 64 / 40 / 24px</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Full Wordmark -->
+    <div class="ds-component">
+      <div class="ds-component-header">
+        <div>
+          <div class="ds-component-title">Full Wordmark</div>
+          <div class="ds-component-desc">Primary brand logo — social ads, email headers, and ebooks</div>
+        </div>
+      </div>
+      <div class="ds-preview" style="padding:0;overflow:hidden">
+        <!-- White on dark -->
+        <div style="padding:56px 48px;background:#000;display:flex;justify-content:center;align-items:center;background-image:linear-gradient(rgba(233,92,37,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(233,92,37,0.04) 1px,transparent 1px);background-size:64px 64px">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="360" height="360" style="display:block">
+            <defs><style>.cls-1{fill:#fff}</style></defs>
+            <g>
+              <path class="cls-1" d="M921.7,672.99c2.59,2.94,4.83,5.53,6.71,7.72,1.42-1.88,3.16-4.2,5.23-6.95,4.25-5.73,8.83-11.64,13.74-17.78,4.91-6.11,9.19-10.33,12.84-12.65,4.42-2.51,9.08-3.84,14.04-3.95l2.18.11c5.83.35,9.84,2.51,12.08,6.43.6,1.06.93,2.32.95,3.76.08,3.79-1.96,8.72-6.08,14.83-5.48,7.5-11.51,15.16-18.13,22.96-3.98,4.74-7.72,9.38-11.21,13.93l-1.28,1.47-2.56,3.24c1.28,1.53,2.78,3.24,4.47,5.15,5.86,6.87,14.83,17.34,26.88,31.46,1.99,2.18,3,4.63,3,7.36s-.98,5.13-2.97,7.2c-1.15.98-2.34,1.74-3.6,2.26-1.53,1.01-3.6,1.72-6.22,2.18l-2.92.05c-4.85.11-11.01-6.35-18.46-19.41-4.12-6.22-6.98-11.07-8.62-14.53l-4.47-5.15c-1.61,2.26-3.44,4.83-5.51,7.69-4.8,7.09-10.25,14.26-16.36,21.46-6.11,7.23-12.24,12-18.4,14.37-3.57,1.04-6.71,1.61-9.43,1.66-4.93.11-8.48-1.42-10.58-4.58-1.2-1.83-1.83-3.9-1.88-6.22-.08-4.17,1.69-9.22,5.34-15.1,3.95-5.73,8.48-11.59,13.6-17.61,2.84-3.27,5.45-6.43,7.8-9.49,4.53-5.92,9.05-11.81,13.6-17.61l-33.15-38.61c-2.07-1.99-3.16-4.39-3.22-7.2v-.44c-.05-2.51.82-4.83,2.62-6.9.85-.79,1.72-1.45,2.59-1.94,1.99-2.18,4.44-3.3,7.36-3.35,6.22-.14,10.74,3.27,13.6,10.2,2.45,5.48,7.91,13.47,16.39,23.97h.03Z"/>
+              <path class="cls-1" d="M456.6,453.75l-16.85-31.22c-10.01-18.57-41.8-66.22-68.6-63.88-18.29,1.61-30.75,27.92-37.98,49.7l-12.68-4.2c-.68,9.3-1.39,14.97-1.47,15.57l-16.22-2.13c.11-.9,7.44-59.87-3.82-117.84-.98-.16-1.99-.35-2.97-.55-34.79-6.65-69.99-28.57-101.8-63.36-23.75-25.98-37.22-49.76-37.79-50.74l-5.86-10.41,11.83-1.69c45.15-6.41,81.63,3.79,108.4,30.29,19.47,19.28,33.45,46.59,41.8,81.6,31.16,2.02,62.44-9.46,93.13-34.3,44.88-36.29,71.11-88.61,82.31-110.94,5.75-11.45,8.12-16.22,15.05-14.56,3,.71,6.54,3.46,6.54,8.81,0,7.66,1.91,74.81,67.67,74.81,4.83,0,7.77,3.22,8.56,6.38,1.66,6.71-3.19,9.27-12.02,13.96-79.64,42.1-120.02,95.29-120.02,158.13l2.78,66.58v-.03.02ZM316.02,301.46c1.99,11.26,3.46,23.23,4.44,35.85,1.64,21.7,1.39,41.39.71,56.08,12.41-32.14,28.71-49.29,48.58-51.04,18.65-1.58,38.66,10.41,59.55,35.77,2.97,3.6,5.73,7.2,8.26,10.66l-.05-1.31c0-65.93,38.74-121.44,115.19-165.47-34.13-9.05-50.25-36.89-56.33-62.6-14.01,26.86-39.83,71.13-80.29,103.85-32.64,26.39-66.17,39.18-100.01,38.14l-.05.05v.02ZM177.47,187.87c16.03,24.05,59.41,81.06,117.54,94.42-6.87-25.63-17.97-49.87-35.69-67.4-20.45-20.2-47.93-29.28-81.85-27.05v.03Z"/>
+              <g>
+                <path class="cls-1" d="M436.9,678.04h.01c-8.86-5.54-16.52-8.24-23.04-8.11-2.54.05-4.85.55-6.95,1.47-7.69,3.19-13.47,9.43-17.29,18.79-3.82,9.35-6.05,19.47-6.71,30.35-.22,3.49-.3,6.84-.22,10.06.14,6.41.9,12.16,2.26,17.29,2.1,7.72,5.89,11.86,11.34,12.43.38.08.76.14,1.17.11,5.43-.11,12.6-5.21,21.51-15.32,5.59-6.52,9.54-13.25,11.86-20.2,2.32-6.93,4.23-14.37,5.7-22.25l.79-3.52-.46-21.1h.03Z"/>
+                <path class="cls-1" d="M344.11,397.13c-154.11,0-279.05,124.93-279.05,279.05s124.94,279.05,279.05,279.05,279.05-124.93,279.05-279.05-124.93-279.05-279.05-279.05ZM251.33,717.94c-1.94,13.44-6.16,25.76-12.68,36.97s-15.08,19.25-25.76,24.13c-4.72,2.13-9.79,3.27-15.21,3.38-6.9.14-14.34-1.34-22.38-4.47-.38-.08-.74-.22-1.04-.41-1.17-.55-2.32-.98-3.38-1.23-.38-.08-.79-.14-1.17-.11-.57,0-1.12.16-1.58.46l-2.02,1.5c-1.64,1.2-3.22,2.24-4.74,3.08s-3.03,1.31-4.47,1.34c-5.04.11-9.05-1.06-12.02-3.52s-5.07-5.86-6.33-10.2c-1.15-4.06-1.8-8.59-1.88-13.63v-1.31c.08-21.95-.05-43.92-.44-65.95l-.35-23.86-.65-23.86c-.55-21.24-1.34-40-2.37-56.3h-.03l-.02.02c-.14-1.45-.22-2.94-.25-4.5-.05-3.11.05-6.27.38-9.46.49-4.85,1.99-8.92,4.55-12.19,2.45-3.24,6.49-4.93,12.13-5.07h.44c7.28.41,12.41,3.14,15.38,8.1,2.97,4.99,4.69,10.96,5.13,17.94.16,2.62.25,5.15.3,7.55.08,4.17.03,8.26-.16,12.24-.14,2.62-.25,5.02-.27,7.14-.14,7.47-.05,17.48.22,29.99.14,6.22.3,12.46.55,18.76.27,7.96.49,15.87.65,23.72,5.1-7.28,11.81-13.3,20.15-18.05,9.41-4.96,18.05-7.52,25.9-7.69,3.38-.08,6.65.3,9.79,1.09,10.44,2.78,17.89,11.89,22.27,27.32,1.58,6.19,2.45,12.62,2.59,19.3.14,5.73-.3,11.64-1.23,17.78ZM341.55,773.98c-2.97,2.15-6.38,3.74-10.22,4.8-3,.74-5.64,1.15-7.99,1.2-.79,0-1.5,0-2.18-.11-5.94-.85-11.01-3.44-15.24-7.74-4.23-4.34-7.66-9.38-10.31-15.13-2.64-5.78-4.61-11.26-5.89-16.47-2.26-9.84-3.79-20.04-4.58-30.54-.82-10.52-1.34-20.91-1.55-31.19-.14-1.64-.22-3.3-.25-4.93-.33-10.2-.57-20.37-.79-30.56l-.6-28.08c-.27-12.9-.65-24.24-1.17-34.05-.11-5.62.6-11.01,2.13-16.19,1.91-6.43,7.06-10.01,15.49-10.66h1.88l.03-.11v-.05c6.64.74,11.3,3.3,14,7.72,2.73,4.42,4.28,9.57,4.69,15.49.25,2.73.41,5.34.46,7.85.05,3.11,0,6.16-.25,9.19-.71,7.58-1.06,18.13-1.06,31.63-.11,8.94-.35,17.91-.74,26.94-.49,8.83-.79,17.69-.9,26.53v1.31c-.08,4.28-.03,10.74.16,19.36l.05,2.62c.16,7.85.74,16.06,1.69,24.57.98,9.49,2.73,17.61,5.26,24.35,2.51,6.73,6.08,10.36,10.63,10.82h.87c.68-.03,1.45-.11,2.32-.22,1.06-.22,2.07-.33,3.05-.35s1.88.05,2.78.22c1.74.35,2.7,1.74,2.86,4.17-.14,2.92-1.69,5.45-4.63,7.61ZM466.64,776.53l-4.06.08c-5.94-.95-10.66-3.35-14.12-7.28-3.34-2.53-6.66-7.63-9.92-15.32-2.91,4.03-5.93,7.45-9,10.23-3.08,2.78-6.79,5.4-11.12,7.8-9.41,4.96-18.08,7.52-26.04,7.69-3.41.08-6.65-.3-9.79-1.09-10.36-2.7-17.72-11.7-22.14-27.05-1.39-5.89-2.15-12.08-2.29-18.59-.14-6.49.35-13.3,1.45-20.42,2.13-14.31,6.79-27.26,14.01-38.88,7.23-11.61,17.15-19.25,29.8-22.9,3.19-.74,6.27-1.15,9.3-1.23,2.24-.05,4.36.11,6.41.44,4.85.68,8.92,1.5,12.13,2.51,2.45.74,4.2,1.06,5.26,1.06h.3s.3-.11.65-.3c.33-.19.74-.46,1.23-.76.76-.41,1.55-.82,2.37-1.23.82-.41,1.47-.71,1.94-.93,3.95-1.34,7.42-2.04,10.44-2.13,3.87-.08,6.95.98,9.24,3.16,3.95,3.9,6.05,10.31,6.24,19.22-.05,2.04-.05,4.12,0,6.27-.05,2.54-.08,5.1-.14,7.72.05,2.92.19,7.39.44,13.39.25,7.47.52,15.81.82,25.03l.19,8.89c.14,5.73.19,11.07.19,16,.85,8.12,1.64,12.98,2.34,14.5l1.25,4.06.05,2.32c-1.15,5.07-3.63,7.66-7.42,7.74ZM586.51,751.42c-2.75,5.29-5.26,9.24-7.52,11.81-6.16,6.35-13.55,10.63-22.14,12.84-3.57.95-7.2,1.47-10.88,1.55-4.85.11-9.68-.57-14.45-2.02-8.32-2.45-15.16-7.5-20.56-15.13-5.53-8.42-9.32-18.29-11.4-29.61-1.34-7.55-2.07-14.91-2.21-22.08-.08-3.49,0-6.98.22-10.5h-.07s0,0,0,.01h-.01s.01-.01.01-.01c1.94-18.67,7.25-32.41,16-41.24,7.8-7.74,18.76-11.75,32.94-12.05,1.85-.03,3.68-.03,5.53,0,8.56.41,15.65,2.56,21.32,6.54s9.38,10.96,11.15,21.02c.14,1.36.19,2.62.22,3.79.14,6.22-1.53,9.98-4.99,11.31-.68.3-1.36.46-2.02.49-3.49.08-7.14-3.14-10.99-9.65-2.24-4.31-5.1-7.5-8.64-9.57-2.15-1.23-4.44-1.8-6.87-1.74-1.55.03-3.19.33-4.93.85-4.34,1.64-7.82,4.47-10.52,8.45-2.67,3.98-4.66,8.32-5.92,13.01-.76,4.58-1.09,9.82-.98,15.73.05,2.81.22,5.73.49,8.72.79,9.49,2.84,18.29,6.16,26.36,3.33,8.07,8.26,13.28,14.83,15.54,1.36.35,2.64.52,3.79.49,1.94-.05,3.74-.6,5.34-1.72,2.67-1.72,4.96-4.14,6.84-7.28,1.31-2.26,2.56-4.61,3.79-7.06,0-.11.05-.19.14-.3.27-.68.6-1.42.98-2.21,1.47-3.82,3.49-7.44,6.03-10.91,1.69-2.26,3.65-3.44,5.89-3.46,1.17,0,2.37.25,3.65.79,3.24,1.96,4.91,4.93,4.99,8.92,0,.79,0,1.61-.08,2.48-.65,5.26-2.37,10.52-5.13,15.84Z"/>
+                <path class="cls-1" d="M228.89,685.18c-2.78-7.99-7.31-12.35-13.52-13.11-.49-.08-1.01-.14-1.61-.11-6.03.14-13.47,5.18-22.38,15.19-5.59,6.52-9.57,13.25-11.94,20.2-2.37,6.95-4.25,14.31-5.64,22.11-.27,1.17-.52,2.4-.79,3.65v-.03h-.01l.44,20.97c8.94,5.64,16.88,8.37,23.77,8.23,2.43-.05,4.74-.49,6.95-1.31,8.37-3,14.86-9.02,19.41-18.1,4.55-9.08,7.25-19,8.1-29.8.22-3.22.3-6.27.25-9.19-.14-6.9-1.15-13.11-3.03-18.7Z"/>
+              </g>
+              <path class="cls-1" d="M650.94,668.3l-.44-.57c-.6-.57-1.25-.95-1.99-1.12-.74-.16-1.5-.35-2.26-.55h-.3c-.98-.16-1.94-.3-2.92-.35-2.62-.14-5.02-.68-7.17-1.66s-3.6-3.14-4.36-6.52c-.11-.68-.16-1.31-.19-1.88-.08-3.3.95-5.64,3.05-7.06,2.59-1.69,5.62-2.78,9.11-3.24,4.36-.76,6.95-2.29,7.77-4.53.74-1.85,1.06-4.34,1.01-7.44l-.08-3.35c-.16-7.47.68-16.03,2.51-25.68,1.83-9.65,4.99-18.62,9.46-26.91,4.47-8.29,10.66-14.04,18.57-17.2,4.23-1.64,10.09-3.03,17.53-4.17,3.38-.55,6.63-.87,9.73-.93,3.79-.08,7.39.19,10.8.79,6.33,1.12,10.03,4.39,11.12,9.82v.87c.08,2.62-.76,4.53-2.48,5.73-1.91,1.31-4.23,2.04-6.95,2.18h-1.61c-2.13.08-4.09,0-5.83-.27-1.74-.16-3.41-.22-4.96-.19-4.47.11-8.04,1.09-10.71,3-3.54,2.51-6.24,7.23-8.15,14.15-1.01,3.22-1.91,8.32-2.73,15.27s-1.36,13.88-1.58,20.78c-.05,1.94-.05,3.74-.03,5.4.08,4.17.49,7.28,1.23,9.3.41,1.06,1.06,1.69,1.94,1.94.87.25,1.91.38,3.05.44l15-.33c2.81-.05,5.23.87,7.28,2.84,2.02,1.94,3.08,4.36,3.14,7.28.05,2.81-.87,5.23-2.84,7.28-1.94,2.02-4.34,3.08-7.14,3.14l-3.63.08c-1.36-.05-2.67-.08-3.93-.05-4.06.08-8.1.52-12.05,1.28,0,4.55.05,9.16.16,13.82.25,11.94.95,24.1,2.1,36.51.79,9.87,1.45,19.63,1.94,29.23.03,1.85.19,4.04.44,6.54.38,4.74.65,9.73.76,14.97.05,2.62.05,5.34.03,8.15,0,8.34-1.2,14.53-3.54,18.57-2.26,3.05-5.67,5.07-10.2,6.05-1.55.33-3.11.49-4.63.55-2.92.05-5.78-.41-8.62-1.42-4.42-1.66-7.47-4.8-9.22-9.41-.74-2.81-1.17-6.82-1.28-12.05s-.08-10.52.11-15.57c0-3.3.05-6.05.11-8.29,0-4.66-.05-9.32-.16-13.99-.41-18.73-1.45-37.38-3.11-55.97-.25-2.24-.57-4.77-.95-7.63-.41-2.86-1.01-5.34-1.83-7.47l-.05-.11-.03-.05Z"/>
+              <path class="cls-1" d="M758.85,648.97c9.43-3.9,20.12-5.97,32.04-6.22,2.13-.05,4.28-.05,6.41,0,14.37.38,26.45,4.39,36.21,12.02,10.31,9.68,16.9,21.54,19.85,35.53,1.09,5.02,1.66,10.06,1.77,15.1.19,8.72-1.15,17.34-3.95,25.85-4.58,13.39-12.98,24.05-25.22,31.98-9.02,5.23-18.54,8.64-28.6,10.22-2.81.44-5.67.71-8.56.76-7.17.16-14.4-.9-21.62-3.16-11.53-3.93-20.72-11.26-27.56-21.97-6.84-10.71-10.88-22.77-12.13-36.13-.25-2.04-.38-4.06-.41-6.11-.25-11.07,1.77-21.54,6.03-31.44,5.1-11.67,13.69-20.48,25.79-26.47l-.03.03h-.02ZM798.49,752.79c10.96-.82,19.49-5.56,25.6-14.23,6.11-8.67,9.35-18.27,9.73-28.74l.08-3.22c-.16-7.47-1.53-14.61-4.09-21.46-3-7.91-7.63-13.96-13.93-18.19-4.44-3-9.76-4.44-15.95-4.31-2.62.05-5.37.41-8.29,1.06-11.48,2.97-19.47,8.86-23.94,17.69-3.35,6.49-4.96,13.6-4.77,21.35.05,2.81.35,5.73.93,8.72,1.55,9.49,5.18,18.43,10.85,26.86,5.67,8.42,13.6,13.25,23.83,14.48l-.05-.03v.02Z"/>
+              <g>
+                <path class="cls-1" d="M647.86,826.21v38.28h-8.64v-38.28h8.64Z"/>
+                <path class="cls-1" d="M666.21,826.21l18.59,24.59v-24.59h8.21v38.28h-7.88l-18.54-24.54v24.54h-8.26v-38.28h7.88Z"/>
+                <path class="cls-1" d="M731.64,826.21v7.33h-11.7v30.94h-8.64v-30.94h-11.64v-7.33h31.98Z"/>
+                <path class="cls-1" d="M767.44,826.21v7.17h-20.5v8.32h18.43v7.17h-18.43v8.48h21.1v7.17h-29.75v-38.28h29.15v-.03h0Z"/>
+                <path class="cls-1" d="M785.49,826.21v30.73h16.39v7.55h-25.03v-38.28h8.64,0Z"/>
+                <path class="cls-1" d="M817.66,826.21v30.73h16.39v7.55h-25.03v-38.28h8.64,0Z"/>
+                <path class="cls-1" d="M849.86,826.21v38.28h-8.64v-38.28h8.64Z"/>
+                <path class="cls-1" d="M886.04,845.19h7.5v14.7c-4.04,2.94-10.22,4.99-15.51,4.99-11.59,0-20.39-8.42-20.39-19.52s8.97-19.41,20.88-19.41c5.7,0,11.48,2.18,15.35,5.59l-4.88,6.19c-2.84-2.62-6.79-4.25-10.5-4.25-6.79,0-12.02,5.21-12.02,11.91s5.32,11.97,12.08,11.97c2.29,0,5.02-.82,7.5-2.07v-10.09h-.01Z"/>
+                <path class="cls-1" d="M932.22,826.21v7.17h-20.5v8.32h18.43v7.17h-18.43v8.48h21.1v7.17h-29.75v-38.28h29.15v-.03h0Z"/>
+                <path class="cls-1" d="M949.51,826.21l18.59,24.59v-24.59h8.21v38.28h-7.88l-18.54-24.54v24.54h-8.26v-38.28h7.88Z"/>
+                <path class="cls-1" d="M1014.94,826.21v7.33h-11.7v30.94h-8.64v-30.94h-11.64v-7.33h31.98Z"/>
+                <path class="cls-1" d="M664.9,902.44h7.5v14.7c-4.04,2.94-10.22,4.99-15.51,4.99-11.59,0-20.39-8.42-20.39-19.52s8.97-19.41,20.88-19.41c5.7,0,11.48,2.18,15.35,5.59l-4.88,6.19c-2.84-2.62-6.79-4.25-10.5-4.25-6.79,0-12.02,5.21-12.02,11.91s5.32,11.97,12.08,11.97c2.29,0,5.02-.82,7.5-2.07v-10.09h-.01Z"/>
+                <path class="cls-1" d="M705.47,921.75l-6.08-10.93h-8.81v10.93h-8.64v-38.28h16.6c10.01,0,15.68,4.8,15.68,13.28,0,5.92-2.51,10.17-7.17,12.35l8.15,12.62h-9.79l.05.03h.01ZM690.61,903.59h7.99c4.77,0,7.5-2.18,7.5-6.57s-2.73-6.41-7.5-6.41h-7.99v12.98Z"/>
+                <path class="cls-1" d="M761.93,902.61c0,11.04-8.86,19.52-20.56,19.52s-20.56-8.42-20.56-19.52,8.86-19.41,20.56-19.41,20.56,8.32,20.56,19.41ZM729.68,902.61c0,6.73,5.43,11.97,11.81,11.97s11.59-5.23,11.59-11.97-5.21-11.86-11.59-11.86-11.81,5.13-11.81,11.86Z"/>
+                <path class="cls-1" d="M774.17,883.47l8.04,28.87,7.99-28.87h8.48l8.1,28.87,7.99-28.87h8.86l-12.68,38.28h-8.92l-7.72-27.26-7.88,27.26h-8.92l-12.62-38.28h9.3-.03,0Z"/>
+                <path class="cls-1" d="M857.57,883.47v7.33h-11.7v30.94h-8.64v-30.94h-11.64v-7.33h31.98Z"/>
+                <path class="cls-1" d="M872.87,883.47v15.95h17.34v-15.95h8.64v38.28h-8.64v-15.08h-17.34v15.08h-8.64v-38.28h8.64Z"/>
+              </g>
+            </g>
+          </svg>
+        </div>
+        <!-- Black on orange -->
+        <div class="logo-on-orange" style="padding:56px 48px;background:#e95c25;display:flex;justify-content:center;align-items:center;background-image:linear-gradient(rgba(0,0,0,0.08) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.08) 1px,transparent 1px);background-size:64px 64px;border-top:1px solid rgba(0,0,0,0.08)">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="360" height="360" style="display:block">
+            <g>
+              <path fill="#000" d="M921.7,672.99c2.59,2.94,4.83,5.53,6.71,7.72,1.42-1.88,3.16-4.2,5.23-6.95,4.25-5.73,8.83-11.64,13.74-17.78,4.91-6.11,9.19-10.33,12.84-12.65,4.42-2.51,9.08-3.84,14.04-3.95l2.18.11c5.83.35,9.84,2.51,12.08,6.43.6,1.06.93,2.32.95,3.76.08,3.79-1.96,8.72-6.08,14.83-5.48,7.5-11.51,15.16-18.13,22.96-3.98,4.74-7.72,9.38-11.21,13.93l-1.28,1.47-2.56,3.24c1.28,1.53,2.78,3.24,4.47,5.15,5.86,6.87,14.83,17.34,26.88,31.46,1.99,2.18,3,4.63,3,7.36s-.98,5.13-2.97,7.2c-1.15.98-2.34,1.74-3.6,2.26-1.53,1.01-3.6,1.72-6.22,2.18l-2.92.05c-4.85.11-11.01-6.35-18.46-19.41-4.12-6.22-6.98-11.07-8.62-14.53l-4.47-5.15c-1.61,2.26-3.44,4.83-5.51,7.69-4.8,7.09-10.25,14.26-16.36,21.46-6.11,7.23-12.24,12-18.4,14.37-3.57,1.04-6.71,1.61-9.43,1.66-4.93.11-8.48-1.42-10.58-4.58-1.2-1.83-1.83-3.9-1.88-6.22-.08-4.17,1.69-9.22,5.34-15.1,3.95-5.73,8.48-11.59,13.6-17.61,2.84-3.27,5.45-6.43,7.8-9.49,4.53-5.92,9.05-11.81,13.6-17.61l-33.15-38.61c-2.07-1.99-3.16-4.39-3.22-7.2v-.44c-.05-2.51.82-4.83,2.62-6.9.85-.79,1.72-1.45,2.59-1.94,1.99-2.18,4.44-3.3,7.36-3.35,6.22-.14,10.74,3.27,13.6,10.2,2.45,5.48,7.91,13.47,16.39,23.97h.03Z"/>
+              <path fill="#000" d="M456.6,453.75l-16.85-31.22c-10.01-18.57-41.8-66.22-68.6-63.88-18.29,1.61-30.75,27.92-37.98,49.7l-12.68-4.2c-.68,9.3-1.39,14.97-1.47,15.57l-16.22-2.13c.11-.9,7.44-59.87-3.82-117.84-.98-.16-1.99-.35-2.97-.55-34.79-6.65-69.99-28.57-101.8-63.36-23.75-25.98-37.22-49.76-37.79-50.74l-5.86-10.41,11.83-1.69c45.15-6.41,81.63,3.79,108.4,30.29,19.47,19.28,33.45,46.59,41.8,81.6,31.16,2.02,62.44-9.46,93.13-34.3,44.88-36.29,71.11-88.61,82.31-110.94,5.75-11.45,8.12-16.22,15.05-14.56,3,.71,6.54,3.46,6.54,8.81,0,7.66,1.91,74.81,67.67,74.81,4.83,0,7.77,3.22,8.56,6.38,1.66,6.71-3.19,9.27-12.02,13.96-79.64,42.1-120.02,95.29-120.02,158.13l2.78,66.58v-.03.02ZM316.02,301.46c1.99,11.26,3.46,23.23,4.44,35.85,1.64,21.7,1.39,41.39.71,56.08,12.41-32.14,28.71-49.29,48.58-51.04,18.65-1.58,38.66,10.41,59.55,35.77,2.97,3.6,5.73,7.2,8.26,10.66l-.05-1.31c0-65.93,38.74-121.44,115.19-165.47-34.13-9.05-50.25-36.89-56.33-62.6-14.01,26.86-39.83,71.13-80.29,103.85-32.64,26.39-66.17,39.18-100.01,38.14l-.05.05v.02ZM177.47,187.87c16.03,24.05,59.41,81.06,117.54,94.42-6.87-25.63-17.97-49.87-35.69-67.4-20.45-20.2-47.93-29.28-81.85-27.05v.03Z"/>
+              <g>
+                <path fill="#000" d="M436.9,678.04h.01c-8.86-5.54-16.52-8.24-23.04-8.11-2.54.05-4.85.55-6.95,1.47-7.69,3.19-13.47,9.43-17.29,18.79-3.82,9.35-6.05,19.47-6.71,30.35-.22,3.49-.3,6.84-.22,10.06.14,6.41.9,12.16,2.26,17.29,2.1,7.72,5.89,11.86,11.34,12.43.38.08.76.14,1.17.11,5.43-.11,12.6-5.21,21.51-15.32,5.59-6.52,9.54-13.25,11.86-20.2,2.32-6.93,4.23-14.37,5.7-22.25l.79-3.52-.46-21.1h.03Z"/>
+                <path fill="#000" d="M344.11,397.13c-154.11,0-279.05,124.93-279.05,279.05s124.94,279.05,279.05,279.05,279.05-124.93,279.05-279.05-124.93-279.05-279.05-279.05ZM251.33,717.94c-1.94,13.44-6.16,25.76-12.68,36.97s-15.08,19.25-25.76,24.13c-4.72,2.13-9.79,3.27-15.21,3.38-6.9.14-14.34-1.34-22.38-4.47-.38-.08-.74-.22-1.04-.41-1.17-.55-2.32-.98-3.38-1.23-.38-.08-.79-.14-1.17-.11-.57,0-1.12.16-1.58.46l-2.02,1.5c-1.64,1.2-3.22,2.24-4.74,3.08s-3.03,1.31-4.47,1.34c-5.04.11-9.05-1.06-12.02-3.52s-5.07-5.86-6.33-10.2c-1.15-4.06-1.8-8.59-1.88-13.63v-1.31c.08-21.95-.05-43.92-.44-65.95l-.35-23.86-.65-23.86c-.55-21.24-1.34-40-2.37-56.3h-.03l-.02.02c-.14-1.45-.22-2.94-.25-4.5-.05-3.11.05-6.27.38-9.46.49-4.85,1.99-8.92,4.55-12.19,2.45-3.24,6.49-4.93,12.13-5.07h.44c7.28.41,12.41,3.14,15.38,8.1,2.97,4.99,4.69,10.96,5.13,17.94.16,2.62.25,5.15.3,7.55.08,4.17.03,8.26-.16,12.24-.14,2.62-.25,5.02-.27,7.14-.14,7.47-.05,17.48.22,29.99.14,6.22.3,12.46.55,18.76.27,7.96.49,15.87.65,23.72,5.1-7.28,11.81-13.3,20.15-18.05,9.41-4.96,18.05-7.52,25.9-7.69,3.38-.08,6.65.3,9.79,1.09,10.44,2.78,17.89,11.89,22.27,27.32,1.58,6.19,2.45,12.62,2.59,19.3.14,5.73-.3,11.64-1.23,17.78ZM341.55,773.98c-2.97,2.15-6.38,3.74-10.22,4.8-3,.74-5.64,1.15-7.99,1.2-.79,0-1.5,0-2.18-.11-5.94-.85-11.01-3.44-15.24-7.74-4.23-4.34-7.66-9.38-10.31-15.13-2.64-5.78-4.61-11.26-5.89-16.47-2.26-9.84-3.79-20.04-4.58-30.54-.82-10.52-1.34-20.91-1.55-31.19-.14-1.64-.22-3.3-.25-4.93-.33-10.2-.57-20.37-.79-30.56l-.6-28.08c-.27-12.9-.65-24.24-1.17-34.05-.11-5.62.6-11.01,2.13-16.19,1.91-6.43,7.06-10.01,15.49-10.66h1.88l.03-.11v-.05c6.64.74,11.3,3.3,14,7.72,2.73,4.42,4.28,9.57,4.69,15.49.25,2.73.41,5.34.46,7.85.05,3.11,0,6.16-.25,9.19-.71,7.58-1.06,18.13-1.06,31.63-.11,8.94-.35,17.91-.74,26.94-.49,8.83-.79,17.69-.9,26.53v1.31c-.08,4.28-.03,10.74.16,19.36l.05,2.62c.16,7.85.74,16.06,1.69,24.57.98,9.49,2.73,17.61,5.26,24.35,2.51,6.73,6.08,10.36,10.63,10.82h.87c.68-.03,1.45-.11,2.32-.22,1.06-.22,2.07-.33,3.05-.35s1.88.05,2.78.22c1.74.35,2.7,1.74,2.86,4.17-.14,2.92-1.69,5.45-4.63,7.61ZM466.64,776.53l-4.06.08c-5.94-.95-10.66-3.35-14.12-7.28-3.34-2.53-6.66-7.63-9.92-15.32-2.91,4.03-5.93,7.45-9,10.23-3.08,2.78-6.79,5.4-11.12,7.8-9.41,4.96-18.08,7.52-26.04,7.69-3.41.08-6.65-.3-9.79-1.09-10.36-2.7-17.72-11.7-22.14-27.05-1.39-5.89-2.15-12.08-2.29-18.59-.14-6.49.35-13.3,1.45-20.42,2.13-14.31,6.79-27.26,14.01-38.88,7.23-11.61,17.15-19.25,29.8-22.9,3.19-.74,6.27-1.15,9.3-1.23,2.24-.05,4.36.11,6.41.44,4.85.68,8.92,1.5,12.13,2.51,2.45.74,4.2,1.06,5.26,1.06h.3s.3-.11.65-.3c.33-.19.74-.46,1.23-.76.76-.41,1.55-.82,2.37-1.23.82-.41,1.47-.71,1.94-.93,3.95-1.34,7.42-2.04,10.44-2.13,3.87-.08,6.95.98,9.24,3.16,3.95,3.9,6.05,10.31,6.24,19.22-.05,2.04-.05,4.12,0,6.27-.05,2.54-.08,5.1-.14,7.72.05,2.92.19,7.39.44,13.39.25,7.47.52,15.81.82,25.03l.19,8.89c.14,5.73.19,11.07.19,16,.85,8.12,1.64,12.98,2.34,14.5l1.25,4.06.05,2.32c-1.15,5.07-3.63,7.66-7.42,7.74ZM586.51,751.42c-2.75,5.29-5.26,9.24-7.52,11.81-6.16,6.35-13.55,10.63-22.14,12.84-3.57.95-7.2,1.47-10.88,1.55-4.85.11-9.68-.57-14.45-2.02-8.32-2.45-15.16-7.5-20.56-15.13-5.53-8.42-9.32-18.29-11.4-29.61-1.34-7.55-2.07-14.91-2.21-22.08-.08-3.49,0-6.98.22-10.5h-.07s0,0,0,.01h-.01s.01-.01.01-.01c1.94-18.67,7.25-32.41,16-41.24,7.8-7.74,18.76-11.75,32.94-12.05,1.85-.03,3.68-.03,5.53,0,8.56.41,15.65,2.56,21.32,6.54s9.38,10.96,11.15,21.02c.14,1.36.19,2.62.22,3.79.14,6.22-1.53,9.98-4.99,11.31-.68.3-1.36.46-2.02.49-3.49.08-7.14-3.14-10.99-9.65-2.24-4.31-5.1-7.5-8.64-9.57-2.15-1.23-4.44-1.8-6.87-1.74-1.55.03-3.19.33-4.93.85-4.34,1.64-7.82,4.47-10.52,8.45-2.67,3.98-4.66,8.32-5.92,13.01-.76,4.58-1.09,9.82-.98,15.73.05,2.81.22,5.73.49,8.72.79,9.49,2.84,18.29,6.16,26.36,3.33,8.07,8.26,13.28,14.83,15.54,1.36.35,2.64.52,3.79.49,1.94-.05,3.74-.6,5.34-1.72,2.67-1.72,4.96-4.14,6.84-7.28,1.31-2.26,2.56-4.61,3.79-7.06,0-.11.05-.19.14-.3.27-.68.6-1.42.98-2.21,1.47-3.82,3.49-7.44,6.03-10.91,1.69-2.26,3.65-3.44,5.89-3.46,1.17,0,2.37.25,3.65.79,3.24,1.96,4.91,4.93,4.99,8.92,0,.79,0,1.61-.08,2.48-.65,5.26-2.37,10.52-5.13,15.84Z"/>
+                <path fill="#000" d="M228.89,685.18c-2.78-7.99-7.31-12.35-13.52-13.11-.49-.08-1.01-.14-1.61-.11-6.03.14-13.47,5.18-22.38,15.19-5.59,6.52-9.57,13.25-11.94,20.2-2.37,6.95-4.25,14.31-5.64,22.11-.27,1.17-.52,2.4-.79,3.65v-.03h-.01l.44,20.97c8.94,5.64,16.88,8.37,23.77,8.23,2.43-.05,4.74-.49,6.95-1.31,8.37-3,14.86-9.02,19.41-18.1,4.55-9.08,7.25-19,8.1-29.8.22-3.22.3-6.27.25-9.19-.14-6.9-1.15-13.11-3.03-18.7Z"/>
+              </g>
+              <path fill="#000" d="M650.94,668.3l-.44-.57c-.6-.57-1.25-.95-1.99-1.12-.74-.16-1.5-.35-2.26-.55h-.3c-.98-.16-1.94-.3-2.92-.35-2.62-.14-5.02-.68-7.17-1.66s-3.6-3.14-4.36-6.52c-.11-.68-.16-1.31-.19-1.88-.08-3.3.95-5.64,3.05-7.06,2.59-1.69,5.62-2.78,9.11-3.24,4.36-.76,6.95-2.29,7.77-4.53.74-1.85,1.06-4.34,1.01-7.44l-.08-3.35c-.16-7.47.68-16.03,2.51-25.68,1.83-9.65,4.99-18.62,9.46-26.91,4.47-8.29,10.66-14.04,18.57-17.2,4.23-1.64,10.09-3.03,17.53-4.17,3.38-.55,6.63-.87,9.73-.93,3.79-.08,7.39.19,10.8.79,6.33,1.12,10.03,4.39,11.12,9.82v.87c.08,2.62-.76,4.53-2.48,5.73-1.91,1.31-4.23,2.04-6.95,2.18h-1.61c-2.13.08-4.09,0-5.83-.27-1.74-.16-3.41-.22-4.96-.19-4.47.11-8.04,1.09-10.71,3-3.54,2.51-6.24,7.23-8.15,14.15-1.01,3.22-1.91,8.32-2.73,15.27s-1.36,13.88-1.58,20.78c-.05,1.94-.05,3.74-.03,5.4.08,4.17.49,7.28,1.23,9.3.41,1.06,1.06,1.69,1.94,1.94.87.25,1.91.38,3.05.44l15-.33c2.81-.05,5.23.87,7.28,2.84,2.02,1.94,3.08,4.36,3.14,7.28.05,2.81-.87,5.23-2.84,7.28-1.94,2.02-4.34,3.08-7.14,3.14l-3.63.08c-1.36-.05-2.67-.08-3.93-.05-4.06.08-8.1.52-12.05,1.28,0,4.55.05,9.16.16,13.82.25,11.94.95,24.1,2.1,36.51.79,9.87,1.45,19.63,1.94,29.23.03,1.85.19,4.04.44,6.54.38,4.74.65,9.73.76,14.97.05,2.62.05,5.34.03,8.15,0,8.34-1.2,14.53-3.54,18.57-2.26,3.05-5.67,5.07-10.2,6.05-1.55.33-3.11.49-4.63.55-2.92.05-5.78-.41-8.62-1.42-4.42-1.66-7.47-4.8-9.22-9.41-.74-2.81-1.17-6.82-1.28-12.05s-.08-10.52.11-15.57c0-3.3.05-6.05.11-8.29,0-4.66-.05-9.32-.16-13.99-.41-18.73-1.45-37.38-3.11-55.97-.25-2.24-.57-4.77-.95-7.63-.41-2.86-1.01-5.34-1.83-7.47l-.05-.11-.03-.05Z"/>
+              <path fill="#000" d="M758.85,648.97c9.43-3.9,20.12-5.97,32.04-6.22,2.13-.05,4.28-.05,6.41,0,14.37.38,26.45,4.39,36.21,12.02,10.31,9.68,16.9,21.54,19.85,35.53,1.09,5.02,1.66,10.06,1.77,15.1.19,8.72-1.15,17.34-3.95,25.85-4.58,13.39-12.98,24.05-25.22,31.98-9.02,5.23-18.54,8.64-28.6,10.22-2.81.44-5.67.71-8.56.76-7.17.16-14.4-.9-21.62-3.16-11.53-3.93-20.72-11.26-27.56-21.97-6.84-10.71-10.88-22.77-12.13-36.13-.25-2.04-.38-4.06-.41-6.11-.25-11.07,1.77-21.54,6.03-31.44,5.1-11.67,13.69-20.48,25.79-26.47l-.03.03h-.02ZM798.49,752.79c10.96-.82,19.49-5.56,25.6-14.23,6.11-8.67,9.35-18.27,9.73-28.74l.08-3.22c-.16-7.47-1.53-14.61-4.09-21.46-3-7.91-7.63-13.96-13.93-18.19-4.44-3-9.76-4.44-15.95-4.31-2.62.05-5.37.41-8.29,1.06-11.48,2.97-19.47,8.86-23.94,17.69-3.35,6.49-4.96,13.6-4.77,21.35.05,2.81.35,5.73.93,8.72,1.55,9.49,5.18,18.43,10.85,26.86,5.67,8.42,13.6,13.25,23.83,14.48l-.05-.03v.02Z"/>
+              <g>
+                <path fill="#000" d="M647.86,826.21v38.28h-8.64v-38.28h8.64Z"/>
+                <path fill="#000" d="M666.21,826.21l18.59,24.59v-24.59h8.21v38.28h-7.88l-18.54-24.54v24.54h-8.26v-38.28h7.88Z"/>
+                <path fill="#000" d="M731.64,826.21v7.33h-11.7v30.94h-8.64v-30.94h-11.64v-7.33h31.98Z"/>
+                <path fill="#000" d="M767.44,826.21v7.17h-20.5v8.32h18.43v7.17h-18.43v8.48h21.1v7.17h-29.75v-38.28h29.15v-.03h0Z"/>
+                <path fill="#000" d="M785.49,826.21v30.73h16.39v7.55h-25.03v-38.28h8.64,0Z"/>
+                <path fill="#000" d="M817.66,826.21v30.73h16.39v7.55h-25.03v-38.28h8.64,0Z"/>
+                <path fill="#000" d="M849.86,826.21v38.28h-8.64v-38.28h8.64Z"/>
+                <path fill="#000" d="M886.04,845.19h7.5v14.7c-4.04,2.94-10.22,4.99-15.51,4.99-11.59,0-20.39-8.42-20.39-19.52s8.97-19.41,20.88-19.41c5.7,0,11.48,2.18,15.35,5.59l-4.88,6.19c-2.84-2.62-6.79-4.25-10.5-4.25-6.79,0-12.02,5.21-12.02,11.91s5.32,11.97,12.08,11.97c2.29,0,5.02-.82,7.5-2.07v-10.09h-.01Z"/>
+                <path fill="#000" d="M932.22,826.21v7.17h-20.5v8.32h18.43v7.17h-18.43v8.48h21.1v7.17h-29.75v-38.28h29.15v-.03h0Z"/>
+                <path fill="#000" d="M949.51,826.21l18.59,24.59v-24.59h8.21v38.28h-7.88l-18.54-24.54v24.54h-8.26v-38.28h7.88Z"/>
+                <path fill="#000" d="M1014.94,826.21v7.33h-11.7v30.94h-8.64v-30.94h-11.64v-7.33h31.98Z"/>
+                <path fill="#000" d="M664.9,902.44h7.5v14.7c-4.04,2.94-10.22,4.99-15.51,4.99-11.59,0-20.39-8.42-20.39-19.52s8.97-19.41,20.88-19.41c5.7,0,11.48,2.18,15.35,5.59l-4.88,6.19c-2.84-2.62-6.79-4.25-10.5-4.25-6.79,0-12.02,5.21-12.02,11.91s5.32,11.97,12.08,11.97c2.29,0,5.02-.82,7.5-2.07v-10.09h-.01Z"/>
+                <path fill="#000" d="M705.47,921.75l-6.08-10.93h-8.81v10.93h-8.64v-38.28h16.6c10.01,0,15.68,4.8,15.68,13.28,0,5.92-2.51,10.17-7.17,12.35l8.15,12.62h-9.79l.05.03h.01ZM690.61,903.59h7.99c4.77,0,7.5-2.18,7.5-6.57s-2.73-6.41-7.5-6.41h-7.99v12.98Z"/>
+                <path fill="#000" d="M761.93,902.61c0,11.04-8.86,19.52-20.56,19.52s-20.56-8.42-20.56-19.52,8.86-19.41,20.56-19.41,20.56,8.32,20.56,19.41ZM729.68,902.61c0,6.73,5.43,11.97,11.81,11.97s11.59-5.23,11.59-11.97-5.21-11.86-11.59-11.86-11.81,5.13-11.81,11.86Z"/>
+                <path fill="#000" d="M774.17,883.47l8.04,28.87,7.99-28.87h8.48l8.1,28.87,7.99-28.87h8.86l-12.68,38.28h-8.92l-7.72-27.26-7.88,27.26h-8.92l-12.62-38.28h9.3-.03,0Z"/>
+                <path fill="#000" d="M857.57,883.47v7.33h-11.7v30.94h-8.64v-30.94h-11.64v-7.33h31.98Z"/>
+                <path fill="#000" d="M872.87,883.47v15.95h17.34v-15.95h8.64v38.28h-8.64v-15.08h-17.34v15.08h-8.64v-38.28h8.64Z"/>
+              </g>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Usage guidance -->
+    <div class="ds-component">
+      <div class="ds-component-header">
+        <div>
+          <div class="ds-component-title">Usage Guidelines</div>
+        </div>
+      </div>
+      <div class="ds-preview">
+        <div class="ds-preview-inner">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px">
+            <div style="padding:20px 24px;border:1px solid rgba(255,255,255,0.12);border-radius:12px">
+              <div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--orange);margin-bottom:10px">Social Ads</div>
+              <div style="font-size:13px;color:var(--muted);line-height:1.65">Use the full wordmark (white on dark or black on orange). Never place on a mid-grey background.</div>
+            </div>
+            <div style="padding:20px 24px;border:1px solid rgba(255,255,255,0.12);border-radius:12px">
+              <div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--orange);margin-bottom:10px">Email Headers</div>
+              <div style="font-size:13px;color:var(--muted);line-height:1.65">Use the full wordmark (white on dark) in the email header. The fox icon alone is acceptable in the email footer at 24px.</div>
+            </div>
+            <div style="padding:20px 24px;border:1px solid rgba(255,255,255,0.12);border-radius:12px">
+              <div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--orange);margin-bottom:10px">eBooks / PDFs</div>
+              <div style="font-size:13px;color:var(--muted);line-height:1.65">Full wordmark on cover and footer of each page. Minimum display width: 200px.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Colors -->
+  <section class="ds-section" id="colors">
+    <div class="ds-section-head">
+      <div class="ds-eyebrow">Foundation</div>
+      <h2 class="ds-section-title">Colors</h2>
+      <p class="ds-section-desc">All color values are defined as CSS custom properties in <code style="font-family:monospace;color:var(--orange)">:root</code>. Reference them as <code style="font-family:monospace;color:var(--orange)">var(--token-name)</code>.</p>
+    </div>
+    <div class="ds-color-grid">
+      <div class="ds-swatch">
+        <div class="ds-swatch-color" style="background:#000"></div>
+        <div class="ds-swatch-info">
+          <div class="ds-swatch-name">Dark</div>
+          <div class="ds-swatch-val">--dark: #000000</div>
+        </div>
+      </div>
+      <div class="ds-swatch">
+        <div class="ds-swatch-color" style="background:#1a1a1a"></div>
+        <div class="ds-swatch-info">
+          <div class="ds-swatch-name">Mid / Card</div>
+          <div class="ds-swatch-val">--mid: #1a1a1a</div>
+        </div>
+      </div>
+      <div class="ds-swatch">
+        <div class="ds-swatch-color" style="background:#e0e0e0"></div>
+        <div class="ds-swatch-info" style="background:rgba(0,0,0,0.8)">
+          <div class="ds-swatch-name">Light</div>
+          <div class="ds-swatch-val">--light: #e0e0e0</div>
+        </div>
+      </div>
+      <div class="ds-swatch">
+        <div class="ds-swatch-color" style="background:#e95c25"></div>
+        <div class="ds-swatch-info">
+          <div class="ds-swatch-name">Orange</div>
+          <div class="ds-swatch-val">--orange: #e95c25</div>
+        </div>
+      </div>
+      <div class="ds-swatch">
+        <div class="ds-swatch-color" style="background:#888"></div>
+        <div class="ds-swatch-info">
+          <div class="ds-swatch-name">Muted</div>
+          <div class="ds-swatch-val">--muted: #888888</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ds-divider"></div>
+
+    <div class="ds-component-title" style="margin-bottom:12px">Background Pattern</div>
+    <p class="ds-component-desc">The signature orange-tinted grid is applied to <code style="font-family:monospace;color:var(--orange)">body</code> as a fixed background. Use the same values on content wrappers that sit above the hero.</p>
+    <div class="ds-preview" style="margin-top:16px">
+      <div class="ds-preview-inner" style="height:160px;background-image:linear-gradient(rgba(233,92,37,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(233,92,37,0.06) 1px,transparent 1px);background-size:64px 64px;display:flex;align-items:center;justify-content:center">
+        <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.3);font-weight:700">64px × 64px Orange Grid — rgba(233,92,37,0.04)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Typography -->
+  <section class="ds-section" id="typography">
+    <div class="ds-section-head">
+      <div class="ds-eyebrow">Foundation</div>
+      <h2 class="ds-section-title">Typography</h2>
+      <p class="ds-section-desc">Montserrat is the sole typeface. Used across all weights from 400 to 900, with italic variants for hero emphasis.</p>
+    </div>
+
+    <div class="ds-preview">
+      <div class="ds-preview-inner">
+        <div class="ds-type-scale">
+          <div class="ds-type-row">
+            <div class="ds-type-meta">Hero Title<br>900 / -0.04em<br>clamp(40px,5.5vw,80px)</div>
+            <div style="font-size:clamp(28px,3.5vw,52px);font-weight:900;letter-spacing:-0.04em;line-height:0.95;color:#fff">Revenue <em style="font-style:italic;color:var(--orange)">Engineered</em></div>
+          </div>
+          <div class="ds-type-row">
+            <div class="ds-type-meta">Section H2<br>800 / -0.03em<br>clamp(26px,3.2vw,44px)</div>
+            <div style="font-size:clamp(22px,2.5vw,36px);font-weight:800;letter-spacing:-0.03em;line-height:1.0;color:#fff">The <em style="font-style:italic;color:var(--orange)">Blacfox</em> Method</div>
+          </div>
+          <div class="ds-type-row">
+            <div class="ds-type-meta">Service H3<br>800 / -0.02em<br>clamp(18px,2.2vw,28px)</div>
+            <div style="font-size:clamp(18px,2vw,24px);font-weight:800;letter-spacing:-0.02em;line-height:1.1;color:#fff">Revenue Operations <em style="font-style:italic;color:var(--orange)">Rebuilt</em></div>
+          </div>
+          <div class="ds-type-row">
+            <div class="ds-type-meta">Body Large<br>400 / normal<br>17px / lh 1.75</div>
+            <div style="font-size:17px;font-weight:400;color:var(--muted);line-height:1.75">We build the revenue engine that powers partner-led growth — from first meeting to closed deal.</div>
+          </div>
+          <div class="ds-type-row">
+            <div class="ds-type-meta">Body<br>400 / normal<br>16px / lh 1.75</div>
+            <div style="font-size:16px;font-weight:400;color:var(--muted);line-height:1.75">Blacfox partners with enterprise SaaS companies to fix the go-to-market layer that's leaking revenue.</div>
+          </div>
+          <div class="ds-type-row">
+            <div class="ds-type-meta">Body Small<br>400 / normal<br>14px / lh 1.65</div>
+            <div style="font-size:14px;font-weight:400;color:var(--muted);line-height:1.65">A structured 12-week engagement that delivers a validated partner program, trained team, and live revenue pipeline.</div>
+          </div>
+          <div class="ds-type-row">
+            <div class="ds-type-meta">Label / Tag<br>700 / 0.14em<br>11px uppercase</div>
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--orange)">Revenue Operations</div>
+          </div>
+          <div class="ds-type-row">
+            <div class="ds-type-meta">Caption<br>400 / normal<br>12–13px</div>
+            <div style="font-size:12px;color:var(--muted)">© 2025 Blacfox. All rights reserved. Registered in South Africa.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Spacing -->
+  <section class="ds-section" id="spacing">
+    <div class="ds-section-head">
+      <div class="ds-eyebrow">Foundation</div>
+      <h2 class="ds-section-title">Spacing</h2>
+      <p class="ds-section-desc">An 8px base grid. Section padding uses the <code style="font-family:monospace;color:var(--orange)">--site-px</code> variable (60px desktop → 32px tablet → 20px mobile).</p>
+    </div>
+    <div class="ds-preview">
+      <div class="ds-preview-inner">
+        <div class="ds-space-list">
+          <div class="ds-space-row"><div class="ds-space-bar" style="width:4px"></div><span class="ds-space-label">4px — border, gap micro</span></div>
+          <div class="ds-space-row"><div class="ds-space-bar" style="width:8px"></div><span class="ds-space-label">8px — icon gap, tight stack</span></div>
+          <div class="ds-space-row"><div class="ds-space-bar" style="width:12px"></div><span class="ds-space-label">12px — card gap small</span></div>
+          <div class="ds-space-row"><div class="ds-space-bar" style="width:16px"></div><span class="ds-space-label">16px — form gap, list gap</span></div>
+          <div class="ds-space-row"><div class="ds-space-bar" style="width:20px"></div><span class="ds-space-label">20px — card grid gap</span></div>
+          <div class="ds-space-row"><div class="ds-space-bar" style="width:24px"></div><span class="ds-space-label">24px — section sub-gap</span></div>
+          <div class="ds-space-row"><div class="ds-space-bar" style="width:32px"></div><span class="ds-space-label">32px — component spacing</span></div>
+          <div class="ds-space-row"><div class="ds-space-bar" style="width:48px"></div><span class="ds-space-label">48px — section inner top/bottom</span></div>
+          <div class="ds-space-row"><div class="ds-space-bar" style="width:60px"></div><span class="ds-space-label">60px — --site-px (desktop horizontal)</span></div>
+          <div class="ds-space-row"><div class="ds-space-bar" style="width:80px"></div><span class="ds-space-label">80px — section vertical padding (tablet)</span></div>
+          <div class="ds-space-row"><div class="ds-space-bar" style="width:120px"></div><span class="ds-space-label">120px — section vertical padding (desktop)</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Animations -->
+  <section class="ds-section" id="animations">
+    <div class="ds-section-head">
+      <div class="ds-eyebrow">Foundation</div>
+      <h2 class="ds-section-title">Animations</h2>
+      <p class="ds-section-desc">Scroll-triggered reveal classes. Applied to elements; the JS IntersectionObserver adds <code style="font-family:monospace;color:var(--orange)">.visible</code> when in view.</p>
+    </div>
+    <div class="ds-preview">
+      <div class="ds-preview-inner">
+        <div class="anim-demo-grid">
+          <div class="anim-demo-item">
+            <div class="anim-demo-label">.reveal</div>
+            <div style="font-size:12px;color:var(--muted)">Fade + slide up (Y+40px)</div>
+          </div>
+          <div class="anim-demo-item">
+            <div class="anim-demo-label">.reveal-left</div>
+            <div style="font-size:12px;color:var(--muted)">Fade + slide from left (X-40px)</div>
+          </div>
+          <div class="anim-demo-item">
+            <div class="anim-demo-label">.reveal-right</div>
+            <div style="font-size:12px;color:var(--muted)">Fade + slide from right (X+40px)</div>
+          </div>
+          <div class="anim-demo-item">
+            <div class="anim-demo-label">.reveal-scale</div>
+            <div style="font-size:12px;color:var(--muted)">Fade + scale from 0.94</div>
+          </div>
+          <div class="anim-demo-item">
+            <div class="anim-demo-label">.stagger</div>
+            <div style="font-size:12px;color:var(--muted)">Children stagger 0.08s each (up to 8)</div>
+          </div>
+          <div class="anim-demo-item">
+            <div class="anim-demo-label">transition</div>
+            <div style="font-size:12px;color:var(--muted)">opacity 0.7s ease, transform 0.7s ease</div>
+          </div>
+        </div>
+        <div style="margin-top:24px;padding:20px 24px;background:rgba(233,92,37,0.06);border:1px solid rgba(233,92,37,0.2);border-radius:10px">
+          <p style="font-size:12px;color:var(--muted);line-height:1.7;font-family:monospace">const observer = new IntersectionObserver(entries => {<br>&nbsp;&nbsp;entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible') })<br>}, { threshold: 0.12 })<br>document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .stagger')<br>&nbsp;&nbsp;.forEach(el => observer.observe(el))</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ COMPONENTS ═══ -->
+
+  <!-- Navigation -->
+  <section class="ds-section" id="navigation">
+    <div class="ds-section-head">
+      <div class="ds-eyebrow">Components</div>
+      <h2 class="ds-section-title">Navigation</h2>
+      <p class="ds-section-desc">Two floating pill groups — logo pill and links pill — using liquid glass blur. Fixed at top center with slide-down entry animation.</p>
+    </div>
+
+    <div class="ds-component">
+      <div class="ds-component-header">
+        <div>
+          <div class="ds-component-title">Nav Pills</div>
+          <div class="ds-component-desc">#bottom-nav · .nav-logo · .nav-links-pill · .nav-pill-glass</div>
+        </div>
+        <span class="ds-class-tag">#bottom-nav</span>
+      </div>
+      <div class="ds-preview">
+        <div class="ds-preview-inner" style="padding:48px 40px">
+          <div class="nav-pill-demo">
+            <div class="nav-pill-glass nav-logo-demo">
+              <svg viewBox="140 150 800 800" style="width:32px;height:32px" xmlns="http://www.w3.org/2000/svg">
+                <path fill="none" stroke="#e95c25" stroke-width="38" stroke-linejoin="round" d="M672.2,800.5c-9.9,0-18.9-5.3-23.9-14.5-21.9-40.6-67.9-99.4-98.3-96.9-17.1,1.5-35.2,27.5-49.8,71.5-4.6,16.6-21.1,28-38.9,26.7h-1.5c-20.5-1.7-36-19.7-34.5-40.2.7-9.8,3-23.7,5.6-39.7,6.3-38.5,15.7-95.4,9.5-140.7l-7.1-1.3c-55.8-10.5-132.2-24.8-183.8-81.1-41-44.8-63.4-85.1-63.6-85.5l-19.6-34.9,39.8-5.6c78.3-11.1,141.8,6.9,188.8,53.4,31.6,31.3,54.9,74.8,69.4,129.4h.2c43.8,0,88.1-17.9,131.8-53.2,71-57.4,112.7-140.7,130.5-176.3,9.8-19.6,18.3-36.5,40.4-31.2,10.6,2.5,21.5,12.1,21.5,28.1s4.6,107.2,96.3,107.9,24.6,8.7,27.7,21.1c5.3,21.6-11.7,30.7-26.7,38.6-125,66-188.3,148.6-188.3,245.5l2.1,50.2c.5,13.1-7.6,24.2-20.2,27.6-2.5.7-5.1,1-7.6,1Z"/>
+              </svg>
+            </div>
+            <div class="nav-pill-glass nav-links-pill">
+              <a href="#">About</a>
+              <a href="#" class="active">Services</a>
+              <a href="#">Work</a>
+              <a href="#">Method</a>
+              <a href="#">Contact</a>
+            </div>
+          </div>
+        </div>
+        <div class="ds-preview-label">PREVIEW</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Buttons -->
+  <section class="ds-section" id="buttons">
+    <div class="ds-section-head">
+      <div class="ds-eyebrow">Components</div>
+      <h2 class="ds-section-title">Buttons</h2>
+      <p class="ds-section-desc">Three liquid glass button variants. All use <code style="font-family:monospace;color:var(--orange)">backdrop-filter</code> for the frosted effect. Add <code style="font-family:monospace;color:var(--orange)">.btn-sm</code> for compact sizing.</p>
+    </div>
+
+    <div class="ds-component">
+      <div class="ds-component-header">
+        <div>
+          <div class="ds-component-title">Primary Button</div>
+          <div class="ds-component-desc">Orange glass — main CTA on dark backgrounds</div>
+        </div>
+        <span class="ds-class-tag">.btn-primary</span>
+      </div>
+      <div class="ds-preview">
+        <div class="ds-preview-inner flex-gap-16">
+          <a href="#" class="btn-primary">Get Started →</a>
+          <a href="#" class="btn-primary">Book a Call</a>
+          <a href="#" class="btn-primary btn-sm">Learn More</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="ds-component">
+      <div class="ds-component-header">
+        <div>
+          <div class="ds-component-title">Ghost Button</div>
+          <div class="ds-component-desc">Neutral glass — secondary action on dark backgrounds</div>
+        </div>
+        <span class="ds-class-tag">.btn-ghost</span>
+      </div>
+      <div class="ds-preview">
+        <div class="ds-preview-inner flex-gap-16">
+          <a href="#" class="btn-ghost">See Our Work</a>
+          <a href="#" class="btn-ghost">Learn More</a>
+          <a href="#" class="btn-ghost btn-sm">View Case Study</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="ds-component">
+      <div class="ds-component-header">
+        <div>
+          <div class="ds-component-title">White Button</div>
+          <div class="ds-component-desc">Light glass — used on orange/CTA section backgrounds</div>
+        </div>
+        <span class="ds-class-tag">.btn-white</span>
+      </div>
+      <div class="ds-preview">
+        <div class="ds-preview-inner ds-preview-bg-orange flex-gap-16">
+          <a href="#" class="btn-white">Start a Project →</a>
+          <a href="#" class="btn-white">Book a Call</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Badges & Tags -->
+  <section class="ds-section" id="badges">
+    <div class="ds-section-head">
+      <div class="ds-eyebrow">Components</div>
+      <h2 class="ds-section-title">Tags</h2>
+      <p class="ds-section-desc">Inline labels for section introductions and case study markers.</p>
+    </div>
+
+    <div class="ds-component">
+      <div class="ds-component-header">
+        <div>
+          <div class="ds-component-title">Section Tag</div>
+          <div class="ds-component-desc">Line + label — introduces each section</div>
+        </div>
+        <span class="ds-class-tag">.section-tag</span>
+      </div>
+      <div class="ds-preview">
+        <div class="ds-preview-inner" style="display:flex;flex-direction:column;gap:20px">
+          <div>
+            <span class="section-tag">Services</span>
+            <h3 class="section-h">What we <em>build</em> for you</h3>
+          </div>
+          <div>
+            <span class="section-tag">Case Study</span>
+            <h3 class="section-h">From zero to <em>$4M</em> partner pipeline</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ds-component">
+      <div class="ds-component-header">
+        <div>
+          <div class="ds-component-title">Case Badge</div>
+          <div class="ds-component-desc">Orange pill — marks case study headers</div>
+        </div>
+        <span class="ds-class-tag">.case-badge</span>
+      </div>
+      <div class="ds-preview">
+        <div class="ds-preview-inner flex-gap-12">
+          <span class="case-badge">Case Study</span>
+          <span class="case-badge">Featured Work</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hero Section -->
+  <section class="ds-section" id="hero">
+    <div class="ds-section-head">
+      <div class="ds-eyebrow">Components</div>
+      <h2 class="ds-section-title">Hero Section</h2>
+      <p class="ds-section-desc">Fixed orange-background hero with black grid overlay. Content scrolls over it via <code style="font-family:monospace;color:var(--orange)">#page-content z-index:1</code>.</p>
+    </div>
+
+    <div class="ds-component">
+      <div class="ds-component-header">
+        <div>
+          <div class="ds-component-title">Hero Split</div>
+          <div class="ds-component-desc">Two-column: copy left, quote panel right. Collapses to single column on tablet.</div>
+        </div>
+        <span class="ds-class-tag">.hero-split</span>
+      </div>
+      <div class="ds-preview" style="overflow:hidden">
+        <div class="ds-preview-label">PREVIEW</div>
+        <div class="hero-split-demo">
+          <div>
+            <div class="hero-title-demo">We engineer<br><em>revenue</em></div>
+            <p class="hero-sub-demo">Blacfox builds the partner revenue engine that tech companies need to scale beyond direct sales.</p>
+            <div class="hero-ctas">
+              <a href="#" class="btn-primary" style="background:#000;border-color:#000;color:#fff;box-shadow:none;backdrop-filter:none">Book a Call →</a>
+              <a href="#" class="btn-ghost" style="border-color:rgba(0,0,0,0.35);color:rgba(0,0,0,0.75);backdrop-filter:none;background:transparent">See Our Work</a>
+            </div>
+          </div>
+          <div class="hero-quote-panel">
+            <blockquote>Within 6 months, Blacfox had rebuilt our entire partner motion. We went from <em>zero channel revenue</em> to a structured, repeatable program generating real pipeline.</blockquote>
+            <div class="hero-attribution">VP Sales · SaaS Platform</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Bar -->
+  <section class="ds-section" id="stats">
+    <div class="ds-section-head">
+      <div class="ds-eyebrow">Components</div>
+      <h2 class="ds-section-title">Stats Bar</h2>
+      <p class="ds-section-desc">4-column metric strip. Numbers use italic orange for the key figure.</p>
+    </div>
+    <div class="ds-component">
+      <div class="ds-component-header">
+        <div>
+          <div class="ds-component-title">Stats Section</div>
+        </div>
+        <span class="ds-class-tag">.stats-section</span>
+      </div>
+      <div class="ds-preview">
+        <div class="ds-preview-inner">
+          <div class="stats-inner">
+            <div class="stat-item"><div class="stat-num"><em>40+</em></div><div class="stat-label">Partner programs<br>built &amp; launched</div></div>
+            <div class="stat-item"><div class="stat-num"><em>$4M</em></div><div class="stat-label">Average first-year<br>partner pipeline</div></div>
+            <div class="stat-item"><div class="stat-num"><em>3×</em></div><div class="stat-label">Revenue increase<br>within 12 months</div></div>
+            <div class="stat-item"><div class="stat-num"><em>12</em></div><div class="stat-label">Weeks to a live<br>partner program</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ds-component">
+      <div class="ds-component-header">
+        <div>
+          <div class="ds-component-title">Trust Bar</div>
+          <div class="ds-component-desc">Logo strip with subtle frosted glass effect</div>
+        </div>
+        <span class="ds-class-tag">.trust-bar</span>
+      </div>
+      <div class="ds-preview">
+        <div class="ds-preview-inner trust-bar" style="border-radius:0;border:none">
+          <span class="trust-label">Trusted by</span>
+          <span class="trust-logo">Acme Corp</span>
+          <span class="trust-logo">NexGen SaaS</span>
+          <span class="trust-logo">PartnerStack</span>
+          <span class="trust-logo">Velocity Tech</span>
+          <span class="trust-logo">CloudBridge</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cards -->
+  <section class="ds-section" id="cards">
+    <div class="ds-section-head">
+      <div class="ds-eyebrow">Components</div>
+      <h2 class="ds-section-title">Cards</h2>
+      <p class="ds-section-desc">Dark cards with white outline borders. Hover reveals orange border + gradient overlay. Available in 3-column and 2-column grids.</p>
+    </div>
+
+    <div class="ds-component">
+      <div class="ds-component-header">
+        <div>
+          <div class="ds-component-title">3-Column Card Grid</div>
+        </div>
+        <span class="ds-class-tag">.card-grid-3 .dark-card</span>
+      </div>
+      <div class="ds-preview">
+        <div class="ds-preview-inner">
+          <div class="card-grid-3">
+            <div class="dark-card">
+              <div class="card-num">01</div>
+              <div class="card-title">Partner-Led Growth</div>
+              <div class="card-body">We design the program structure, partner tiers, and incentive models that convert resellers into revenue generators.</div>
+            </div>
+            <div class="dark-card">
+              <div class="card-num">02</div>
+              <div class="card-title">Revenue Operations</div>
+              <div class="card-body">Systems, processes, and tooling that ensure every partner deal moves through the funnel without leaking at the handoffs.</div>
+            </div>
+            <div class="dark-card">
+              <div class="card-num">03</div>
+              <div class="card-title">ISV Ecosystem</div>
+              <div class="card-body">Building the technical and commercial relationships between your product and the ecosystem platforms your buyers live in.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ds-component">
+      <div class="ds-component-header">
+        <div>
+          <div class="ds-component-title">2-Column Card Grid</div>
+        </div>
+        <span class="ds-class-tag">.card-grid-2 .dark-card</span>
+      </div>
+      <div class="ds-preview">
+        <div class="ds-preview-inner">
+          <div class="card-grid-2">
+            <div class="dark-card">
+              <div class="card-num">01</div>
+              <div class="card-title">The Diagnosis</div>
+              <div class="card-body">We map where revenue is leaking — across your channel, your RevOps stack, and your partner relationships.</div>
+            </div>
+            <div class="dark-card">
+              <div class="card-num">02</div>
+              <div class="card-title">The Build</div>
+              <div class="card-body">We design, build, and launch the program. You get a live partner motion in 12 weeks, not 12 months.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison Grid -->
+  <section class="ds-section" id="comparison">
+    <div class="ds-section-head">
+      <div class="ds-eyebrow">Components</div>
+      <h2 class="ds-section-title">Comparison Grid</h2>
+      <p class="ds-section-desc">Side-by-side bad/good comparison. <code style="font-family:monospace;color:var(--orange)">.col-bad</code> uses white outline; <code style="font-family:monospace;color:var(--orange)">.col-good</code> uses orange outline.</p>
+    </div>
+    <div class="ds-component">
+      <div class="ds-component-header">
+        <div>
+          <div class="ds-component-title">Compare Columns — Rich</div>
+          <div class="ds-component-desc">Numbered steps with title + sub-copy, icon indicator, dead-end box (bad col) and outcome box (good col)</div>
+        </div>
+        <span class="ds-class-tag">.cmp-col</span>
+      </div>
+      <div class="ds-preview">
+        <div class="ds-preview-inner">
+          <div class="compare-wrap">
+
+            <!-- BAD column -->
+            <div class="cmp-col bad">
+              <div class="cmp-col-label">Most B2B Marketing Agencies</div>
+              <h3 class="cmp-col-title">Stop at leads.<br>Then shrug.</h3>
+              <div class="cmp-steps">
+                <div class="cmp-step">
+                  <span class="cmp-step-num">01</span>
+                  <div class="cmp-step-content">
+                    <div class="cmp-step-text">Campaigns</div>
+                    <div class="cmp-step-sub">Impressions, clicks, CPM reports</div>
+                  </div>
+                  <span class="cmp-step-icon">→</span>
+                </div>
+                <div class="cmp-step">
+                  <span class="cmp-step-num">02</span>
+                  <div class="cmp-step-content">
+                    <div class="cmp-step-text">Leads</div>
+                    <div class="cmp-step-sub">MQL volume. Spreadsheet of names.</div>
+                  </div>
+                  <span class="cmp-step-icon">→</span>
+                </div>
+                <div class="cmp-step">
+                  <span class="cmp-step-num">03</span>
+                  <div class="cmp-step-content">
+                    <div class="cmp-step-text">Handover</div>
+                    <div class="cmp-step-sub">Dropped into the CRM. Job done.</div>
+                  </div>
+                  <span class="cmp-step-icon">→</span>
+                </div>
+                <div class="cmp-step">
+                  <span class="cmp-step-num">04</span>
+                  <div class="cmp-step-content">
+                    <div class="cmp-step-text">(Shrug)</div>
+                    <div class="cmp-step-sub">Sales team inherits the problem.</div>
+                  </div>
+                  <span class="cmp-step-icon">×</span>
+                </div>
+              </div>
+              <div class="cmp-dead-end">
+                <p>"If your agency can't tell you their pipeline-to-spend ratio, they don't have one."</p>
+              </div>
+            </div>
+
+            <!-- GOOD column -->
+            <div class="cmp-col good">
+              <div class="cmp-col-label">Blacfox</div>
+              <h3 class="cmp-col-title">Stays in the room until sales is talking.</h3>
+              <div class="cmp-steps">
+                <div class="cmp-step">
+                  <span class="cmp-step-num">01</span>
+                  <div class="cmp-step-content">
+                    <div class="cmp-step-text">Research</div>
+                    <div class="cmp-step-sub">Real buyer interviews. Decision-maker language.</div>
+                  </div>
+                  <span class="cmp-step-icon" style="color:rgba(255,200,150,0.7)">→</span>
+                </div>
+                <div class="cmp-step">
+                  <span class="cmp-step-num">02</span>
+                  <div class="cmp-step-content">
+                    <div class="cmp-step-text">Positioning</div>
+                    <div class="cmp-step-sub">PMF built from buyer research. Sales can repeat it.</div>
+                  </div>
+                  <span class="cmp-step-icon" style="color:rgba(255,200,150,0.7)">→</span>
+                </div>
+                <div class="cmp-step">
+                  <span class="cmp-step-num">03</span>
+                  <div class="cmp-step-content">
+                    <div class="cmp-step-text">Campaigns</div>
+                    <div class="cmp-step-sub">Built on the PMF. Measured on pipeline ACV.</div>
+                  </div>
+                  <span class="cmp-step-icon" style="color:rgba(255,200,150,0.7)">→</span>
+                </div>
+                <div class="cmp-step">
+                  <span class="cmp-step-num">04</span>
+                  <div class="cmp-step-content">
+                    <div class="cmp-step-text">Follow-up</div>
+                    <div class="cmp-step-sub">SDR outbound. Real conversations, not cold lists.</div>
+                  </div>
+                  <span class="cmp-step-icon" style="color:rgba(255,200,150,0.7)">→</span>
+                </div>
+                <div class="cmp-step">
+                  <span class="cmp-step-num">05</span>
+                  <div class="cmp-step-content">
+                    <div class="cmp-step-text">Sales-ready meetings</div>
+                    <div class="cmp-step-sub">Decision-makers who are ready to talk. The actual job.</div>
+                  </div>
+                  <span class="cmp-step-icon" style="color:var(--orange)">✓</span>
+                </div>
+              </div>
+              <div class="cmp-outcome">
+                <div class="cmp-outcome-num">10:1</div>
+                <p>Pipeline ACV return on campaign spend, guaranteed or we keep working.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="ds-section" id="faq">
+    <div class="ds-section-head">
+      <div class="ds-eyebrow">Components</div>
+      <h2 class="ds-section-title">FAQ Accordion</h2>
+      <p class="ds-section-desc">Animated accordion. The <code style="font-family:monospace;color:var(--orange)">+</code> indicator rotates to <code style="font-family:monospace;color:var(--orange)">×</code> on open. JS toggles <code style="font-family:monospace;color:var(--orange)">.open</code>.</p>
+    </div>
+    <div class="ds-component">
+      <div class="ds-component-header">
+        <div><div class="ds-component-title">FAQ List</div></div>
+        <span class="ds-class-tag">.faq-list .faq-item</span>
+      </div>
+      <div class="ds-preview">
+        <div class="ds-preview-inner">
+          <div class="faq-list">
+            <div class="faq-item open" onclick="this.classList.toggle('open')">
+              <div class="faq-q">How long does a typical engagement take?</div>
+              <div class="faq-a">Our flagship Partner Revenue Program runs 12 weeks. By week 12, you have a live partner motion — recruited partners, a working playbook, and active pipeline.</div>
+            </div>
+            <div class="faq-item" onclick="this.classList.toggle('open')">
+              <div class="faq-q">Do we need an existing partner base?</div>
+              <div class="faq-a">No. We regularly build partner programs from scratch. We handle the partner identification, outreach, and recruitment as part of the engagement.</div>
+            </div>
+            <div class="faq-item" onclick="this.classList.toggle('open')">
+              <div class="faq-q">What kind of companies does Blacfox work with?</div>
+              <div class="faq-a">Enterprise SaaS companies, typically between Series B and Series D, with between $5M and $50M ARR and an existing direct sales motion they want to leverage through partners.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Steps / Method -->
+  <section class="ds-section" id="steps">
+    <div class="ds-section-head">
+      <div class="ds-eyebrow">Components</div>
+      <h2 class="ds-section-title">Steps / Method</h2>
+      <p class="ds-section-desc">Numbered process steps. The output step uses an orange background to signal the result.</p>
+    </div>
+
+    <div class="ds-component">
+      <div class="ds-component-header">
+        <div><div class="ds-component-title">Steps List</div></div>
+        <span class="ds-class-tag">.steps-list .step-item</span>
+      </div>
+      <div class="ds-preview">
+        <div class="ds-preview-inner">
+          <div class="steps-list">
+            <div class="step-item">
+              <div class="step-num">Phase 01</div>
+              <div>
+                <div class="step-label">Diagnose</div>
+                <div class="step-body">We map your current revenue architecture — where it works, where it leaks, and what the ceiling is without channel.</div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">Phase 02</div>
+              <div>
+                <div class="step-label">Design</div>
+                <div class="step-body">Partner tiers, incentive models, onboarding playbooks, and the RevOps infrastructure that makes it all run.</div>
+              </div>
+            </div>
+            <div class="step-item is-output">
+              <div class="step-num">Output</div>
+              <div>
+                <div class="step-label">Live Partner Program</div>
+                <div class="step-body">A fully operational partner revenue motion — with active partners, pipeline, and the team to run it.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ds-component">
+      <div class="ds-component-header">
+        <div><div class="ds-component-title">Method Preview (4-col)</div></div>
+        <span class="ds-class-tag">.method-preview .method-card</span>
+      </div>
+      <div class="ds-preview">
+        <div class="ds-preview-inner">
+          <div class="method-preview">
+            <div class="method-card">
+              <div class="card-num">01</div>
+              <div class="card-title">Diagnose</div>
+              <div class="card-body">Revenue audit and gap analysis</div>
+            </div>
+            <div class="method-card">
+              <div class="card-num">02</div>
+              <div class="card-title">Design</div>
+              <div class="card-body">Program architecture and playbooks</div>
+            </div>
+            <div class="method-card">
+              <div class="card-num">03</div>
+              <div class="card-title">Build</div>
+              <div class="card-body">Partner recruitment and enablement</div>
+            </div>
+            <div class="method-card is-output">
+              <div class="card-num">Result</div>
+              <div class="card-title">Revenue</div>
+              <div class="card-body">Live partner pipeline in 12 weeks</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Callout Box -->
+  <section class="ds-section" id="callout">
+    <div class="ds-section-head">
+      <div class="ds-eyebrow">Components</div>
+      <h2 class="ds-section-title">Callout Box</h2>
+      <p class="ds-section-desc">Orange-tinted highlight block. Used inline within section content to emphasize key statements.</p>
+    </div>
+    <div class="ds-component">
+      <div class="ds-component-header">
+        <div><div class="ds-component-title">Callout</div></div>
+        <span class="ds-class-tag">.callout-box</span>
+      </div>
+      <div class="ds-preview">
+        <div class="ds-preview-inner">
+          <div class="callout-box">
+            <p>Revenue isn't random. Every company that scales through channel has a <em style="font-style:italic;color:var(--orange)">system</em> — a structured way of recruiting, enabling, and activating partners. We build that system.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Service Card -->
+  <section class="ds-section" id="service">
+    <div class="ds-section-head">
+      <div class="ds-eyebrow">Components</div>
+      <h2 class="ds-section-title">Service Card</h2>
+      <p class="ds-section-desc">Full-width service block with headline, lead copy, deliverable list, and meta footer. Stacked vertically for services pages.</p>
+    </div>
+    <div class="ds-component">
+      <div class="ds-component-header">
+        <div><div class="ds-component-title">Service Card</div></div>
+        <span class="ds-class-tag">.service-card</span>
+      </div>
+      <div class="ds-preview">
+        <div class="ds-preview-inner" style="padding:0">
+          <div class="service-card" style="border-radius:0;border-left:none;border-right:none">
+            <div class="service-name">Partner Revenue Program</div>
+            <div class="service-headline">The complete <em>partner revenue</em> engine — designed, built, and launched in 12 weeks</div>
+            <p class="service-lead">A structured engagement that takes you from scattered partner activity to a repeatable revenue channel. We handle strategy, recruitment, enablement, and RevOps integration.</p>
+            <div class="service-includes-title">What's included</div>
+            <ul class="service-list">
+              <li>Partner program architecture and tier design</li>
+              <li>ICP-matched partner identification and outreach</li>
+              <li>Partner onboarding and activation playbooks</li>
+              <li>CRM and RevOps integration</li>
+              <li>Partner portal and co-sell resources</li>
+              <li>12-week launch support</li>
+            </ul>
+            <div class="service-meta">Timeline: 12 weeks · Outcome: Live partner program + active pipeline</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Case Study -->
+  <section class="ds-section" id="casestudy">
+    <div class="ds-section-head">
+      <div class="ds-eyebrow">Components</div>
+      <h2 class="ds-section-title">Case Study Card</h2>
+      <p class="ds-section-desc">Full-width case study with headline, narrative, and a 4-metric stats strip at the base.</p>
+    </div>
+    <div class="ds-component">
+      <div class="ds-component-header">
+        <div><div class="ds-component-title">Case Study</div></div>
+        <span class="ds-class-tag">.case-study-card</span>
+      </div>
+      <div class="ds-preview" style="padding:0">
+        <div class="case-study-card" style="border-radius:14px">
+          <div class="case-study-body">
+            <span class="case-badge">Case Study</span>
+            <div class="case-meta">Enterprise SaaS · EMEA</div>
+            <div class="case-headline">From zero channel revenue to <em>$4.2M partner pipeline</em> in 9 months</div>
+            <p style="font-size:15px;color:var(--muted);line-height:1.75;max-width:680px">A Series C data infrastructure company had attempted to build a partner program twice internally — both times it stalled. Blacfox rebuilt the program from the architecture up: new partner tiers, a working incentive model, and a RevOps integration that gave their team visibility for the first time.</p>
+          </div>
+          <div class="case-stats-strip">
+            <div><div class="case-stat-num">$4.2M</div><div class="case-stat-label">Partner pipeline<br>in 9 months</div></div>
+            <div><div class="case-stat-num">23</div><div class="case-stat-label">Active partners<br>recruited</div></div>
+            <div><div class="case-stat-num">3.4×</div><div class="case-stat-label">Revenue increase<br>vs prior year</div></div>
+            <div><div class="case-stat-num">12wks</div><div class="case-stat-label">Time to first<br>partner deal</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Charts -->
+  <section class="ds-section" id="charts">
+    <div class="ds-section-head">
+      <div class="ds-eyebrow">Components</div>
+      <h2 class="ds-section-title">Charts</h2>
+      <p class="ds-section-desc">CSS-animated data visualisations. Both charts replay every time they scroll into view via IntersectionObserver. No external libraries required.</p>
+    </div>
+
+    <div class="ds-component">
+      <div class="ds-component-header">
+        <div>
+          <div class="ds-component-title">Chart Pair — Bar + Radial Arc</div>
+          <div class="ds-component-desc">Two-column grid: animated wave-line bar chart left, animated SVG arc chart right. Wrapped in <code style="font-family:monospace;color:var(--orange)">.chart-pair</code> · <code style="font-family:monospace;color:var(--orange)">.glass-card</code></div>
+        </div>
+        <span class="ds-class-tag">.chart-pair</span>
+      </div>
+      <div class="ds-preview">
+        <div class="ds-preview-inner">
+          <div class="chart-pair" id="ds-chart-pair">
+
+            <!-- Chart 1 — Pipeline ACV bar chart -->
+            <div class="glass-card" style="border-radius:20px;padding:32px;overflow:visible">
+              <p style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--orange);margin-bottom:6px">Pipeline Performance</p>
+              <p style="font-size:15px;font-weight:700;color:var(--light);margin-bottom:36px;line-height:1.3">Pipeline ACV return on campaign spend</p>
+
+              <!-- Blacfox row -->
+              <div style="margin-bottom:36px">
+                <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px">
+                  <span style="font-size:11px;color:var(--muted);font-weight:500;letter-spacing:0.01em">Blacfox portfolio average (n=11)</span>
+                  <span style="font-size:34px;font-weight:900;color:var(--orange);letter-spacing:-0.03em;line-height:1;text-shadow:0 0 24px rgba(233,92,37,0.45)">10:1</span>
+                </div>
+                <div style="position:relative;height:2px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:visible">
+                  <div class="bar-blacfox"></div>
+                  <div class="bar-dot-blacfox"></div>
+                </div>
+              </div>
+
+              <!-- Benchmark row -->
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px">
+                  <span style="font-size:11px;color:var(--muted);font-weight:500;letter-spacing:0.01em">B2B industry benchmark (Gartner, 2026)</span>
+                  <span style="font-size:24px;font-weight:700;color:rgba(255,255,255,0.28);letter-spacing:-0.03em;line-height:1">3:1</span>
+                </div>
+                <div style="position:relative;height:1px;background:rgba(255,255,255,0.05);border-radius:1px;overflow:visible">
+                  <div class="bar-bench"></div>
+                  <div class="bar-dot-bench"></div>
+                </div>
+              </div>
+
+              <p style="font-size:9px;color:var(--muted);margin-top:28px;letter-spacing:0.08em;text-transform:uppercase;opacity:0.6">Source: Blacfox portfolio, n=11 (May 2025–May 2026) · Gartner B2B Marketing Spend Report, 2026</p>
+            </div>
+
+            <!-- Chart 2 — Buyer Research radial arc -->
+            <div class="glass-card" style="border-radius:20px;padding:32px">
+              <p style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--orange);margin-bottom:6px">B2B Buyer Behaviour</p>
+              <p style="font-size:15px;font-weight:700;color:var(--light);margin-bottom:20px;line-height:1.3">Research completed before first vendor contact</p>
+
+              <svg viewBox="0 0 200 200" height="190" style="display:block;margin:0 auto;overflow:visible">
+                <defs>
+                  <linearGradient id="arcGradDS" x1="50%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.35"/>
+                  </linearGradient>
+                </defs>
+                <!-- Background track -->
+                <circle cx="100" cy="100" r="78" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="2"/>
+                <!-- Animated arc -->
+                <circle cx="100" cy="100" r="78" fill="none" stroke="url(#arcGradDS)" stroke-width="2.5"
+                  stroke-linecap="round" transform="rotate(-90 100 100)" class="arc-fill"/>
+                <!-- Endpoint dot at 70% -->
+                <circle id="arcDotEnd" cx="25.8" cy="124.1" r="6" fill="#e95c25"/>
+                <!-- Centre label -->
+                <text x="100" y="100" text-anchor="middle" dominant-baseline="central"
+                  style="font-size:32px;font-weight:900;fill:#e95c25;font-family:'Montserrat',sans-serif;filter:drop-shadow(0 0 22px rgba(233,92,37,0.5))">70%</text>
+              </svg>
+
+              <div style="display:flex;gap:20px;justify-content:center;margin-top:14px">
+                <div style="display:flex;align-items:center;gap:7px">
+                  <div style="width:8px;height:8px;border-radius:50%;background:var(--orange);box-shadow:0 0 8px rgba(233,92,37,0.6);flex-shrink:0"></div>
+                  <span style="font-size:10px;color:var(--muted)">Research done pre-contact</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:7px">
+                  <div style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.2);flex-shrink:0"></div>
+                  <span style="font-size:10px;color:var(--muted)">Post-contact discovery</span>
+                </div>
+              </div>
+              <p style="font-size:9px;color:var(--muted);margin-top:12px;letter-spacing:0.08em;text-transform:uppercase;opacity:0.6;text-align:center">Source: Blacfox Copy Deck, 2026</p>
+            </div>
+
+          </div><!-- /.chart-pair -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PMF Wave -->
+  <section class="ds-section" id="pmf-wave">
+    <div class="ds-section-head">
+      <div class="ds-eyebrow">Components</div>
+      <h2 class="ds-section-title">PMF Wave Timeline</h2>
+      <p class="ds-section-desc">Animated SVG wave that draws itself on scroll. A travelling dot follows the path. Driven by the browser's native <code style="font-family:monospace;color:var(--orange)">stroke-dashoffset</code> transition and <code style="font-family:monospace;color:var(--orange)">&lt;animateMotion&gt;</code>. No libraries.</p>
+    </div>
+
+    <div class="ds-component">
+      <div class="ds-component-header">
+        <div>
+          <div class="ds-component-title">Wave Timeline</div>
+          <div class="ds-component-desc">7 steps + output. Scroll into view to replay. Uses IntersectionObserver to reset and restart on each visit.</div>
+        </div>
+        <span class="ds-class-tag">#pmfWaveSvg</span>
+      </div>
+      <div class="ds-preview" id="pmfWaveSectionDS">
+        <div class="ds-preview-inner" style="padding:40px 40px 32px;background:rgba(0,0,0,0.35)">
+
+          <svg id="pmfWaveSvg" viewBox="0 0 1600 340" preserveAspectRatio="xMidYMid meet" style="width:100%;display:block;overflow:visible">
+            <defs>
+              <radialGradient id="pmfGlowDS" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#e95c25" stop-opacity="0.3"/>
+                <stop offset="100%" stop-color="#e95c25" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+
+            <!-- Glow blob at PMF endpoint -->
+            <ellipse cx="1600" cy="155" rx="110" ry="110" fill="url(#pmfGlowDS)"/>
+
+            <!-- Wave path — drawn by JS on scroll -->
+            <path id="wavePathDrawDS"
+              d="M 0,170 C 80,170 120,85 200,85 C 280,85 320,235 400,235 C 480,235 520,110 600,110 C 680,110 720,230 800,230 C 880,230 920,85 1000,85 C 1080,85 1120,195 1200,195 C 1360,195 1440,155 1600,155"
+              stroke="rgba(255,255,255,0.85)" stroke-width="1.5" fill="none"
+              stroke-dasharray="9999" stroke-dashoffset="9999"/>
+
+            <!-- Hollow step dots -->
+            <circle cx="0"    cy="170" r="5" fill="#1a1a1a" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+            <circle cx="200"  cy="85"  r="5" fill="#1a1a1a" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+            <circle cx="400"  cy="235" r="5" fill="#1a1a1a" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+            <circle cx="600"  cy="110" r="5" fill="#1a1a1a" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+            <circle cx="800"  cy="230" r="5" fill="#1a1a1a" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+            <circle cx="1000" cy="85"  r="5" fill="#1a1a1a" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+            <circle cx="1200" cy="195" r="5" fill="#1a1a1a" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+
+            <!-- PMF endpoint — large filled orange -->
+            <circle cx="1600" cy="155" r="22" fill="rgba(233,92,37,0.2)"/>
+            <circle cx="1600" cy="155" r="13" fill="#e95c25"/>
+
+            <!-- Animated travelling dot -->
+            <circle id="pmfDotDS" r="7" fill="#e95c25" opacity="0">
+              <animateMotion id="pmfDotAnimDS"
+                path="M 0,170 C 80,170 120,85 200,85 C 280,85 320,235 400,235 C 480,235 520,110 600,110 C 680,110 720,230 800,230 C 880,230 920,85 1000,85 C 1080,85 1120,195 1200,195 C 1360,195 1440,155 1600,155"
+                dur="3s" begin="indefinite" fill="freeze" calcMode="linear"/>
+            </circle>
+
+            <!-- Separator line -->
+            <line x1="0" y1="263" x2="1600" y2="263" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+
+            <!-- Step labels -->
+            <text x="8"    y="283" font-family="Montserrat,sans-serif" font-size="11" font-weight="700" letter-spacing="1.5" fill="#666" text-anchor="start">STEP 01</text>
+            <text x="8"    y="303" font-family="Montserrat,sans-serif" font-size="15" font-weight="700" fill="#e0e0e0" text-anchor="start">Context</text>
+            <text x="8"    y="319" font-family="Montserrat,sans-serif" font-size="10" font-weight="500" letter-spacing="1" fill="#555" text-anchor="start">MARKET &amp; TIMING</text>
+
+            <text x="200"  y="283" font-family="Montserrat,sans-serif" font-size="11" font-weight="700" letter-spacing="1.5" fill="#666" text-anchor="middle">STEP 02</text>
+            <text x="200"  y="303" font-family="Montserrat,sans-serif" font-size="15" font-weight="700" fill="#e0e0e0" text-anchor="middle">Company</text>
+            <text x="200"  y="319" font-family="Montserrat,sans-serif" font-size="10" font-weight="500" letter-spacing="1" fill="#555" text-anchor="middle">CREDIBLE CLAIMS</text>
+
+            <text x="400"  y="283" font-family="Montserrat,sans-serif" font-size="11" font-weight="700" letter-spacing="1.5" fill="#666" text-anchor="middle">STEP 03</text>
+            <text x="400"  y="303" font-family="Montserrat,sans-serif" font-size="15" font-weight="700" fill="#e0e0e0" text-anchor="middle">Competitors</text>
+            <text x="400"  y="319" font-family="Montserrat,sans-serif" font-size="10" font-weight="500" letter-spacing="1" fill="#555" text-anchor="middle">WHERE THEY'RE WEAK</text>
+
+            <text x="600"  y="283" font-family="Montserrat,sans-serif" font-size="11" font-weight="700" letter-spacing="1.5" fill="#666" text-anchor="middle">STEP 04</text>
+            <text x="600"  y="303" font-family="Montserrat,sans-serif" font-size="15" font-weight="700" fill="#e0e0e0" text-anchor="middle">Customers</text>
+            <text x="600"  y="319" font-family="Montserrat,sans-serif" font-size="10" font-weight="500" letter-spacing="1" fill="#555" text-anchor="middle">BUYER INTERVIEWS</text>
+
+            <text x="800"  y="283" font-family="Montserrat,sans-serif" font-size="11" font-weight="700" letter-spacing="1.5" fill="#666" text-anchor="middle">STEP 05</text>
+            <text x="800"  y="303" font-family="Montserrat,sans-serif" font-size="15" font-weight="700" fill="#e0e0e0" text-anchor="middle">Segment</text>
+            <text x="800"  y="319" font-family="Montserrat,sans-serif" font-size="10" font-weight="500" letter-spacing="1" fill="#555" text-anchor="middle">WHO WE GO AFTER</text>
+
+            <text x="1000" y="283" font-family="Montserrat,sans-serif" font-size="11" font-weight="700" letter-spacing="1.5" fill="#666" text-anchor="middle">STEP 06</text>
+            <text x="1000" y="303" font-family="Montserrat,sans-serif" font-size="15" font-weight="700" fill="#e0e0e0" text-anchor="middle">Position</text>
+            <text x="1000" y="319" font-family="Montserrat,sans-serif" font-size="10" font-weight="500" letter-spacing="1" fill="#555" text-anchor="middle">"WHY YOU" STORY</text>
+
+            <text x="1200" y="283" font-family="Montserrat,sans-serif" font-size="11" font-weight="700" letter-spacing="1.5" fill="#666" text-anchor="middle">STEP 07</text>
+            <text x="1200" y="303" font-family="Montserrat,sans-serif" font-size="15" font-weight="700" fill="#e0e0e0" text-anchor="middle">4 Ps</text>
+            <text x="1200" y="319" font-family="Montserrat,sans-serif" font-size="10" font-weight="500" letter-spacing="1" fill="#555" text-anchor="middle">PRICE, PLACE, PRODUCT, PROMO</text>
+
+            <text x="1592" y="283" font-family="Montserrat,sans-serif" font-size="11" font-weight="700" letter-spacing="1.5" fill="#e95c25" text-anchor="end">OUTPUT</text>
+            <text x="1592" y="303" font-family="Montserrat,sans-serif" font-size="15" font-weight="700" fill="#e95c25" font-style="italic" text-anchor="end">PMF</text>
+            <text x="1592" y="319" font-family="Montserrat,sans-serif" font-size="10" font-weight="500" letter-spacing="1" fill="#e95c25" text-anchor="end">THE MESSAGE BLUEPRINT</text>
+          </svg>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PMF Expanded -->
+  <section class="ds-section" id="pmf-expanded">
+    <div class="ds-section-head">
+      <div class="ds-eyebrow">Components</div>
+      <h2 class="ds-section-title">PMF Expanded</h2>
+      <p class="ds-section-desc">Three-column layout: step cards left, hub circle centre, step cards right. The vertical orange spine connects through the hub. Output card uses the orange border variant.</p>
+    </div>
+
+    <div class="ds-component">
+      <div class="ds-component-header">
+        <div>
+          <div class="ds-component-title">PMF Radial Layout</div>
+          <div class="ds-component-desc">.pmf-radial · .pmf-left-col / .pmf-right-col · .pmf-hub-col · .pmf-n · .pmf-rcard</div>
+        </div>
+        <span class="ds-class-tag">.pmf-radial</span>
+      </div>
+      <div class="ds-preview">
+        <div class="ds-preview-inner" style="padding:40px 32px">
+
+          <div class="pmf-radial">
+
+            <!-- LEFT: Steps 1–4 -->
+            <div class="pmf-left-col">
+              <div class="pmf-step-item">
+                <div class="pmf-rcard">
+                  <div class="pmf-rcard-num">Step 01</div>
+                  <div class="pmf-rcard-name">Context</div>
+                  <div class="pmf-rcard-sub">Market &amp; Timing</div>
+                  <div class="pmf-rcard-body">Macro forces, vendor strategy shifts, regulatory changes, buyer-behaviour data. Position your product against the market your B2B buyer is currently navigating, not last year's version.</div>
+                </div>
+                <div class="pmf-n">1</div>
+              </div>
+              <div class="pmf-step-item">
+                <div class="pmf-rcard">
+                  <div class="pmf-rcard-num">Step 02</div>
+                  <div class="pmf-rcard-name">Company</div>
+                  <div class="pmf-rcard-sub">Credible Claims</div>
+                  <div class="pmf-rcard-body">Audit your actual capability, outcomes, and proof points, then ringfence the claims you can own. Positioning that overstates gets called out in the first sales conversation.</div>
+                </div>
+                <div class="pmf-n">2</div>
+              </div>
+              <div class="pmf-step-item">
+                <div class="pmf-rcard">
+                  <div class="pmf-rcard-num">Step 03</div>
+                  <div class="pmf-rcard-name">Competitors</div>
+                  <div class="pmf-rcard-sub">Where They're Weak</div>
+                  <div class="pmf-rcard-body">A linguistic map of the B2B tech category: who claims what, in whose words, with what proof. The strongest positioning is built on where competitors are evasive or quietly overpromising.</div>
+                </div>
+                <div class="pmf-n">3</div>
+              </div>
+              <div class="pmf-step-item">
+                <div class="pmf-rcard">
+                  <div class="pmf-rcard-num">Step 04</div>
+                  <div class="pmf-rcard-name">Customers</div>
+                  <div class="pmf-rcard-sub">Buyer Interviews</div>
+                  <div class="pmf-rcard-body">Real buyer interviews with real decision-makers. The exact words buyers use, the trade-offs they make, the alternatives they consider, the risks they fear.</div>
+                </div>
+                <div class="pmf-n">4</div>
+              </div>
+            </div>
+
+            <!-- CENTRE: Hub circle + vertical spine -->
+            <div class="pmf-hub-col">
+              <div class="pmf-hub">
+                <p class="pmf-hub-pre">How we build your</p>
+                <strong class="pmf-hub-title">Positioning &amp; Messaging Framework</strong>
+                <p class="pmf-hub-post">eight steps.</p>
+              </div>
+            </div>
+
+            <!-- RIGHT: Steps 5–8 -->
+            <div class="pmf-right-col">
+              <div class="pmf-step-item">
+                <div class="pmf-n">5</div>
+                <div class="pmf-rcard">
+                  <div class="pmf-rcard-num">Step 05</div>
+                  <div class="pmf-rcard-name">Segmentation</div>
+                  <div class="pmf-rcard-sub">Who We Go After First</div>
+                  <div class="pmf-rcard-body">The segment with the highest right-to-win, the shortest path to revenue, and the most defensible early-customer story. The other segments wait.</div>
+                </div>
+              </div>
+              <div class="pmf-step-item">
+                <div class="pmf-n">6</div>
+                <div class="pmf-rcard">
+                  <div class="pmf-rcard-num">Step 06</div>
+                  <div class="pmf-rcard-name">Positioning</div>
+                  <div class="pmf-rcard-sub">"Why You" Story</div>
+                  <div class="pmf-rcard-body">The intersection of what your customer needs, what you can credibly deliver, and what your competitors can't. This is where the PMF crystallises.</div>
+                </div>
+              </div>
+              <div class="pmf-step-item">
+                <div class="pmf-n">7</div>
+                <div class="pmf-rcard">
+                  <div class="pmf-rcard-num">Step 07</div>
+                  <div class="pmf-rcard-name">The 4 Ps</div>
+                  <div class="pmf-rcard-sub">Price · Place · Product · Promo</div>
+                  <div class="pmf-rcard-body">The positioning must land in operational reality. Tune the four levers so the B2B messaging ships — into campaigns, sales decks, partner packs.</div>
+                </div>
+              </div>
+              <div class="pmf-step-item">
+                <div class="pmf-n">8</div>
+                <div class="pmf-rcard output">
+                  <div class="pmf-rcard-num">Output</div>
+                  <div class="pmf-rcard-name">PMF</div>
+                  <div class="pmf-rcard-sub">The Message Blueprint</div>
+                  <div class="pmf-rcard-body">The Positioning &amp; Messaging Framework that aligns B2B sales and marketing. A working document — feeds your website, sales decks, partner packs, campaign briefs, and renewal conversations.</div>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /.pmf-radial -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Forms -->
+  <section class="ds-section" id="forms">
+    <div class="ds-section-head">
+      <div class="ds-eyebrow">Components</div>
+      <h2 class="ds-section-title">Forms</h2>
+      <p class="ds-section-desc">Form elements with translucent dark backgrounds. Focus state shows orange glow ring.</p>
+    </div>
+    <div class="ds-component">
+      <div class="ds-component-header">
+        <div><div class="ds-component-title">Form Elements</div></div>
+        <span class="ds-class-tag">.form-input .form-select .form-textarea</span>
+      </div>
+      <div class="ds-preview">
+        <div class="ds-preview-inner">
+          <div class="form-grid" style="max-width:640px">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">First Name</label>
+                <input type="text" class="form-input" placeholder="Jane">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Last Name</label>
+                <input type="text" class="form-input" placeholder="Smith">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Company</label>
+              <input type="text" class="form-input" placeholder="Acme SaaS Inc.">
+            </div>
+            <div class="form-group">
+              <label class="form-label">What are you looking for?</label>
+              <select class="form-select">
+                <option>Partner Revenue Program</option>
+                <option>RevOps Restructure</option>
+                <option>ISV Strategy</option>
+                <option>Advisory</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tell us about your current situation</label>
+              <textarea class="form-textarea" placeholder="Brief description of your current partner setup and goals…"></textarea>
+            </div>
+            <div>
+              <button class="btn-primary" style="border:none;cursor:pointer">Send Message →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <section class="ds-section" id="cta">
+    <div class="ds-section-head">
+      <div class="ds-eyebrow">Components</div>
+      <h2 class="ds-section-title">CTA Banner</h2>
+      <p class="ds-section-desc">Full-bleed orange section with black grid overlay. Always use a black button (<code style="font-family:monospace;color:var(--orange)">.btn-white</code> or <code style="font-family:monospace;color:var(--orange)">.btn-primary</code>) inside <code style="font-family:monospace;color:var(--orange)">.cta-section</code> — the context override forces it black automatically.</p>
+    </div>
+    <div class="ds-component">
+      <div class="ds-component-header">
+        <div><div class="ds-component-title">CTA Section</div></div>
+        <span class="ds-class-tag">.cta-section</span>
+      </div>
+      <div class="ds-preview">
+        <div class="cta-section">
+          <h2 class="cta-h">Ready to build revenue that <em>scales</em>?</h2>
+          <p class="cta-p">12 weeks. One focused engagement. A live partner program on the other side.</p>
+          <a href="#" class="btn-white">Book a Strategy Call →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <section class="ds-section" id="footer">
+    <div class="ds-section-head">
+      <div class="ds-eyebrow">Components</div>
+      <h2 class="ds-section-title">Footer</h2>
+      <p class="ds-section-desc">5-column grid: brand + 4 link groups. Social icon buttons use <code style="font-family:monospace;color:var(--orange)">.soc</code>. Bottom bar has copyright and policy links.</p>
+    </div>
+    <div class="ds-component">
+      <div class="ds-component-header">
+        <div><div class="ds-component-title">Footer</div></div>
+        <span class="ds-class-tag">footer .footer-grid</span>
+      </div>
+      <div class="ds-preview">
+        <div class="ds-preview-inner" style="padding:48px">
+          <div class="footer-demo">
+            <div class="footer-grid">
+              <div class="footer-brand">
+                <svg viewBox="140 150 800 800" style="width:36px;height:36px" xmlns="http://www.w3.org/2000/svg">
+                  <path fill="none" stroke="#e95c25" stroke-width="38" stroke-linejoin="round" d="M672.2,800.5c-9.9,0-18.9-5.3-23.9-14.5-21.9-40.6-67.9-99.4-98.3-96.9-17.1,1.5-35.2,27.5-49.8,71.5-4.6,16.6-21.1,28-38.9,26.7h-1.5c-20.5-1.7-36-19.7-34.5-40.2.7-9.8,3-23.7,5.6-39.7,6.3-38.5,15.7-95.4,9.5-140.7l-7.1-1.3c-55.8-10.5-132.2-24.8-183.8-81.1-41-44.8-63.4-85.1-63.6-85.5l-19.6-34.9,39.8-5.6c78.3-11.1,141.8,6.9,188.8,53.4,31.6,31.3,54.9,74.8,69.4,129.4h.2c43.8,0,88.1-17.9,131.8-53.2,71-57.4,112.7-140.7,130.5-176.3,9.8-19.6,18.3-36.5,40.4-31.2,10.6,2.5,21.5,12.1,21.5,28.1s4.6,107.2,96.3,107.9,24.6,8.7,27.7,21.1c5.3,21.6-11.7,30.7-26.7,38.6-125,66-188.3,148.6-188.3,245.5l2.1,50.2c.5,13.1-7.6,24.2-20.2,27.6-2.5.7-5.1,1-7.6,1Z"/>
+                </svg>
+                <p>We engineer the revenue engine that tech companies need to scale through partners — not around them.</p>
+                <div class="footer-socials">
+                  <a href="#" class="soc">in</a>
+                  <a href="#" class="soc">tw</a>
+                  <a href="#" class="soc">gh</a>
+                </div>
+              </div>
+              <div class="footer-col">
+                <h5>Services</h5>
+                <ul>
+                  <li><a href="#">Partner Revenue</a></li>
+                  <li><a href="#">RevOps</a></li>
+                  <li><a href="#">ISV Strategy</a></li>
+                  <li><a href="#">Advisory</a></li>
+                </ul>
+              </div>
+              <div class="footer-col">
+                <h5>Company</h5>
+                <ul>
+                  <li><a href="#">About</a></li>
+                  <li><a href="#">Work</a></li>
+                  <li><a href="#">Method</a></li>
+                  <li><a href="#">Contact</a></li>
+                </ul>
+              </div>
+              <div class="footer-col">
+                <h5>Legal</h5>
+                <ul>
+                  <li><a href="#">Privacy Policy</a></li>
+                  <li><a href="#">Terms</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="footer-bottom">
+              <span>© 2025 Blacfox. All rights reserved.</span>
+              <span>Johannesburg, South Africa</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TEMPLATES ═══ -->
+  <section class="ds-section" id="social">
+    <div class="ds-section-head">
+      <div class="ds-eyebrow">Templates</div>
+      <h2 class="ds-section-title">Templates</h2>
+      <p class="ds-section-desc">Production-ready HTML templates using the Blacfox design language. Open each in a new tab to preview or use.</p>
+    </div>
+
+    <!-- Email + eBook -->
+    <div class="ds-template-grid">
+      <a href="email.html" class="ds-template-card" target="_blank">
+        <div class="ds-template-thumb">
+          <div class="ds-template-thumb-inner">
+            <div style="text-align:center">
+              <div style="width:60px;height:4px;background:var(--orange);margin:0 auto 10px;border-radius:2px"></div>
+              <div style="font-size:10px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.5)">Email Template</div>
+              <div style="width:80px;height:2px;background:rgba(255,255,255,0.1);margin:10px auto 0;border-radius:2px"></div>
+            </div>
+          </div>
+        </div>
+        <div class="ds-template-info">
+          <div class="ds-template-name">Email Template</div>
+          <div class="ds-template-meta">600px wide · Table-based HTML email · Dark Blacfox style</div>
+        </div>
+      </a>
+      <a href="ebook.html" class="ds-template-card" target="_blank">
+        <div class="ds-template-thumb">
+          <div class="ds-template-thumb-inner">
+            <div style="text-align:center">
+              <div style="width:48px;height:64px;border:2px solid rgba(233,92,37,0.4);border-radius:4px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center">
+                <div style="font-size:9px;font-weight:800;color:var(--orange)">A4</div>
+              </div>
+              <div style="font-size:10px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.5)">eBook A4</div>
+            </div>
+          </div>
+        </div>
+        <div class="ds-template-info">
+          <div class="ds-template-name">eBook A4 Template</div>
+          <div class="ds-template-meta">210mm × 297mm · Multi-page · Print-ready</div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Social Ads -->
+    <div style="margin-top:48px">
+      <div class="ds-eyebrow" style="margin-bottom:16px">Social Ad Templates</div>
+      <div class="ds-social-grid">
+        <a href="social-1x1.html" class="ds-social-card" target="_blank">
+          <div class="ds-social-thumb" style="aspect-ratio:1/1">
+            <div class="ds-social-thumb-bg"></div>
+            <span class="ds-social-dim">1080×1080</span>
+          </div>
+          <div class="ds-social-info">
+            <div class="ds-social-name">Square 1:1</div>
+            <div class="ds-social-meta">Instagram Feed · LinkedIn</div>
+          </div>
+        </a>
+        <a href="social-9x16.html" class="ds-social-card" target="_blank">
+          <div class="ds-social-thumb" style="aspect-ratio:9/16;max-height:200px">
+            <div class="ds-social-thumb-bg"></div>
+            <span class="ds-social-dim">1080×1920</span>
+          </div>
+          <div class="ds-social-info">
+            <div class="ds-social-name">Story 9:16</div>
+            <div class="ds-social-meta">IG/FB Stories · Reels</div>
+          </div>
+        </a>
+        <a href="social-16x9.html" class="ds-social-card" target="_blank">
+          <div class="ds-social-thumb" style="aspect-ratio:16/9">
+            <div class="ds-social-thumb-bg"></div>
+            <span class="ds-social-dim">1920×1080</span>
+          </div>
+          <div class="ds-social-info">
+            <div class="ds-social-name">Landscape 16:9</div>
+            <div class="ds-social-meta">LinkedIn · YouTube · Twitter</div>
+          </div>
+        </a>
+        <a href="social-4x5.html" class="ds-social-card" target="_blank">
+          <div class="ds-social-thumb" style="aspect-ratio:4/5;max-height:200px">
+            <div class="ds-social-thumb-bg"></div>
+            <span class="ds-social-dim">1080×1350</span>
+          </div>
+          <div class="ds-social-info">
+            <div class="ds-social-name">Portrait 4:5</div>
+            <div class="ds-social-meta">Instagram Feed (optimal)</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bottom padding -->
+  <div style="height:80px"></div>
+
+</main>
+</div>
+
+<script>
+// Chart pair — replay animations on scroll into view
+;(function() {
+  var pair = document.getElementById('ds-chart-pair')
+  if (!pair) return
+  var animated = pair.querySelectorAll('.bar-blacfox,.bar-dot-blacfox,.bar-bench,.bar-dot-bench,.arc-fill,#arcDotEnd')
+  function replay() {
+    animated.forEach(function(el) { el.style.animation = 'none' })
+    void document.body.offsetWidth
+    animated.forEach(function(el) { el.style.animation = '' })
+  }
+  new IntersectionObserver(function(entries) {
+    if (entries[0].isIntersecting) replay()
+  }, { threshold: 0.4 }).observe(pair)
+})()
+
+// PMF Wave — draw on scroll, reset on leave
+;(function() {
+  var waveEl     = document.getElementById('wavePathDrawDS')
+  var dotEl      = document.getElementById('pmfDotDS')
+  var dotAnimEl  = document.getElementById('pmfDotAnimDS')
+  var sectionEl  = document.getElementById('pmfWaveSectionDS')
+  if (!waveEl || !sectionEl) return
+  var pathLen = waveEl.getTotalLength()
+  function startWave() {
+    waveEl.style.transition = 'none'
+    waveEl.style.strokeDasharray = pathLen
+    waveEl.style.strokeDashoffset = pathLen
+    dotEl.setAttribute('opacity', '1')
+    void waveEl.getBoundingClientRect()
+    waveEl.style.transition = 'stroke-dashoffset 3s cubic-bezier(0.4,0,0.2,1)'
+    waveEl.style.strokeDashoffset = '0'
+    dotAnimEl.beginElement()
+  }
+  function resetWave() {
+    waveEl.style.transition = 'none'
+    waveEl.style.strokeDasharray = pathLen
+    waveEl.style.strokeDashoffset = pathLen
+    dotEl.setAttribute('opacity', '0')
+  }
+  resetWave()
+  new IntersectionObserver(function(entries) {
+    if (entries[0].isIntersecting) startWave(); else resetWave()
+  }, { threshold: 0.25 }).observe(sectionEl)
+})()
+
+// Active nav link on scroll
+const sections = document.querySelectorAll('.ds-section[id]')
+const navLinks = document.querySelectorAll('.ds-nav-link[href^="#"]')
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'))
+      const active = document.querySelector(`.ds-nav-link[href="#${entry.target.id}"]`)
+      if (active) active.classList.add('active')
+    }
+  })
+}, { rootMargin: '-20% 0px -70% 0px' })
+
+sections.forEach(s => observer.observe(s))
+</script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-﻿/* =========================================================
+/* =========================================================
    BLACFOX â€” Shared Design System
    ========================================================= */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -21,10 +21,39 @@ body{
   /* Orange grid â€” fixed so it never scrolls away */
   background-color:#000;
   background-image:
-    linear-gradient(rgba(233,92,37,0.18) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(233,92,37,0.18) 1px, transparent 1px);
+    linear-gradient(rgba(233,92,37,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(233,92,37,0.04) 1px, transparent 1px);
   background-size:64px 64px;
   background-attachment:fixed;
+}
+
+/* Fixed dark header bar — sits above hero (z:0) and page-content (z:1), below nav (z:1000) */
+#header-bg {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 130px;
+  background-color: #000;
+  background-image:
+    linear-gradient(rgba(233,92,37,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(233,92,37,0.04) 1px, transparent 1px);
+  background-size: 64px 64px;
+  z-index: 998;
+  pointer-events: none;
+}
+
+/* Grain overlay */
+body::after {
+  content:'';
+  position:fixed;inset:0;
+  pointer-events:none;z-index:9999;
+  opacity:0.09;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size:300px 300px;
+}
+
+/* Orange section dividers */
+section + section {
+  border-top: 1px solid rgba(233,92,37,0.3);
 }
 
 /* â”€â”€ Cursor glow â”€â”€ */
@@ -134,7 +163,7 @@ body{
   letter-spacing:-0.04em;max-width:960px;
   animation:fadeSlideUp 0.9s 0.15s ease both;
 }
-.hero-title .line{display:block;overflow:hidden}
+.hero-title .line{display:block;overflow:hidden;padding-bottom:0.2em;margin-bottom:-0.2em}
 .hero-title .word{display:inline-block;animation:revealWord 0.8s ease both}
 .hero-title .word:nth-child(2){animation-delay:0.1s}
 .hero-title .word:nth-child(3){animation-delay:0.2s}
@@ -494,15 +523,18 @@ section{position:relative;overflow:clip}
   position:relative;overflow:hidden;
 }
 .cta-section::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse 60% 80% at 50% 0%,rgba(255,255,255,0.15) 0%,transparent 70%);
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.10) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.10) 1px, transparent 1px);
+  background-size:64px 64px;
 }
 .cta-h{
   font-size:clamp(28px,4vw,54px);font-weight:900;letter-spacing:-0.03em;
-  color:white;line-height:1.0;margin-bottom:20px;position:relative;
+  color:#000;line-height:1.0;margin-bottom:20px;position:relative;
 }
-.cta-h em{font-style:italic;font-weight:900;color:white}
-.cta-p{font-size:17px;color:rgba(255,255,255,0.75);margin-bottom:40px;position:relative}
+.cta-h em{font-style:italic;font-weight:900;color:#fff}
+.cta-p{font-size:17px;color:rgba(0,0,0,0.65);margin-bottom:40px;position:relative}
 
 .btn-white{
   display:inline-flex;align-items:center;gap:10px;text-decoration:none;
@@ -602,12 +634,9 @@ footer{
 }
 
 /* =========================================================
-   LIQUID GLASS â€” all grey cards & panels
-   Background refracts through the glass layer.
-   Orange output states (.is-output, .col-good) are excluded.
+   CARDS & PANELS — white outline, no glass blur
    ========================================================= */
 
-/* Core glass recipe â€” shared by every card type */
 .dark-card,
 .faq-item,
 .step-item:not(.is-output),
@@ -618,197 +647,280 @@ footer{
 .cmp-col.bad,
 .case-study-card,
 .info-card {
-  background: linear-gradient(
-    135deg,
-    rgba(255,255,255,0.10) 0%,
-    rgba(255,255,255,0.03) 45%,
-    rgba(255,255,255,0.07) 100%
-  );
-  backdrop-filter: blur(20px) saturate(1.9) brightness(1.14);
-  -webkit-backdrop-filter: blur(20px) saturate(1.9) brightness(1.14);
-  border-color: rgba(255,255,255,0.15);
-  box-shadow:
-    0 4px 32px rgba(0,0,0,0.28),
-    inset 0 1.5px 0 rgba(255,255,255,0.22),
-    inset 0 -1px 0 rgba(0,0,0,0.08),
-    inset 1px 0 0 rgba(255,255,255,0.05),
-    inset -1px 0 0 rgba(255,255,255,0.05);
+  background: transparent;
+  border-color: rgba(255,255,255,0.18);
+  box-shadow: none;
 }
 
-/* Heavier glass for cards that hover / scale */
 .dark-card:hover,
 .service-card:hover {
-  background: linear-gradient(
-    135deg,
-    rgba(255,255,255,0.13) 0%,
-    rgba(255,255,255,0.04) 45%,
-    rgba(255,255,255,0.09) 100%
-  );
+  background: transparent;
   border-color: rgba(233,92,37,0.45);
-  box-shadow:
-    0 12px 48px rgba(0,0,0,0.32),
-    0 0 0 1px rgba(233,92,37,0.12),
-    inset 0 1.5px 0 rgba(255,255,255,0.26),
-    inset 0 -1px 0 rgba(0,0,0,0.1);
+  box-shadow: none;
 }
 
-/* Stats bar â€” full-width glass band */
 .stats-section {
-  background: linear-gradient(
-    180deg,
-    rgba(255,255,255,0.06) 0%,
-    rgba(255,255,255,0.015) 100%
-  );
-  backdrop-filter: blur(24px) saturate(1.7) brightness(1.08);
-  -webkit-backdrop-filter: blur(24px) saturate(1.7) brightness(1.08);
-  border-top-color: rgba(255,255,255,0.12);
-  border-bottom-color: rgba(255,255,255,0.08);
-  box-shadow: inset 0 1.5px 0 rgba(255,255,255,0.14);
+  background: transparent;
+  box-shadow: none;
 }
 
-/* Nav pills â€” elevated glass (already partially glass; enhance) */
 .nav-pill-glass {
-  background: rgba(0,0,0,0.22);
-  backdrop-filter: blur(32px) saturate(2.1) brightness(1.18);
-  -webkit-backdrop-filter: blur(32px) saturate(2.1) brightness(1.18);
+  background: rgba(0,0,0,0.6);
   border-color: rgba(255,255,255,0.18);
-  box-shadow:
-    0 8px 40px rgba(0,0,0,0.35),
-    inset 0 1.5px 0 rgba(255,255,255,0.24),
-    inset 0 -1px 0 rgba(0,0,0,0.18);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+}
+.nav-links-pill.nav-pill-glass {
+  border-color: rgba(233,92,37,0.6);
 }
 
-/* Open FAQ item â€” slightly stronger glass on expand */
 .faq-item.open {
-  background: linear-gradient(
-    135deg,
-    rgba(255,255,255,0.13) 0%,
-    rgba(255,255,255,0.04) 45%,
-    rgba(255,255,255,0.09) 100%
-  );
+  background: transparent;
   border-color: rgba(233,92,37,0.5);
-  box-shadow:
-    0 8px 40px rgba(0,0,0,0.3),
-    0 0 0 1px rgba(233,92,37,0.1),
-    inset 0 1.5px 0 rgba(255,255,255,0.26),
-    inset 0 -1px 0 rgba(0,0,0,0.08);
+  box-shadow: none;
 }
 
-/* Case study stats strip â€” slightly darker glass */
 .case-stats-strip {
-  background: linear-gradient(
-    135deg,
-    rgba(0,0,0,0.3) 0%,
-    rgba(0,0,0,0.15) 100%
-  );
-  backdrop-filter: blur(12px) saturate(1.5);
-  -webkit-backdrop-filter: blur(12px) saturate(1.5);
+  background: rgba(0,0,0,0.25);
 }
 
-/* Callout boxes â€” warm-tinted glass */
 .callout-box {
-  background: linear-gradient(
-    135deg,
-    rgba(233,92,37,0.10) 0%,
-    rgba(233,92,37,0.03) 100%
-  );
-  backdrop-filter: blur(16px) saturate(1.8) brightness(1.1);
-  -webkit-backdrop-filter: blur(16px) saturate(1.8) brightness(1.1);
-  border-color: rgba(233,92,37,0.35);
-  box-shadow:
-    0 4px 24px rgba(0,0,0,0.2),
-    inset 0 1.5px 0 rgba(233,92,37,0.2),
-    inset 0 -1px 0 rgba(0,0,0,0.06);
+  background: transparent;
+  border-color: rgba(233,92,37,0.4);
+  box-shadow: none;
 }
 
-/* Contact info cards inside contact page */
 .contact-item {
-  background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
-  backdrop-filter: blur(16px) saturate(1.8);
-  -webkit-backdrop-filter: blur(16px) saturate(1.8);
-  border: 1px solid rgba(255,255,255,0.12);
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.18);
   border-radius: 14px;
   padding: 20px 24px;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.14);
+  box-shadow: none;
 }
 
-/* Form inputs â€” frosted glass fields */
 .form-input,
 .form-select,
 .form-textarea {
-  background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
-  backdrop-filter: blur(12px) saturate(1.5);
-  -webkit-backdrop-filter: blur(12px) saturate(1.5);
+  background: rgba(255,255,255,0.04);
   border-color: rgba(255,255,255,0.14);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(0,0,0,0.08);
+  box-shadow: none;
   color: var(--light);
 }
 
 .form-input:focus,
 .form-select:focus,
 .form-textarea:focus {
-  background: linear-gradient(135deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.03) 100%);
+  background: rgba(255,255,255,0.06);
   border-color: rgba(233,92,37,0.6);
-  box-shadow: 0 0 0 3px rgba(233,92,37,0.12), inset 0 1px 0 rgba(255,255,255,0.1);
+  box-shadow: 0 0 0 3px rgba(233,92,37,0.12);
 }
 
-/* â”€â”€ Body background is now defined at the top (orange grid) â”€â”€ */
-
-/* â”€â”€ .glass-card â€” utility for inline-styled elements â”€â”€ */
-/* Uses !important to override inline background & border */
 .glass-card {
-  background: linear-gradient(
-    135deg,
-    rgba(255,255,255,0.10) 0%,
-    rgba(255,255,255,0.03) 48%,
-    rgba(255,255,255,0.07) 100%
-  ) !important;
-  backdrop-filter: blur(20px) saturate(1.9) brightness(1.14) !important;
-  -webkit-backdrop-filter: blur(20px) saturate(1.9) brightness(1.14) !important;
-  border: 1px solid rgba(255,255,255,0.15) !important;
-  box-shadow:
-    0 4px 32px rgba(0,0,0,0.28),
-    inset 0 1.5px 0 rgba(255,255,255,0.22),
-    inset 0 -1px 0 rgba(0,0,0,0.08) !important;
+  background: transparent !important;
+  border: 1px solid rgba(255,255,255,0.18) !important;
+  box-shadow: none !important;
 }
 
-/* â”€â”€ Biz card / letterhead in stationery mockups â”€â”€ */
 .biz-card {
-  background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
-  backdrop-filter: blur(16px) saturate(1.8) brightness(1.1);
-  -webkit-backdrop-filter: blur(16px) saturate(1.8) brightness(1.1);
-  border: 1px solid rgba(255,255,255,0.12);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.15);
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: none;
 }
 
-/* â”€â”€ Laptop mockup screen wrap â”€â”€ */
 .lp-screen-wrap {
-  background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%);
-  backdrop-filter: blur(10px) saturate(1.5);
-  -webkit-backdrop-filter: blur(10px) saturate(1.5);
+  background: transparent;
   border-color: rgba(255,255,255,0.12);
 }
 
-/* â”€â”€ Section mid â€” liquid glass over the body grid â”€â”€ */
 .section-mid {
-  background: linear-gradient(
-    135deg,
-    rgba(255,255,255,0.07) 0%,
-    rgba(0,0,0,0.40) 50%,
-    rgba(255,255,255,0.04) 100%
-  );
-  backdrop-filter: blur(14px) saturate(1.8) brightness(1.06);
-  -webkit-backdrop-filter: blur(14px) saturate(1.8) brightness(1.06);
-  border-top: 1px solid rgba(255,255,255,0.08);
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+  background: transparent;
+  box-shadow: none;
 }
 
-/* â”€â”€ Regular sections â€” very light glass so grid bleeds through â”€â”€ */
-section:not(.cta-section):not(.section-mid) {
-  backdrop-filter: blur(2px) saturate(1.1);
-  -webkit-backdrop-filter: blur(2px) saturate(1.1);
+/* =========================================================
+   HERO — INVERTED (orange bg, black grid, flipped text)
+   Fixed so page content scrolls over it.
+   ========================================================= */
+
+#hero {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  padding-top: 112px;
+  z-index: 0;
+  background: linear-gradient(to bottom, #000 130px, var(--orange) 130px);
 }
+
+#hero .hero-split {
+  min-height: 0;
+  padding-top: 60px;
+  padding-bottom: 80px;
+}
+
+/* Spacer reserves the hero's scroll height in the document flow */
+#hero-spacer {
+  height: 100vh;
+}
+
+
+/* Everything after the hero scrolls over it */
+#page-content {
+  position: relative;
+  z-index: 1;
+  background: #000;
+  background-image:
+    linear-gradient(rgba(233,92,37,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(233,92,37,0.04) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* Black grid overlay replaces the body's orange grid */
+#hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.10) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.10) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* White → black */
+#hero .hero-title            { color: #000; }
+#hero .hero-sub              { color: rgba(0,0,0,0.65); }
+#hero .hero-meta             { color: rgba(0,0,0,0.5); }
+#hero .hero-scroll span      { color: rgba(0,0,0,0.5); }
+#hero .scroll-line           { background: linear-gradient(to bottom, rgba(0,0,0,0.35), transparent); }
+
+/* Orange → white */
+#hero .hero-title em         { color: #fff; }
+
+/* Buttons on orange bg */
+#hero .btn-primary {
+  background: #000;
+  border-color: #000;
+  color: #fff;
+  box-shadow: none;
+}
+#hero .btn-primary:hover {
+  background: #1a1a1a;
+  box-shadow: none;
+}
+#hero .btn-ghost {
+  border-color: rgba(0,0,0,0.35);
+  color: rgba(0,0,0,0.75);
+}
+#hero .btn-ghost:hover {
+  border-color: #000;
+  color: #000;
+  background: transparent;
+}
+
+/* Quote panel — dark card on orange bg */
+#hero .hero-quote-panel {
+  background: rgba(0,0,0,0.75);
+  border-color: rgba(0,0,0,0.3);
+}
+#hero .hero-quote-panel blockquote      { color: #fff; }
+#hero .hero-quote-panel blockquote em   { color: #fff; font-weight: 900; }
+#hero .hero-attribution                 { color: rgba(255,255,255,0.55); }
+
+/* =========================================================
+   PAGE HERO — fixed parallax + orange inversion (all pages except index)
+   ========================================================= */
+
+/* Fixed in place — content slides over it */
+.hero-section,
+.page-hero {
+  position: fixed !important;
+  top: 0 !important; left: 0 !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  z-index: 0;
+  padding-top: 130px !important;
+  overflow: visible !important;
+  background: linear-gradient(to bottom, #000 130px, var(--orange) 130px) !important;
+}
+
+/* Black grid overlay */
+.hero-section::before,
+.page-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  pointer-events: none; z-index: 0;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.10) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.10) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* Content above grid overlay */
+.page-hero .hero-split {
+  position: relative; z-index: 1;
+  min-height: 0 !important;
+  padding-top: 60px !important;
+  padding-bottom: 80px !important;
+}
+.hero-section > div { position: relative; z-index: 1; padding-top: 60px; padding-bottom: 80px; }
+
+/* Scroll hint — dark tones on orange bg */
+.page-hero .hero-scroll span,
+.hero-section .hero-scroll span { color: rgba(0,0,0,0.5); }
+.page-hero .scroll-line,
+.hero-section .scroll-line { background: linear-gradient(to bottom, rgba(0,0,0,0.35), transparent); }
+
+/* Content wrapper that slides over the fixed hero */
+.other-page-content {
+  position: relative;
+  z-index: 1;
+  background: #000;
+  background-image:
+    linear-gradient(rgba(233,92,37,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(233,92,37,0.04) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* White → black */
+.hero-section .section-h,
+.hero-section .hero-title,
+.page-hero .hero-title            { color: #000; }
+
+.hero-section .section-tag,
+.hero-section .section-p,
+.hero-section .hero-sub,
+.page-hero .hero-sub              { color: rgba(0,0,0,0.65); }
+
+/* Orange → white */
+.hero-section .section-h em,
+.hero-section .hero-title em,
+.page-hero .hero-title em         { color: #fff; }
+
+/* Quote panel */
+.page-hero .hero-quote-panel,
+.hero-section .hero-quote-panel   { background: rgba(0,0,0,0.75); border-color: rgba(0,0,0,0.3); }
+.page-hero .hero-quote-panel blockquote,
+.hero-section .hero-quote-panel blockquote { color: #fff; }
+.page-hero .hero-quote-panel blockquote em,
+.hero-section .hero-quote-panel blockquote em { color: #fff; font-weight: 900; }
+.page-hero .hero-attribution,
+.hero-section .hero-attribution   { color: rgba(255,255,255,0.55); }
+
+/* Buttons */
+.hero-section .btn-primary,
+.page-hero .btn-primary {
+  background: #000; border-color: #000; color: #fff;
+  box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none;
+}
+.hero-section .btn-primary:hover,
+.page-hero .btn-primary:hover     { background: #1a1a1a; box-shadow: none; }
+.hero-section .btn-ghost,
+.page-hero .btn-ghost             { border-color: rgba(0,0,0,0.35); color: rgba(0,0,0,0.75); }
+.hero-section .btn-ghost:hover,
+.page-hero .btn-ghost:hover       { border-color: #000; color: #000; background: transparent; }
 
 /* =========================================================
    FLOATING ORANGE ORBS
@@ -932,98 +1044,31 @@ body::before {
 }
 
 /* =========================================================
-   ORANGE-TINTED LIQUID GLASS
+   ORANGE-TINTED ELEMENTS — flat orange, no glass blur
    ========================================================= */
 
-/* Nav links pill â€” orange glass (overrides the neutral .nav-pill-glass) */
-.nav-links-pill.nav-pill-glass {
-  background: linear-gradient(
-    135deg,
-    rgba(233,92,37,0.28) 0%,
-    rgba(233,92,37,0.11) 48%,
-    rgba(233,92,37,0.22) 100%
-  );
-  backdrop-filter: blur(32px) saturate(2.4) brightness(1.25);
-  -webkit-backdrop-filter: blur(32px) saturate(2.4) brightness(1.25);
-  border-color: rgba(233,92,37,0.50);
-  box-shadow:
-    0 8px 40px rgba(233,92,37,0.25),
-    0 2px 12px rgba(0,0,0,0.3),
-    inset 0 1.5px 0 rgba(255,185,110,0.45),
-    inset 0 -1px 0 rgba(100,28,0,0.28);
-}
 
-/* Nav link text â€” warm white on orange glass */
-.nav-links-pill a {
-  color: rgba(255,230,215,0.6);
-}
-.nav-links-pill a:hover {
-  color: #fff;
-  background: rgba(255,255,255,0.10);
-}
-.nav-links-pill a.active {
-  color: #fff;
-}
-
-/* â”€â”€ Orange solid cards â†’ orange-tinted liquid glass â”€â”€ */
-
-/* Comparison right column ("Blacfox" card) â€” both old and infographic class names */
 .compare-col.col-good,
 .cmp-col.good {
-  background: linear-gradient(
-    135deg,
-    rgba(233,92,37,0.62) 0%,
-    rgba(233,92,37,0.30) 48%,
-    rgba(233,92,37,0.54) 100%
-  );
-  backdrop-filter: blur(22px) saturate(2.3) brightness(1.32);
-  -webkit-backdrop-filter: blur(22px) saturate(2.3) brightness(1.32);
-  border: 1px solid rgba(255,160,80,0.55);
-  box-shadow:
-    0 8px 40px rgba(233,92,37,0.30),
-    inset 0 2px 0 rgba(255,190,110,0.50),
-    inset 0 -1px 0 rgba(100,28,0,0.28);
+  background: transparent;
+  border: 1px solid var(--orange);
+  box-shadow: none;
 }
 
-/* PMF output step (method page) */
 .step-item.is-output {
-  background: linear-gradient(
-    135deg,
-    rgba(233,92,37,0.60) 0%,
-    rgba(233,92,37,0.28) 48%,
-    rgba(233,92,37,0.52) 100%
-  );
-  backdrop-filter: blur(20px) saturate(2.2) brightness(1.30);
-  -webkit-backdrop-filter: blur(20px) saturate(2.2) brightness(1.30);
-  border-color: rgba(255,155,75,0.55);
-  box-shadow:
-    0 6px 32px rgba(233,92,37,0.28),
-    inset 0 2px 0 rgba(255,185,105,0.48),
-    inset 0 -1px 0 rgba(100,28,0,0.25);
+  background: rgba(233,92,37,0.55);
+  border-color: rgba(255,155,75,0.5);
+  box-shadow: none;
 }
 
-/* PMF method preview output card (home page) */
 .method-card.is-output {
-  background: linear-gradient(
-    135deg,
-    rgba(233,92,37,0.58) 0%,
-    rgba(233,92,37,0.26) 48%,
-    rgba(233,92,37,0.50) 100%
-  );
-  backdrop-filter: blur(18px) saturate(2.1) brightness(1.28);
-  -webkit-backdrop-filter: blur(18px) saturate(2.1) brightness(1.28);
-  border-color: rgba(255,150,70,0.52);
-  box-shadow:
-    0 4px 24px rgba(233,92,37,0.26),
-    inset 0 1.5px 0 rgba(255,180,100,0.45),
-    inset 0 -1px 0 rgba(100,28,0,0.22);
+  background: rgba(233,92,37,0.52);
+  border-color: rgba(255,150,70,0.5);
+  box-shadow: none;
 }
 
-/* Text colours on orange glass cards â€” keep readable */
 .compare-col.col-good .compare-label { color: rgba(255,220,190,0.80); }
 .compare-col.col-good .compare-step  { color: #fff; border-color: rgba(255,255,255,0.20); }
-
-/* Infographic comparison card text on orange glass */
 .cmp-col.good .cmp-col-label  { color: rgba(255,200,170,0.85); }
 .cmp-col.good .cmp-col-title  { color: #fff; }
 .cmp-col.good .cmp-step       { border-color: rgba(255,255,255,0.18); }
@@ -1031,20 +1076,15 @@ body::before {
 .cmp-col.good .cmp-step-sub   { color: rgba(255,220,200,0.70); }
 .cmp-col.good .cmp-step-num   { color: rgba(255,200,150,0.85); }
 
-/* Inner boxes inside infographic comparison cards */
 .cmp-dead-end {
-  background: linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.02) 100%);
-  backdrop-filter: blur(12px) saturate(1.6);
-  -webkit-backdrop-filter: blur(12px) saturate(1.6);
+  background: rgba(255,255,255,0.04);
   border-color: rgba(255,255,255,0.14);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.10);
+  box-shadow: none;
 }
 .cmp-outcome {
-  background: linear-gradient(135deg, rgba(233,92,37,0.55) 0%, rgba(233,92,37,0.28) 100%);
-  backdrop-filter: blur(16px) saturate(2) brightness(1.25);
-  -webkit-backdrop-filter: blur(16px) saturate(2) brightness(1.25);
-  border-color: rgba(255,155,75,0.55);
-  box-shadow: 0 4px 20px rgba(233,92,37,0.22), inset 0 1.5px 0 rgba(255,185,110,0.40);
+  background: transparent;
+  border: 1px solid var(--orange);
+  box-shadow: none;
   color: #fff;
 }
 .cmp-outcome-num { color: #fff; }
@@ -1055,23 +1095,26 @@ body::before {
 .method-card.is-output .card-title   { color: #fff; }
 .method-card.is-output .card-body    { color: rgba(255,230,210,0.85); }
 
-/* CTA section â€” orange-tinted liquid glass instead of solid orange */
 .cta-section {
-  background: linear-gradient(
-    135deg,
-    rgba(233,92,37,0.55) 0%,
-    rgba(233,92,37,0.28) 45%,
-    rgba(233,92,37,0.48) 100%
-  );
-  backdrop-filter: blur(40px) saturate(2.5) brightness(1.4);
-  -webkit-backdrop-filter: blur(40px) saturate(2.5) brightness(1.4);
-  border-top: 1px solid rgba(255,160,80,0.40);
-  border-bottom: 1px solid rgba(100,28,0,0.20);
-  box-shadow:
-    0 -8px 48px rgba(233,92,37,0.18) inset,
-    0 8px 48px rgba(0,0,0,0.20),
-    inset 0 2px 0 rgba(255,185,110,0.55),
-    inset 0 -2px 0 rgba(100,28,0,0.22);
+  background: var(--orange);
+  box-shadow: none;
+}
+
+.cta-section .btn-primary,
+.cta-section .btn-white {
+  background: #000;
+  border-color: #000;
+  color: #fff;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.cta-section .btn-primary:hover,
+.cta-section .btn-white:hover {
+  background: #1a1a1a;
+  border-color: #1a1a1a;
+  box-shadow: none;
+  transform: translateY(-2px);
 }
 
 /* =========================================================

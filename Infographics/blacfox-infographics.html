@@ -37,20 +37,6 @@
       overflow-x: hidden;
     }
 
-    /* ── BG ORBS ── */
-    #orbs-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-    .orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.18; }
-    .orb-1 { width: 600px; height: 600px; background: #e95c25; top: -200px; left: -200px; }
-    .orb-2 { width: 400px; height: 400px; background: #ff8c42; top: 40%; right: -150px; }
-    .orb-3 { width: 350px; height: 350px; background: #c44b1a; bottom: 10%; left: 20%; }
-
-    /* ── CURSOR GLOW ── */
-    #cursor-glow {
-      position: fixed; width: 300px; height: 300px;
-      border-radius: 50%; pointer-events: none; z-index: 9999;
-      background: radial-gradient(circle, rgba(233,92,37,0.08) 0%, transparent 70%);
-      transform: translate(-50%, -50%); transition: left 0.1s, top 0.1s;
-    }
 
     /* ── PAGE HEADER ── */
     .page-header {
@@ -624,13 +610,7 @@
 </head>
 <body>
 
-<div id="cursor-glow"></div>
 
-<div id="orbs-bg" aria-hidden="true">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
-</div>
 
 <!-- PAGE HEADER -->
 <div class="page-header reveal">
@@ -1380,12 +1360,6 @@
 </footer>
 
 <script>
-  // Cursor glow
-  const glow = document.getElementById('cursor-glow');
-  document.addEventListener('mousemove', e => {
-    glow.style.left = e.clientX + 'px';
-    glow.style.top = e.clientY + 'px';
-  });
 
   // Scroll reveal
   const ro = new IntersectionObserver(entries => {
